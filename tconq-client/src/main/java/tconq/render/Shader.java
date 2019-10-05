@@ -88,7 +88,7 @@ public class Shader {
 		StringBuilder outputString = new StringBuilder();
 		BufferedReader bufferedReader;
 		try {
-			URI filePath = getClass().getResource("/shaders/" + filename).toURI();
+			URI filePath = getClass().getResource("/java/shaders/" + filename).toURI();
 			bufferedReader = new BufferedReader(new FileReader(new File(filePath)));
 			String line;
 			while ((line = bufferedReader.readLine()) != null) {

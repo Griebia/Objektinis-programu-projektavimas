@@ -16,9 +16,53 @@ import tconq.io.Window;
 import tconq.worldmap.TileRender;
 import tconq.worldmap.Map;
 
+import lwjgui.LWJGUI;
+import lwjgui.LWJGUIUtil;
+import lwjgui.geometry.Insets;
+import lwjgui.geometry.Pos;
+import lwjgui.paint.Color;
+import lwjgui.scene.Scene;
+import lwjgui.scene.control.CheckBox;
+import lwjgui.scene.control.Label;
+import lwjgui.scene.control.Slider;
+import lwjgui.scene.layout.BorderPane;
+import lwjgui.scene.layout.HBox;
+import lwjgui.scene.layout.StackPane;
+import lwjgui.scene.layout.VBox;
+
+
 public class App {
 	private final int WINDOWX = 640;
 	private final int WINDOWY = 480;
+
+	private static Window window;
+
+	private static void addComponents(Scene scene) {
+		// Create a simple pane
+		BorderPane pane = new BorderPane();
+
+		pane.setPadding(new Insets(6));
+		pane.setBackground(null);
+		// Frame
+		// Set the pane as the scenes root
+		scene.setRoot(pane);
+
+		{
+			VBox vbox = new VBox();
+			vbox.setAlignment(Pos.BOTTOM_LEFT);
+			vbox.setBackground(Color.BLUE.alpha(0.4f));
+			vbox.setMinSize(window.getWidth() - 10, 64);
+			//vbox.setPadding(new Insets(0, 10, 10, 0));
+			pane.setTop(vbox);
+
+			Label label1 = new Label("Gold"); //TODO: write income and balance
+			label1.setTextFill(Color.YELLOW);
+			label1.setFontSize(64);
+			vbox.getChildren().add(label1);
+		}
+		
+	 }
+
 	public void run() {
 		Window.setCallbacks();
 		
@@ -27,12 +71,13 @@ public class App {
 			System.exit(1);
 		}
 		
-		Window window = new Window();
+		window = new Window();
 		window.setSize(WINDOWX, WINDOWY);
 		window.setFullscreen(false);
 		window.createWindow("Territory Conquest");
 		
 		GL.createCapabilities();
+		
 		
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -42,6 +87,13 @@ public class App {
 		
 		TileRender tiles = new TileRender();
 		Assets.initAsset();
+
+		lwjgui.scene.Window lwjguiWindow = LWJGUI.initialize(window.getWindow());
+		lwjguiWindow.setWindowAutoClear(false); // We must call glClear ourselves.
+		lwjguiWindow.setWindowAutoDraw(false); // We must call glfwSwapBuffers ourselves.
+		lwjguiWindow.show(); // Display window if it's invisible.
+		// Add some components
+		addComponents(lwjguiWindow.getScene());
 		
 		// float[] vertices = new float[] {
 		// -1f, 1f, 0, //TOP LEFT 0
@@ -87,6 +139,9 @@ public class App {
 			frame_time += passed;
 			
 			time = time_2;
+
+
+			
 			
 			while (unprocessed >= frame_cap) {
 				if (window.hasResized()) {
@@ -131,7 +186,6 @@ public class App {
 					frames = 0;
 				}
 			}
-			
 			if (can_render) {
 				glClear(GL_COLOR_BUFFER_BIT);
 				
@@ -145,6 +199,8 @@ public class App {
 				world.render(tiles, shader, camera);
 				
 				//gui.render();
+
+				LWJGUI.render();
 				
 				window.swapBuffers();
 				frames++;
@@ -159,5 +215,7 @@ public class App {
 	public static void main(String[] args) {
 		new App().run();
 	}
+
+	
 	
 }

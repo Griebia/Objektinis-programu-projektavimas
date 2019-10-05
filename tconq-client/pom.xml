@@ -17,6 +17,7 @@
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
     <lwjgl.version>3.2.3</lwjgl.version>
+    <lwjgui.version>b7abc1a0b2</lwjgui.version>
   </properties>
 
 
@@ -71,7 +72,19 @@
 		</dependencies>
 	</dependencyManagement>
 
+  <repositories>
+		<repository>
+		    <id>jitpack.io</id>
+		    <url>https://jitpack.io</url>
+		</repository>
+	</repositories>
+
   <dependencies>
+      <dependency>
+        <groupId>com.github.orange451</groupId>
+        <artifactId>LWJGUI</artifactId>
+        <version>${lwjgui.version}</version>
+      </dependency>
       <dependency>
           <groupId>org.lwjgl</groupId>
           <artifactId>lwjgl</artifactId>
