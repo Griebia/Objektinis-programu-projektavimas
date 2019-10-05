@@ -22,7 +22,7 @@ public class Texture {
 	public Texture(String filename) {
 		BufferedImage bufferedImage;
 		try {
-			URI file = getClass().getResource("/java/textures/" + filename).toURI();
+			URI file = getClass().getResource("/textures/" + filename).toURI();
 			bufferedImage = ImageIO.read(new File(file));
 			width = bufferedImage.getWidth();
 			height = bufferedImage.getHeight();

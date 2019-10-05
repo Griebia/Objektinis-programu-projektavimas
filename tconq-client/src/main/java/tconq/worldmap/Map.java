@@ -32,7 +32,7 @@ public class Map {
 
 	public Map(String Map, Camera camera)  {
 		try {
-			URI tilesmap = getClass().getResource("java/levels/" + Map + "/tiles.png").toURI();
+			URI tilesmap = getClass().getResource("/levels/" + Map + "/tiles.png").toURI();
 			//URI entitymap = getClass().getResource("/levels/" + Map + "/entities.png").toURI();
 			BufferedImage tile_sheet = ImageIO.read(new File(tilesmap));
 			//BufferedImage entity_sheet = ImageIO.read(new File(entitymap));
