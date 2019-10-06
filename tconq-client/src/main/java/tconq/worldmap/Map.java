@@ -23,6 +23,7 @@ public class Map {
 	private int viewY;
 	private byte[] tiles;
 	private AABB[] bounding_boxes;
+	//private AABB selectedTile;
 	private List<Entity> entities;
 	private int width;
 	private int height;
@@ -162,7 +163,7 @@ public class Map {
 	
 	public void setTile(Tile tile, int x, int y) {
 		tiles[x + y * width] = tile.getId();
-		if (tile.isSolid()) {
+		if (tile.isSelectable()) {
 			bounding_boxes[x + y * width] = new AABB(new Vector2f(x * 2, -y * 2), new Vector2f(1, 1));
 		}
 		else {

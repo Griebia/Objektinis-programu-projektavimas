@@ -9,7 +9,9 @@ import org.joml.Vector3f;
 import org.lwjgl.opengl.GL;
 
 import tconq.assets.Assets;
+import tconq.collision.AABB;
 import tconq.gui.Gui;
+import tconq.io.Input;
 import tconq.io.Timer;
 import tconq.render.Camera;
 import tconq.render.Shader;
@@ -42,13 +44,22 @@ public class App {
 	private static Window window;
 	private static lwjgui.scene.Window lwjguiWindow;
 
-	private static void showCursorCoordinates(){
+	private static void showCursorCoordinates(Map world, Camera cam){
 		Vector2f pos = window.getInput().getMousePosition();
+		pos.x = (pos.x + 32 - (cam.getPosition().x))/64;
+		pos.y = (pos.y - 32 - (cam.getPosition().y))/-64;
+		AABB box = world.getTileBoundingBox((int) (pos.x), (int) (pos.y));
 		BorderPane bd = (BorderPane) lwjguiWindow.getScene().getRoot();
 		VBox vbox = (VBox)bd.getChildren().get(0);
 		VBox vboxtop = (VBox)vbox.getChildren().get(0);
 		Label label1 = (Label) vboxtop.getChildren().get(0);
-		label1.setText("Coords: x - " + pos.x + " y - " + pos.y );
+		String s = "null";
+		if (box != null){
+			s = box.toString();
+		}else{
+			s = "null";
+		}
+		label1.setText( s + "camera x."+cam.getPosition().x + " y."+cam.getPosition().y);
 	}
 	
 
@@ -72,7 +83,7 @@ public class App {
 
 			Label label1 = new Label("Gold"); //TODO: write income and balance
 			label1.setTextFill(Color.YELLOW);
-			label1.setFontSize(64);
+			label1.setFontSize(32);
 			vbox.getChildren().add(label1);
 			int i = 0;
 		}
@@ -216,7 +227,7 @@ public class App {
 				world.render(tiles, shader, camera);
 				
 				//gui.render();
-				showCursorCoordinates();
+				showCursorCoordinates(world, camera);
 
 				LWJGUI.render();
 				
