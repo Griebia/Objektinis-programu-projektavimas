@@ -91,6 +91,10 @@ public class Map {
 			e.printStackTrace();
 		}
 	}
+
+	public void addEntity(Entity entity){
+		entities.add(entity);
+	}
 	
 	public Map() {
 		width = 64;

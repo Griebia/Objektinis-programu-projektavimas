@@ -11,9 +11,11 @@ import tconq.worldmap.Map;
 
 public abstract class Entity {
 	protected AABB bounding_box;
-	// private Texture texture;
+	
 	protected Animation[] animations;
 	private int use_animation;
+	private Texture texture;
+
 	
 	protected TransformTc transform;
 	
@@ -24,6 +26,15 @@ public abstract class Entity {
 		this.use_animation = 0;
 		
 		bounding_box = new AABB(new Vector2f(transform.pos.x, transform.pos.y), new Vector2f(transform.scale.x, transform.scale.y));
+	}
+
+	public Entity(String texturepath, TransformTc transform){
+		this.texture = new Texture(texturepath);
+		this.transform = transform;
+	}
+
+	protected void setTexture(String texturepath){
+		this.texture = new Texture(texturepath);
 	}
 	
 	protected void setAnimation(int index, Animation animation) {

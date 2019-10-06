@@ -4,8 +4,10 @@ public class Tile {
 	public static Tile tiles[] = new Tile[255];
 	public static byte not = 0;
 	
-	public static final Tile test_tile = new Tile("water");
-	public static final Tile test2 = new Tile("grass");
+	public static final Tile water = new Tile("water");
+	public static final Tile grass = new Tile("grass");
+	public static final Tile yellowgrass = new Tile("grass_yellow");
+	public static final Tile bluegrass = new Tile("grass_blue"); //TODO: add textures paths
 	
 	private byte id;
 	private boolean solid;

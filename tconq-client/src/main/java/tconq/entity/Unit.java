@@ -9,10 +9,10 @@ import tconq.render.Animation;
 import tconq.render.Camera;
 import tconq.worldmap.Map;
 
-public class WeakUnit extends Entity {
+public class Unit extends Entity {
 
-    public WeakUnit(TransformTc transform) {
-		super("weakWarrior", transform); //TODO:set textures
+    public Unit(TransformTc transform) {
+		super("texture", transform); //TODO:set textures
 	}
 	
 	@Override

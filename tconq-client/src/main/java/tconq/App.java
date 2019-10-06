@@ -4,6 +4,7 @@ import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
 
 import org.joml.Vector2d;
+import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.lwjgl.opengl.GL;
 
@@ -21,12 +22,15 @@ import lwjgui.LWJGUIUtil;
 import lwjgui.geometry.Insets;
 import lwjgui.geometry.Pos;
 import lwjgui.paint.Color;
+import lwjgui.scene.Node;
 import lwjgui.scene.Scene;
+import lwjgui.scene.Node.LayoutBounds;
 import lwjgui.scene.control.CheckBox;
 import lwjgui.scene.control.Label;
 import lwjgui.scene.control.Slider;
 import lwjgui.scene.layout.BorderPane;
 import lwjgui.scene.layout.HBox;
+import lwjgui.scene.layout.Pane;
 import lwjgui.scene.layout.StackPane;
 import lwjgui.scene.layout.VBox;
 
@@ -36,6 +40,17 @@ public class App {
 	private final int WINDOWY = 960;
 
 	private static Window window;
+	private static lwjgui.scene.Window lwjguiWindow;
+
+	private static void showCursorCoordinates(){
+		Vector2f pos = window.getInput().getMousePosition();
+		BorderPane bd = (BorderPane) lwjguiWindow.getScene().getRoot();
+		VBox vbox = (VBox)bd.getChildren().get(0);
+		VBox vboxtop = (VBox)vbox.getChildren().get(0);
+		Label label1 = (Label) vboxtop.getChildren().get(0);
+		label1.setText("Coords: x - " + pos.x + " y - " + pos.y );
+	}
+	
 
 	private static void addComponents(Scene scene) {
 		// Create a simple pane
@@ -59,6 +74,7 @@ public class App {
 			label1.setTextFill(Color.YELLOW);
 			label1.setFontSize(64);
 			vbox.getChildren().add(label1);
+			int i = 0;
 		}
 		
 	 }
@@ -88,12 +104,13 @@ public class App {
 		TileRender tiles = new TileRender();
 		Assets.initAsset();
 
-		lwjgui.scene.Window lwjguiWindow = LWJGUI.initialize(window.getWindow());
+	    lwjguiWindow = LWJGUI.initialize(window.getWindow());
 		lwjguiWindow.setWindowAutoClear(false); // We must call glClear ourselves.
 		lwjguiWindow.setWindowAutoDraw(false); // We must call glfwSwapBuffers ourselves.
 		lwjguiWindow.show(); // Display window if it's invisible.
 		// Add some components
 		addComponents(lwjguiWindow.getScene());
+		
 		
 		// float[] vertices = new float[] {
 		// -1f, 1f, 0, //TOP LEFT 0
@@ -199,6 +216,7 @@ public class App {
 				world.render(tiles, shader, camera);
 				
 				//gui.render();
+				showCursorCoordinates();
 
 				LWJGUI.render();
 				
