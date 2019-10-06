@@ -32,8 +32,8 @@ import lwjgui.scene.layout.VBox;
 
 
 public class App {
-	private final int WINDOWX = 640;
-	private final int WINDOWY = 480;
+	private final int WINDOWX = 1280;
+	private final int WINDOWY = 960;
 
 	private static Window window;
 
