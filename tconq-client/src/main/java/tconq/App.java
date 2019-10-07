@@ -11,6 +11,7 @@ import org.lwjgl.opengl.GL;
 import tconq.assets.Assets;
 import tconq.collision.AABB;
 import tconq.gui.Gui;
+import tconq.gui.Selector;
 import tconq.io.Input;
 import tconq.io.Timer;
 import tconq.render.Camera;
@@ -45,21 +46,18 @@ public class App {
 	private static lwjgui.scene.Window lwjguiWindow;
 
 	private static void showCursorCoordinates(Map world, Camera cam){
-		Vector2f pos = window.getInput().getMousePosition();
-		pos.x = (pos.x + 32 - (cam.getPosition().x))/64;
-		pos.y = (pos.y - 32 - (cam.getPosition().y))/-64;
-		AABB box = world.getTileBoundingBox((int) (pos.x), (int) (pos.y));
-		BorderPane bd = (BorderPane) lwjguiWindow.getScene().getRoot();
-		VBox vbox = (VBox)bd.getChildren().get(0);
-		VBox vboxtop = (VBox)vbox.getChildren().get(0);
-		Label label1 = (Label) vboxtop.getChildren().get(0);
-		String s = "null";
-		if (box != null){
-			s = box.toString();
-		}else{
-			s = "null";
-		}
-		label1.setText( s + "camera x."+cam.getPosition().x + " y."+cam.getPosition().y);
+		//AABB box = world.getTileBoundingBox((int) (pos.x), (int) (pos.y));
+		// BorderPane bd = (BorderPane) lwjguiWindow.getScene().getRoot();
+		// VBox vbox = (VBox)bd.getChildren().get(0);
+		// VBox vboxtop = (VBox)vbox.getChildren().get(0);
+		// Label label1 = (Label) vboxtop.getChildren().get(0);
+		// String s = "null";
+		// if (box != null){
+		// 	s = box.toString();
+		// }else{
+		// 	s = "null";
+		// }
+		// label1.setText( s + "camera x."+cam.getPosition().x + " y."+cam.getPosition().y);
 	}
 	
 
@@ -109,7 +107,6 @@ public class App {
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		
-		Camera camera = new Camera(window.getWidth(), window.getHeight());
 		glEnable(GL_TEXTURE_2D);
 		
 		TileRender tiles = new TileRender();
@@ -145,8 +142,9 @@ public class App {
 		// Model model = new Model(vertices, texture, indices);
 		Shader shader = new Shader("shader");
 		
-		Map world = new Map("test_level", camera);
+		Map world = new Map("test_level");
 		world.calculateView(window);
+		Gui gui = new Gui(this.window, world);
 		
 		//Gui gui = new Gui(window);
 		
@@ -173,8 +171,7 @@ public class App {
 			
 			while (unprocessed >= frame_cap) {
 				if (window.hasResized()) {
-					camera.setProjection(window.getWidth(), window.getHeight());
-					//gui.resizeCamera(window);
+					gui.resizeCamera(window);
 					world.calculateView(window);
 					glViewport(0, 0, window.getWidth(), window.getHeight());
 				}
@@ -186,25 +183,11 @@ public class App {
 					glfwSetWindowShouldClose(window.getWindow(), true);
 				}
 				
-				//gui.update(window.getInput());
-				if (window.getInput().isKeyDown(GLFW_KEY_A)){
-					camera.getPosition().sub(new Vector3f(-5, 0,0));
-				}
+				gui.update(window.getInput());
 
-				if (window.getInput().isKeyDown(GLFW_KEY_D)){
-					camera.getPosition().sub(new Vector3f(5, 0,0));
-				}
-
-				if (window.getInput().isKeyDown(GLFW_KEY_W)){
-					camera.getPosition().sub(new Vector3f(0, 5,0));
-				}
-
-				if (window.getInput().isKeyDown(GLFW_KEY_S)){
-					camera.getPosition().sub(new Vector3f(0, -5,0));
-				}
-				world.update((float) frame_cap, window, camera);
+				world.update((float) frame_cap, window, gui.getCamera());
 				
-				world.correctCamera(camera, window);
+				world.correctCamera(gui.getCamera(), window);
 				
 				window.update();
 				
@@ -223,11 +206,11 @@ public class App {
 				// camera.getProjection().mul(target));
 				// model.render();
 				// tex.bind(0);
-				
-				world.render(tiles, shader, camera);
-				
+				gui.update(window.getInput());
+				world.render(tiles, shader, gui.getCamera());
+				gui.render();
 				//gui.render();
-				showCursorCoordinates(world, camera);
+				showCursorCoordinates(world, gui.getCamera());
 
 				LWJGUI.render();
 				

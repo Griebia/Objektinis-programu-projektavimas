@@ -31,7 +31,7 @@ public class Map {
 
 	private Matrix4f Map;
 
-	public Map(String Map, Camera camera)  {
+	public Map(String Map)  {
 		try {
 			URI tilesmap = getClass().getResource("/levels/" + Map + "/tiles.png").toURI();
 			//URI entitymap = getClass().getResource("/levels/" + Map + "/entities.png").toURI();

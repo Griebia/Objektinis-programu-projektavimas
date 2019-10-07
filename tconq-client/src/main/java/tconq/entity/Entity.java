@@ -14,7 +14,7 @@ public abstract class Entity {
 	
 	protected Animation[] animations;
 	private int use_animation;
-	private Texture texture;
+	protected Texture texture;
 
 	
 	protected TransformTc transform;
