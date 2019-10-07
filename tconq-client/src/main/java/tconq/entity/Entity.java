@@ -31,6 +31,7 @@ public abstract class Entity {
 	public Entity(String texturepath, TransformTc transform){
 		this.texture = new Texture(texturepath);
 		this.transform = transform;
+		bounding_box = new AABB(new Vector2f(transform.pos.x, transform.pos.y), new Vector2f(transform.scale.x, transform.scale.y));
 	}
 
 	protected void setTexture(String texturepath){
@@ -39,6 +40,14 @@ public abstract class Entity {
 	
 	protected void setAnimation(int index, Animation animation) {
 		animations[index] = animation;
+	}
+
+	public TransformTc getPos(){
+		return this.transform;
+	}
+
+	public AABB getEntityBoundingBox(){
+		return this.bounding_box;
 	}
 	
 	public void useAnimation(int index) {
@@ -127,4 +136,5 @@ public abstract class Entity {
 			entity.transform.pos.set(entity.bounding_box.getCenter().x, entity.bounding_box.getCenter().y, 0);
 		}
 	}
+	
 }

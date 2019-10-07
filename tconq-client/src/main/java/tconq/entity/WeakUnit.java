@@ -15,7 +15,7 @@ import tconq.worldmap.Map;
 public class WeakUnit extends Entity {
 
     public WeakUnit(TransformTc transform) {
-		super("weakWarrior", transform);
+		super("weakWarrior.png", transform);
 	}
 	
 	@Override

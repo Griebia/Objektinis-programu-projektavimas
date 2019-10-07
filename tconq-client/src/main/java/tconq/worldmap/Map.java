@@ -11,6 +11,7 @@ import java.util.List;
 import javax.imageio.ImageIO;
 
 import org.joml.*;
+import org.joml.Math;
 
 import tconq.collision.AABB;
 import tconq.entity.*;
@@ -178,6 +179,17 @@ public class Map {
 		catch (ArrayIndexOutOfBoundsException e) {
 			return null;
 		}
+	}
+
+	public AABB getEntityBoundungBox(int x, int y){
+		for (Entity var : entities) {
+			int tcx = (int) Math.floor(var.getPos().pos.x);
+			int tcy = (int) Math.floor(var.getPos().pos.y);
+			if(tcx == x && tcy == y){
+				return var.getEntityBoundingBox();
+			}
+		}
+		return null;
 	}
 	
 	public AABB getTileBoundingBox(int x, int y) {

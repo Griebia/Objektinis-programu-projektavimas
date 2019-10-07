@@ -5,7 +5,7 @@ public class Tile {
 	public static byte not = 0;
 	
 	public static final Tile water = new Tile("water");
-	public static final Tile grass = new Tile("grass").setSelectable();
+	public static final Tile grass = new Tile("grass");//.setSelectable();
 	public static final Tile yellowgrass = new Tile("grass_yellow").setSelectable();
 	public static final Tile bluegrass = new Tile("grass_blue").setSelectable(); 
 	
