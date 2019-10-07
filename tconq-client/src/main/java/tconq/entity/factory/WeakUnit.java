@@ -1,4 +1,4 @@
-package tconq.entity;
+package tconq.entity.factory;
 
 import org.joml.Matrix4f;
 import org.joml.Vector2f;

@@ -9,7 +9,7 @@ import tconq.io.Window;
 import tconq.render.*;
 import tconq.worldmap.Map;
 
-public abstract class Entity {
+public abstract class Entity implements IEntity {
 	protected AABB bounding_box;
 	
 	protected Animation[] animations;
