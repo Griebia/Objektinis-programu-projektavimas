@@ -6,10 +6,10 @@ import tconq.io.Window;
 import tconq.render.Camera;
 import tconq.worldmap.Map;
 
-public class StrongUnit extends Entity {
+public class House extends Entity {
 
-    public StrongUnit(TransformTc transform) {
-        super("strongWarrior.png", transform);
+    public House(TransformTc transform) {
+        super("house.png", transform);
         // TODO Auto-generated constructor stub
     }
 
@@ -19,4 +19,5 @@ public class StrongUnit extends Entity {
 
     }
 
+    
 }

@@ -183,9 +183,9 @@ public class Map {
 
 	public AABB getEntityBoundungBox(int x, int y){
 		for (Entity var : entities) {
-			int tcx = (int) Math.floor(var.getPos().pos.x);
-			int tcy = (int) Math.floor(var.getPos().pos.y);
-			if(tcx == x && tcy == y){
+			int tcx = (int) Math.floor(var.getPos().pos.x/2);
+			int tcy = (int) Math.floor(var.getPos().pos.y/2);
+			if(tcx == x && tcy == -y){
 				return var.getEntityBoundingBox();
 			}
 		}

@@ -4,12 +4,13 @@ import tconq.entity.Entity;
 import tconq.entity.TransformTc;
 import tconq.io.Window;
 import tconq.render.Camera;
+import tconq.render.Shader;
 import tconq.worldmap.Map;
 
-public class StrongUnit extends Entity {
+public class Tower extends Entity {
 
-    public StrongUnit(TransformTc transform) {
-        super("strongWarrior.png", transform);
+    public Tower( TransformTc transform) {
+        super("tower.png", transform);
         // TODO Auto-generated constructor stub
     }
 
@@ -18,5 +19,4 @@ public class StrongUnit extends Entity {
         // TODO Auto-generated method stub
 
     }
-
 }

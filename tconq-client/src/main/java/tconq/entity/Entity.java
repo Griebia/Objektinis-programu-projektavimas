@@ -118,7 +118,7 @@ public abstract class Entity implements IEntity {
 		shader.bind();
 		shader.setUniform("sampler", 0);
 		shader.setUniform("projection", transform.getProjection(target));
-		animations[use_animation].bind(0);
+		texture.bind(0);
 		Assets.getModel().render();
 	}
 	

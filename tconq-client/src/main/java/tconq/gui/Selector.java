@@ -5,8 +5,11 @@ import org.joml.Vector2f;
 import tconq.assets.Assets;
 import tconq.collision.AABB;
 import tconq.collision.Collision;
+import tconq.entity.Entity;
+import tconq.entity.IEntity;
 import tconq.entity.TransformTc;
-import tconq.entity.WeakUnit;
+import tconq.entity.factory.AbstractEntityFactory;
+import tconq.entity.factory.EntityProducer;
 import tconq.io.Input;
 import tconq.io.Window;
 import tconq.render.Camera;
@@ -28,6 +31,7 @@ public class Selector {
 	private Camera camera;
 	private AABB boundingBox;
 	private Texture texture;
+	private AbstractEntityFactory entityFactory;
     
     public Selector( Map world2, Camera camera) {
 		//this.boundingBox = new AABB(position, scale);
@@ -51,14 +55,16 @@ public class Selector {
 		this.boundingBox = data;
 		if (data == null) {
 			selectedState = STATE_SELECTED;
+			entityFactory = EntityProducer.getFactory(true);
+			
 			//System.out.println(data.getCollision(window.getInput().getMousePosition()).toString());
 				if (window.getInput().isMouseButtonDown(0)) {
 					TransformTc tc = new TransformTc();
 					Vector2f v = getTileCoordinates(window);
-					tc.pos.x = (float)Math.floor(v.x);
-					tc.pos.y =  (float)Math.floor(v.y*-2)+1;
-					WeakUnit weak = new WeakUnit(tc);
-					world.addEntity(weak);
+					tc.pos.x = (float)Math.floor(v.x)*2;
+					tc.pos.y =  (float)Math.floor(v.y)*-2;
+					IEntity weak = entityFactory.getEntity("WeakUnit",tc);
+					world.addEntity((Entity)weak);
 					selectedState = STATE_CLICKED;
 				}
 
