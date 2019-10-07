@@ -4,17 +4,14 @@ import org.joml.Vector2f;
 
 import tconq.assets.Assets;
 import tconq.collision.AABB;
-import tconq.collision.Collision;
 import tconq.entity.Entity;
 import tconq.entity.IEntity;
 import tconq.entity.TransformTc;
 import tconq.entity.factory.AbstractEntityFactory;
 import tconq.entity.factory.EntityProducer;
-import tconq.io.Input;
 import tconq.io.Window;
 import tconq.render.Camera;
 import tconq.render.Shader;
-import tconq.render.Texture;
 import tconq.render.TileSheet;
 import tconq.worldmap.Map;
 
@@ -30,7 +27,7 @@ public class Selector {
 	private Map world;
 	private Camera camera;
 	private AABB boundingBox;
-	private Texture texture;
+	//private Texture texture; TODO: implement selector textures.
 	private AbstractEntityFactory entityFactory;
     
     public Selector( Map world2, Camera camera) {

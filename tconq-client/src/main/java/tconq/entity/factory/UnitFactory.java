@@ -1,7 +1,6 @@
 package tconq.entity.factory;
 
 import tconq.entity.IEntity;
-import tconq.entity.Entity;
 import tconq.entity.TransformTc;
 
 public class UnitFactory extends AbstractEntityFactory {

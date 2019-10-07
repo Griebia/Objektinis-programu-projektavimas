@@ -3,16 +3,10 @@ package tconq;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
 
-import org.joml.Vector2d;
-import org.joml.Vector2f;
-import org.joml.Vector3f;
 import org.lwjgl.opengl.GL;
 
 import tconq.assets.Assets;
-import tconq.collision.AABB;
 import tconq.gui.Gui;
-import tconq.gui.Selector;
-import tconq.io.Input;
 import tconq.io.Timer;
 import tconq.render.Camera;
 import tconq.render.Shader;
@@ -21,20 +15,12 @@ import tconq.worldmap.TileRender;
 import tconq.worldmap.Map;
 
 import lwjgui.LWJGUI;
-import lwjgui.LWJGUIUtil;
 import lwjgui.geometry.Insets;
 import lwjgui.geometry.Pos;
 import lwjgui.paint.Color;
-import lwjgui.scene.Node;
 import lwjgui.scene.Scene;
-import lwjgui.scene.Node.LayoutBounds;
-import lwjgui.scene.control.CheckBox;
 import lwjgui.scene.control.Label;
-import lwjgui.scene.control.Slider;
 import lwjgui.scene.layout.BorderPane;
-import lwjgui.scene.layout.HBox;
-import lwjgui.scene.layout.Pane;
-import lwjgui.scene.layout.StackPane;
 import lwjgui.scene.layout.VBox;
 
 

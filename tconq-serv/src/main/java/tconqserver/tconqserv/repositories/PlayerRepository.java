@@ -1,4 +1,4 @@
-package tconqserver.tconqserv;
+package tconqserver.tconqserv.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

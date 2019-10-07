@@ -1,4 +1,4 @@
-package tconqserver.tconqserv;
+package tconqserver.tconqserv.controllers;
 
 import java.util.List;
 
@@ -40,8 +40,7 @@ class PlayerController {
     @GetMapping("/Player/{id}")
     Player one(@PathVariable Long id) {
 
-        return repository.findById(id)
-        .orElseThrow();
+        return repository.findById(id);
     }
 
 
