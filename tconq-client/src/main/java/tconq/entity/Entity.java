@@ -5,6 +5,7 @@ import org.joml.*;
 import tconq.assets.Assets;
 import tconq.collision.AABB;
 import tconq.collision.Collision;
+import tconq.entity.strategy.Upgrade;
 import tconq.io.Window;
 import tconq.render.*;
 import tconq.worldmap.Map;
@@ -15,6 +16,7 @@ public abstract class Entity implements IEntity {
 	protected Animation[] animations;
 	private int use_animation;
 	protected Texture texture;
+	private Upgrade upgradeStrategy;
 
 	
 	protected TransformTc transform;
@@ -107,6 +109,11 @@ public abstract class Entity implements IEntity {
 				transform.pos.set(bounding_box.getCenter(), 0);
 			}
 		}
+	}
+
+	public void upgrade(){
+		upgradeStrategy.upgrade();
+		//TODO: implement
 	}
 	
 	public abstract void update(float delta, Window window, Camera camera, Map world);
