@@ -1,9 +1,12 @@
 package tconqserver.tconqserv.controllers;
 
+import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,41 +14,53 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import tconqserver.tconqserv.entities.Player;
+import tconqserver.tconqserv.repositories.PlayerRepository;
 
 
 @RestController
 class PlayerController {
-    
 
-    private final PlayerRepository repository;
-
-    PlayerController(PlayerRepository repository) {
-        this.repository = repository;
+    static private class PlayerNotFoundExeption extends Exception { 
+        public PlayerNotFoundExeption(String errorMessage) {
+            super(errorMessage);
+        }
     }
+    
+    @Autowired
+    private PlayerRepository repository;
 
     // Aggregate root
 
     @GetMapping("/Players")
-    List<Player> all() {
+    public List<Player> all() {
         return repository.findAll();
     }
 
     @PostMapping("/Players")
-    Player newPlayer(@RequestBody Player newPlayer) {
-        return repository.save(newPlayer);
+    public ResponseEntity<Object> newPlayer(@RequestBody Player newPlayer) {
+        Player savedPlayer = repository.save(newPlayer);
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+                .buildAndExpand(savedPlayer.getId()).toUri();
+        return ResponseEntity.created(location).build();
     }
 
     // Single item
 
     @GetMapping("/Player/{id}")
-    Player one(@PathVariable Long id) {
-
-        return repository.findById(id);
+    public Player one(@PathVariable Long id) throws PlayerNotFoundExeption{
+        Optional<Player> player = repository.findById(id);
+        if(!player.isPresent()){
+            throw new PlayerNotFoundExeption("id-"+id);
+        }
+        return player.get();
     }
 
 
     @PutMapping("/Player/{id}")
-    Player replacePlayer(@RequestBody Player newPlayer, @PathVariable Long id) {
+    public Player replacePlayer(@RequestBody Player newPlayer, @PathVariable Long id) {
 
         return repository.findById(id)
         .map(Player -> {
@@ -62,7 +77,7 @@ class PlayerController {
     }
 
     @DeleteMapping("/Player/{id}")
-    void deletePlayer(@PathVariable Long id) {
+    public void deletePlayer(@PathVariable Long id) {
         repository.deleteById(id);
     }
 }

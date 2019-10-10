@@ -57,7 +57,7 @@ public class Texture {
 		catch (IOException | URISyntaxException e) {
 			e.printStackTrace();
 		}
-	}
+	} 
 	
 	@Override
 	protected void finalize() throws Throwable {

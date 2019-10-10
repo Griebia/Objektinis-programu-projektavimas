@@ -1,7 +1,11 @@
 package tconqserver.tconqserv.repositories;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import tconqserver.tconqserv.entities.Player;
 
-interface PlayerRepository extends JpaRepository<Player, Long> {
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface PlayerRepository extends JpaRepository<Player, Long> {
 
 }

@@ -3,6 +3,7 @@ package tconq.worldmap;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -31,6 +32,9 @@ public class Map {
 	private int scale;
 
 	private Matrix4f Map;
+
+	private final String playerURL = "http://localhost:8080/Players/";
+	HttpURLConnection playerCon;
 
 	public Map(String Map)  {
 		try {

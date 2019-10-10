@@ -1,27 +1,22 @@
 package tconqserver.tconqserv.entities;
 
 import java.util.Collection;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Component;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
 
-@Component
-class PlayerCommandLineRunner implements CommandLineRunner{
-    @Override
-    public void run(String... args) throws Exception{
-
-    }
-}
-
-@Data
 @Entity
+@Table(name = "players")
+public
 class Player{
     private @Id @GeneratedValue Long id;
     private String name;
@@ -29,6 +24,10 @@ class Player{
     private boolean playing;
     private Integer points;
     
+    @OneToMany(mappedBy = "player", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<SEntity> playerEntities;
+
     public Player(String name, Integer gold, boolean playing, Integer points){
         super();
         this.name = name;
@@ -37,7 +36,6 @@ class Player{
         this.points = points;
     }
     public Player(){
-
     }
     public Long getId(){
         return id;
@@ -64,7 +62,7 @@ class Player{
 		return this.playing;
 	}
 	public Integer getPoints() {
-		return this.getPoints();
+		return this.points;
 	}
 	public void setName(String name2) {
         this.name = name2;
