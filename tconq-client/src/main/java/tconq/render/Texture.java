@@ -58,7 +58,7 @@ public class Texture {
 			e.printStackTrace();
 		}
 	} 
-
+	
 	public void bind(int sampler) {
 		if (sampler >= 0 && sampler <= 31) {
 			glActiveTexture(GL_TEXTURE0 + sampler);
