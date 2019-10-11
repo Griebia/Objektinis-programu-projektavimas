@@ -36,7 +36,7 @@ public class Input {
 		return glfwGetMouseButton(window, button) == GLFW_PRESS;
 	}
 
-	public boolean isMouseButtonRelesed(int button) {
+	public boolean isMouseButtonReleased(int button) {
 		return glfwGetMouseButton(window, button) == GLFW_RELEASE;
 	}
 	

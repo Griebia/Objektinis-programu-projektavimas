@@ -36,6 +36,8 @@ public class Selector {
 	private AABB boundingBox;
 	//private Texture texture; TODO: implement selector textures.
 	private AbstractEntityFactory entityFactory;
+
+	private boolean canUpgrade = true;		//if true unit or building can be upgraded if false can't resets when button is released
     
     public Selector( Map world2, Camera camera) {
 		//this.boundingBox = new AABB(position, scale);
@@ -53,6 +55,8 @@ public class Selector {
 		return v;
 	}
 
+
+
 	public void update(Window window) {
 		Vector2f coords = getTileCoordinates(window);
 		AABB data = world.getEntityBoundungBox((int)coords.x, (int)coords.y);
@@ -61,10 +65,6 @@ public class Selector {
 			selectedState = STATE_SELECTED;
 			entityFactory = EntityProducer.getFactory(true);
 
-
-
-
-			
 			//System.out.println(data.getCollision(window.getInput().getMousePosition()).toString());
 				if (window.getInput().isMouseButtonDown(0)) {
 					TransformTc tc = new TransformTc();
@@ -73,54 +73,54 @@ public class Selector {
 					tc.pos.y =  (float)Math.floor(v.y)*-2;
 					IEntity weak = entityFactory.getEntity("WeakUnit",tc);
 					world.addEntity((Entity)weak);
-
-//					System.out.println(world.getEntity());
-
 					selectedState = STATE_CLICKED;
 				}
-
-
-
-
-
 			}
 
-		if (window.getInput().isMouseButtonDown(1)) {
+		UpgradeUnitOrBuilding(window);		//upgrades units or buildings
+
+		//}
+		//else selectedState = STATE_IDLE;
+	}
+
+	//upgrades units and buildings
+	public void UpgradeUnitOrBuilding(Window window){
+		if (window.getInput().isMouseButtonDown(1) && canUpgrade) {
 			TransformTc tc = new TransformTc();
 			Vector2f v = getTileCoordinates(window);
 			tc.pos.x = (float)Math.floor(v.x)*2;
 			tc.pos.y =  (float)Math.floor(v.y)*-2;
 
-			System.out.println(world.getEntity(tc.pos) + "          " + tc.pos.x + "   " + tc.pos.y);
-
-
+			//checks what type of unit is on the tile and upgrades it
 			if (world.getEntity(tc.pos) != null) {
 				switch (world.getEntity(tc.pos).getClass().getSimpleName()) {
 					case "House":
 						world.getEntity(tc.pos).upgrade(world, new HouseToTower());
+						canUpgrade = false;
 						break;
 					case "Tower":
 						world.getEntity(tc.pos).upgrade(world, new TowerToCastle());
+						canUpgrade = false;
 						break;
 					case "WeakUnit":
 						world.getEntity(tc.pos).upgrade(world, new WeakToMedium());
+						canUpgrade = false;
 						break;
 					case "MediumUnit":
 						world.getEntity(tc.pos).upgrade(world, new MediumToStrong());
+						canUpgrade = false;
 						break;
 					default:
 						break;
 				}
 			}
-
-
 			selectedState = STATE_CLICKED;
 		}
 
-
-
-		//}
-		//else selectedState = STATE_IDLE;
+		//resets can upgrade when button is released
+		if (window.getInput().isMouseButtonReleased(1) && !canUpgrade){
+			canUpgrade = true;
+		}
 	}
 
 	public void render(Camera camera, TileSheet sheet, Shader shader) {
