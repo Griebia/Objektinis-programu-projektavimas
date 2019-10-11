@@ -33,7 +33,11 @@ public class Input {
 	}
 	
 	public boolean isMouseButtonDown(int button) {
-		return glfwGetMouseButton(window, button) == 1;
+		return glfwGetMouseButton(window, button) == GLFW_PRESS;
+	}
+
+	public boolean isMouseButtonRelesed(int button) {
+		return glfwGetMouseButton(window, button) == GLFW_RELEASE;
 	}
 	
 	public Vector2f getMousePosition() {
