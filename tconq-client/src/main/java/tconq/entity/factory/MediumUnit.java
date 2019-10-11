@@ -9,7 +9,7 @@ import tconq.worldmap.Map;
 public class MediumUnit extends Entity {
 
     public MediumUnit(TransformTc transform) {
-        super("mediumUnit.png", transform);
+        super("mediumWarrior.png", transform);
         // TODO Auto-generated constructor stub
     }
 

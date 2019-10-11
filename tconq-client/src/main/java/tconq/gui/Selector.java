@@ -10,13 +10,18 @@ import tconq.entity.TransformTc;
 import tconq.entity.factory.AbstractEntityFactory;
 import tconq.entity.factory.EntityProducer;
 import tconq.entity.strategy.HouseToTower;
+import tconq.entity.strategy.MediumToStrong;
 import tconq.entity.strategy.TowerToCastle;
+import tconq.entity.strategy.WeakToMedium;
 import tconq.io.Window;
 import tconq.render.Camera;
 import tconq.render.Shader;
 import tconq.render.TileSheet;
 import tconq.worldmap.Map;
 
+import javax.swing.*;
+import java.awt.*;
+import java.awt.Button;
 
 
 public class Selector {
@@ -54,7 +59,7 @@ public class Selector {
 		this.boundingBox = data;
 		if (data == null) {
 			selectedState = STATE_SELECTED;
-			entityFactory = EntityProducer.getFactory(false);
+			entityFactory = EntityProducer.getFactory(true);
 
 
 
@@ -66,7 +71,7 @@ public class Selector {
 					Vector2f v = getTileCoordinates(window);
 					tc.pos.x = (float)Math.floor(v.x)*2;
 					tc.pos.y =  (float)Math.floor(v.y)*-2;
-					IEntity weak = entityFactory.getEntity("House",tc);
+					IEntity weak = entityFactory.getEntity("WeakUnit",tc);
 					world.addEntity((Entity)weak);
 
 //					System.out.println(world.getEntity());
@@ -88,16 +93,21 @@ public class Selector {
 
 			System.out.println(world.getEntity(tc.pos) + "          " + tc.pos.x + "   " + tc.pos.y);
 
+
 			if (world.getEntity(tc.pos) != null) {
 				switch (world.getEntity(tc.pos).getClass().getSimpleName()) {
 					case "House":
 						world.getEntity(tc.pos).upgrade(world, new HouseToTower());
-						selectedState = STATE_CLICKED;
 						break;
-//					case "Tower":
-//						world.getEntity(tc.pos).upgrade(world, new TowerToCastle());
-//						selectedState = STATE_CLICKED;
-//						break;
+					case "Tower":
+						world.getEntity(tc.pos).upgrade(world, new TowerToCastle());
+						break;
+					case "WeakUnit":
+						world.getEntity(tc.pos).upgrade(world, new WeakToMedium());
+						break;
+					case "MediumUnit":
+						world.getEntity(tc.pos).upgrade(world, new MediumToStrong());
+						break;
 					default:
 						break;
 				}
