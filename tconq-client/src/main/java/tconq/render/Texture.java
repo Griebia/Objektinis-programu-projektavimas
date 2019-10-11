@@ -59,13 +59,6 @@ public class Texture {
 		}
 	} 
 	
-	@Override
-	protected void finalize() throws Throwable {
-		glDisable(textureObject);
-		glDeleteTextures(textureObject);
-		super.finalize();
-	}
-	
 	public void bind(int sampler) {
 		if (sampler >= 0 && sampler <= 31) {
 			glActiveTexture(GL_TEXTURE0 + sampler);
