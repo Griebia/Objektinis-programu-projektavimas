@@ -101,6 +101,24 @@ public class Map {
 	public void addEntity(Entity entity){
 		entities.add(entity);
 	}
+
+	public Entity getEntity(Vector3f pos){
+		for (Entity ent : entities) {
+			if (ent.getPos().pos.equals(pos))
+				return ent;
+		}
+		return null;
+	}
+
+	public boolean removeEntity(Vector3f pos){
+		for (int i = 0; i < entities.size(); i++) {
+			if (entities.get(i).getPos().pos.equals(pos)) {
+				entities.remove(i);
+				return true;
+			}
+		}
+		return false;
+	}
 	
 	public Map() {
 		width = 64;

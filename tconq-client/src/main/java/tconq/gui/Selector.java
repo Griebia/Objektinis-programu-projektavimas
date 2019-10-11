@@ -9,6 +9,8 @@ import tconq.entity.IEntity;
 import tconq.entity.TransformTc;
 import tconq.entity.factory.AbstractEntityFactory;
 import tconq.entity.factory.EntityProducer;
+import tconq.entity.strategy.HouseToTower;
+import tconq.entity.strategy.TowerToCastle;
 import tconq.io.Window;
 import tconq.render.Camera;
 import tconq.render.Shader;
@@ -52,7 +54,11 @@ public class Selector {
 		this.boundingBox = data;
 		if (data == null) {
 			selectedState = STATE_SELECTED;
-			entityFactory = EntityProducer.getFactory(true);
+			entityFactory = EntityProducer.getFactory(false);
+
+
+
+
 			
 			//System.out.println(data.getCollision(window.getInput().getMousePosition()).toString());
 				if (window.getInput().isMouseButtonDown(0)) {
@@ -60,12 +66,49 @@ public class Selector {
 					Vector2f v = getTileCoordinates(window);
 					tc.pos.x = (float)Math.floor(v.x)*2;
 					tc.pos.y =  (float)Math.floor(v.y)*-2;
-					IEntity weak = entityFactory.getEntity("WeakUnit",tc);
+					IEntity weak = entityFactory.getEntity("House",tc);
 					world.addEntity((Entity)weak);
+
+//					System.out.println(world.getEntity());
+
 					selectedState = STATE_CLICKED;
 				}
 
+
+
+
+
 			}
+
+		if (window.getInput().isMouseButtonDown(1)) {
+			TransformTc tc = new TransformTc();
+			Vector2f v = getTileCoordinates(window);
+			tc.pos.x = (float)Math.floor(v.x)*2;
+			tc.pos.y =  (float)Math.floor(v.y)*-2;
+
+			System.out.println(world.getEntity(tc.pos) + "          " + tc.pos.x + "   " + tc.pos.y);
+
+			if (world.getEntity(tc.pos) != null) {
+				switch (world.getEntity(tc.pos).getClass().getSimpleName()) {
+					case "House":
+						world.getEntity(tc.pos).upgrade(world, new HouseToTower());
+						selectedState = STATE_CLICKED;
+						break;
+//					case "Tower":
+//						world.getEntity(tc.pos).upgrade(world, new TowerToCastle());
+//						selectedState = STATE_CLICKED;
+//						break;
+					default:
+						break;
+				}
+			}
+
+
+			selectedState = STATE_CLICKED;
+		}
+
+
+
 		//}
 		//else selectedState = STATE_IDLE;
 	}

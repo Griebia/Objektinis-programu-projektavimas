@@ -5,6 +5,7 @@ import org.joml.*;
 import tconq.assets.Assets;
 import tconq.collision.AABB;
 import tconq.collision.Collision;
+import tconq.entity.factory.AbstractEntityFactory;
 import tconq.entity.strategy.Upgrade;
 import tconq.io.Window;
 import tconq.render.*;
@@ -111,10 +112,13 @@ public abstract class Entity implements IEntity {
 		}
 	}
 
-	public void upgrade(){
-		upgradeStrategy.upgrade();
+	public void upgrade(Map world, Upgrade newUpgradeStrategy){
+		upgradeStrategy = newUpgradeStrategy;
+		upgradeStrategy.upgrade(this.transform, world);
 		//TODO: implement
 	}
+
+
 	
 	public abstract void update(float delta, Window window, Camera camera, Map world);
 	

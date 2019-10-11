@@ -61,6 +61,7 @@ public class Texture {
 	
 	@Override
 	protected void finalize() throws Throwable {
+		glDisable(textureObject);
 		glDeleteTextures(textureObject);
 		super.finalize();
 	}
