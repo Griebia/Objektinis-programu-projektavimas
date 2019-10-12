@@ -8,11 +8,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 @Entity
-class SEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-    private enum Type {
+public class SEntity {
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    public @Id @GeneratedValue Long id;
+    public enum Type {
         HOUSE,
         TOWER,
         CASTLE,
@@ -30,7 +30,7 @@ class SEntity {
     private Player player;
 
     public SEntity(){
-        id = 0;
+//        id = 0;
         x = 0;
         y = 0;
     }
@@ -45,8 +45,11 @@ class SEntity {
         y = this.y;
     }
 
+    public void setId(Long id) {this.id = id;}
+
     public int getX(){return this.x;}
     public int getY(){return this.y;}
+    public Long getId(){return this.id;}
 
     
 }
