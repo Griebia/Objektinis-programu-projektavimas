@@ -8,26 +8,27 @@ public class Observer {
 
     private ArrayList<SEntity> entities;
 
-    private static int observerIDTracker = 0;
-
-    private int observerID;
+    private Long observerID;
 
     private Subject entityGrabber;
 
-    public Observer(Subject entityGrabber){
+    public Observer(Subject entityGrabber, Long playerID){
         this.entityGrabber = entityGrabber;                 //gets entities for observer
 
-        this.observerID = ++observerIDTracker;              //sets id for observer              ???sita kaskaip reiktu susiet su playerio id manau???
+        this.observerID = playerID;              //sets observer id to player id
 
         System.out.println("New Observer " + this.observerID);
 
-        entityGrabber.register(this);           //creates new observer
+        entityGrabber.register(this, playerID);           //creates new observer
     }
 
     //turetu kaskaip informuot kita player kad ivyko kaskokie pakitimai
+    //kita playeri gauna per sesiona pasiema sezsiona kuriame yra playeris kuris siuncia duomenis ir ziuri kas dar tame sesione yra
+    //turi pasalint obijektus kurie buvo pakeisti ir palikt tik naujus arba istrint visus senus playerio obijektus ir palikt tik naujus
+    //arba atnaujint senus obijektus
     public void update(ArrayList<SEntity> entities){
         for (SEntity entity : entities){
-            System.out.println(entity.id);
+            System.out.println(entity.getId());
         }
 
     }

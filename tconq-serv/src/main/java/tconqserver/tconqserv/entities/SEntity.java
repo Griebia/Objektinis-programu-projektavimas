@@ -1,18 +1,13 @@
 package tconqserver.tconqserv.entities;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 @Entity
+@Table(name = "sentities")
 public class SEntity {
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public @Id @GeneratedValue Long id;
-    public enum Type {
+
+    private @Id @GeneratedValue Long id;
+    private enum Type {
         HOUSE,
         TOWER,
         CASTLE,
@@ -47,9 +42,15 @@ public class SEntity {
 
     public void setId(Long id) {this.id = id;}
 
+    public void setPlayer(Player player) {this.player = player;}
+
+    public Type getType() {return this.type;}
+
     public int getX(){return this.x;}
     public int getY(){return this.y;}
     public Long getId(){return this.id;}
+
+    public Player getPlayer() {return this.player;}
 
     
 }

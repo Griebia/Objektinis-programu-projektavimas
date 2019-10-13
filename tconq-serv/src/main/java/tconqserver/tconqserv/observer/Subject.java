@@ -3,31 +3,33 @@ package tconqserver.tconqserv.observer;
 import tconqserver.tconqserv.entities.SEntity;
 
 import java.util.ArrayList;
+import java.util.Hashtable;
 
 public class Subject {
 
-    private ArrayList<Observer> observers;          //registered observers
+    private Hashtable<Long, Observer> observers;          //registered observers
 
     public Subject() {
-        observers = new ArrayList<Observer>();
+        observers = new Hashtable<Long, Observer>();
     }
 
     //registers new observer
-    public void register(Observer newObserver){
-        observers.add(newObserver);
+    public void register(Observer newObserver, Long playerID){
+        observers.put(playerID, newObserver);
     }
 
-    //notify's player about changes
+    //deletes observer
+    public void unregister(Long playerID){
+        observers.remove(playerID);
+    }
 
-    //???reiktu kviest tik viena pagal tai koks playeris pabaige turetu but lengva padaryt jei observerio id = playerio id???
-    public void notifyObserver(ArrayList<SEntity> entities){
-        for (Observer observer : observers){
-            observer.update(entities);
-        }
+    //calls update method for observer which  was updated
+    public void notifyObserver(ArrayList<SEntity> entities, Long playerId){
+        observers.get(playerId).update(entities);
     }
 
     //sets new entity
-    public void setEntity(ArrayList<SEntity> entities){
-        notifyObserver(entities);
+    public void setEntity(ArrayList<SEntity> entities, Long playerID){
+        notifyObserver(entities, playerID);
     }
 }

@@ -17,13 +17,25 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import tconqserver.tconqserv.entities.Player;
+import tconqserver.tconqserv.observer.Observer;
+import tconqserver.tconqserv.observer.Subject;
 import tconqserver.tconqserv.repositories.PlayerRepository;
 
 
 @RestController
 class PlayerController {
 
-    static private class PlayerNotFoundExeption extends Exception { 
+    private static Subject sub;
+
+    public PlayerController(){
+        sub = new Subject();
+    }
+
+    public static Subject getSub() {
+        return sub;
+    }
+
+    static private class PlayerNotFoundExeption extends Exception {
         public PlayerNotFoundExeption(String errorMessage) {
             super(errorMessage);
         }
@@ -44,6 +56,10 @@ class PlayerController {
         Player savedPlayer = repository.save(newPlayer);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(savedPlayer.getId()).toUri();
+
+
+        Observer observer1 = new Observer(sub, savedPlayer.getId());
+
         return ResponseEntity.created(location).build();
     }
 

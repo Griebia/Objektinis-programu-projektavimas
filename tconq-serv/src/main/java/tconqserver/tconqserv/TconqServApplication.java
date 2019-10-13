@@ -15,17 +15,17 @@ public class TconqServApplication {
 		SpringApplication.run(TconqServApplication.class, args);
 
 
-		ArrayList<SEntity> ent = new ArrayList<SEntity>();
-
-		Subject sub = new Subject();
-
-		Observer observer1 = new Observer(sub);
-
-		ent.add(new SEntity(1, 1, 2, SEntity.Type.HOUSE));
-		ent.add(new SEntity(2, 3, 2, SEntity.Type.HOUSE));
-		ent.add(new SEntity(3, 5, 2, SEntity.Type.HOUSE));
-
-		sub.setEntity(ent);
+//		ArrayList<SEntity> ent = new ArrayList<SEntity>();
+//
+//		Subject sub = new Subject();
+//
+//		Observer observer1 = new Observer(sub);
+//
+//		ent.add(new SEntity(1, 1, 2, SEntity.Type.HOUSE));
+//		ent.add(new SEntity(2, 3, 2, SEntity.Type.HOUSE));
+//		ent.add(new SEntity(3, 5, 2, SEntity.Type.HOUSE));
+//
+//		sub.setEntity(ent);
 
 
 

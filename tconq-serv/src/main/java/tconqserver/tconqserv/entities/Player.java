@@ -37,6 +37,10 @@ class Player{
     }
     public Player(){
     }
+
+    public Player(Long id){
+        this.id = id;
+    }
     public Long getId(){
         return id;
     }

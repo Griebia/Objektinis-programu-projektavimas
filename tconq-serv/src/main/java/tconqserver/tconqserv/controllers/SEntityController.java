@@ -41,11 +41,8 @@ public class SEntityController {
             URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                     .buildAndExpand(savedSEntity.getId()).toUri();
         }
-        Subject sub = new Subject();
 
-        Observer observer1 = new Observer(sub);
-
-        sub.setEntity(newSEntities);
+        PlayerController.getSub().setEntity(newSEntities, newSEntities.get(0).getPlayer().getId());
 
         return null;
     }
