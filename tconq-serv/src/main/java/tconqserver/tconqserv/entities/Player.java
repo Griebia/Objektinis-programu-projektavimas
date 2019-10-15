@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 @Entity
-@Table(name = "players")
+@Table(name = "player")
 public
 class Player{
     private @Id @GeneratedValue Long id;
@@ -34,6 +34,7 @@ class Player{
         this.gold = gold;
         this.playing = playing;
         this.points = points;
+       
     }
     public Player(){
     }

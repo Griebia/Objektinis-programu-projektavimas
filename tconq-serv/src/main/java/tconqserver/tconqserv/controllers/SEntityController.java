@@ -37,6 +37,8 @@ public class SEntityController {
     public ResponseEntity<Object> newSEntity(@RequestBody ArrayList<SEntity> newSEntities){
 
         for (SEntity newSEntity : newSEntities) {
+            System.out.println(newSEntity + "dasdasd");
+
             SEntity savedSEntity = repository.save(newSEntity);
             URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                     .buildAndExpand(savedSEntity.getId()).toUri();
@@ -46,4 +48,16 @@ public class SEntityController {
 
         return null;
     }
+
+    @PostMapping("/SEntity")
+    public ResponseEntity<Object> newSEntity(@RequestBody SEntity newSEntity){
+
+        SEntity savedSEntity = repository.save(newSEntity);
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+                .buildAndExpand(savedSEntity.getId()).toUri();
+
+        return ResponseEntity.created(location).build();
+    }
+
+ 
 }

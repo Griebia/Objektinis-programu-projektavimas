@@ -4,7 +4,10 @@ import tconqserver.tconqserv.entities.SEntity;
 
 import java.util.ArrayList;
 
+
+
 public class Observer {
+
 
     private ArrayList<SEntity> entities;
 
@@ -20,6 +23,22 @@ public class Observer {
         System.out.println("New Observer " + this.observerID);
 
         entityGrabber.register(this, playerID);           //creates new observer
+    }
+
+    public Long getObserverId(){
+        return observerID;
+    }
+
+    public Subject getSubject(){
+        return entityGrabber;
+    }
+
+    public void setId(Long id){
+        this.observerID = id;  
+    }
+
+    public void getSubject(Subject entityGrabber){
+        this.entityGrabber = entityGrabber; 
     }
 
     //turetu kaskaip informuot kita player kad ivyko kaskokie pakitimai

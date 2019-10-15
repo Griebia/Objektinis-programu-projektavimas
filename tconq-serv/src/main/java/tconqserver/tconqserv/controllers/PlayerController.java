@@ -51,12 +51,13 @@ class PlayerController {
         return repository.findAll();
     }
 
-    @PostMapping("/Players")
+    @PostMapping("/Player")
     public ResponseEntity<Object> newPlayer(@RequestBody Player newPlayer) {
         Player savedPlayer = repository.save(newPlayer);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(savedPlayer.getId()).toUri();
 
+        System.out.println(newPlayer);
 
         Observer observer1 = new Observer(sub, savedPlayer.getId());
 
@@ -66,7 +67,7 @@ class PlayerController {
     // Single item
 
     @GetMapping("/Player/{id}")
-    public Player one(@PathVariable Long id) throws PlayerNotFoundExeption{
+    public Player onePlayer(@PathVariable Long id) throws PlayerNotFoundExeption{
         Optional<Player> player = repository.findById(id);
         if(!player.isPresent()){
             throw new PlayerNotFoundExeption("id-"+id);

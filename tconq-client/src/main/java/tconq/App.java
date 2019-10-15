@@ -3,7 +3,19 @@ package tconq;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
 
+import java.net.http.HttpRequest;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+
 import org.lwjgl.opengl.GL;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import tconq.assets.Assets;
 import tconq.gui.Gui;
@@ -23,7 +35,11 @@ import lwjgui.scene.control.Label;
 import lwjgui.scene.layout.BorderPane;
 import lwjgui.scene.layout.VBox;
 
+import org.json.JSONObject;
 
+
+@EnableWebMvc
+@SpringBootApplication
 public class App {
 	private final int WINDOWX = 1280;
 	private final int WINDOWY = 960;
@@ -208,9 +224,99 @@ public class App {
 		Assets.deleteAsset();
 		
 		glfwTerminate();
+
+		
+
+	}
+
+	private static void getPlayers(){
+		final String uri = "http://localhost:8080/Players";
+		RestTemplate  restTemplate = new RestTemplate();
+		String result = restTemplate.getForObject(uri, String.class);
+		System.out.println(result);
+	}
+
+
+	private static void addEntities() {
+		final String uri = "http://localhost:8080/SEntities";
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+
+		// create a map for post parameters
+		HashMap<String, Object> map = new HashMap<>();
+		map.put("x",5);
+		map.put("type","WEAK");
+		map.put("y",1);
+		map.put("player",2);
+		HashMap<String, Object> map2 = new HashMap<>();
+		map2.put("x",8);
+		map2.put("type","STRONG");
+		map2.put("y",4);
+		map2.put("player",2);
+
+		ArrayList<HashMap<String, Object>> list = new ArrayList<HashMap<String, Object>>();
+
+		list.add(map);
+		list.add(map2);
+
+		// build the request
+		HttpEntity<ArrayList<HashMap<String, Object>>> entity = new HttpEntity<>(list, headers);
+
+		RestTemplate restTemplate = new RestTemplate();
+		restTemplate.postForObject(uri, entity, String.class);
+	}
+
+	private static void addEntity() {
+		final String uri = "http://localhost:8080/SEntity";
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+
+		// create a map for post parameters
+		HashMap<String, Object> map = new HashMap<>();
+		map.put("x",12);
+		map.put("type","CASTLE");
+		map.put("y",10);
+		map.put("player",2);
+
+		// build the request
+		HttpEntity<HashMap<String, Object>> entity = new HttpEntity<>(map, headers);
+
+		RestTemplate restTemplate = new RestTemplate();
+		restTemplate.postForObject(uri, entity, String.class);
+	}
+
+	private static void addPlayer(){
+		final String uri = "http://localhost:8080/Player";
+
+		
+		// create headers
+		HttpHeaders headers = new HttpHeaders();
+		// set `content-type` header
+		headers.setContentType(MediaType.APPLICATION_JSON);
+
+		// create a map for post parameters
+		HashMap<String, Object> map = new HashMap<>();
+		map.put("points",1);
+		map.put("name","Karolis");
+		map.put("gold",2);
+		map.put("playing","true");
+
+		// build the request
+		HttpEntity<HashMap<String, Object>> entity = new HttpEntity<>(map, headers);
+		
+		RestTemplate restTemplate = new RestTemplate();
+		// send POST request
+		restTemplate.postForEntity(uri, entity, String.class);
+
+
 	}
 	
 	public static void main(String[] args) {
+		//getPlayers();
+		addPlayer();
+		addEntity();
+		//addEntities();
+		
 		new App().run();
 	}
 
