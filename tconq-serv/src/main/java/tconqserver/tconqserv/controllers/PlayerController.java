@@ -52,7 +52,7 @@ class PlayerController {
     }
 
     @PostMapping("/Player")
-    public ResponseEntity<Object> newPlayer(@RequestBody Player newPlayer) {
+    public Player newPlayer(@RequestBody Player newPlayer) {
         Player savedPlayer = repository.save(newPlayer);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(savedPlayer.getId()).toUri();
@@ -61,7 +61,9 @@ class PlayerController {
 
         Observer observer1 = new Observer(sub, savedPlayer.getId());
 
-        return ResponseEntity.created(location).build();
+//        return ResponseEntity.created(location).build();
+
+        return repository.findById(savedPlayer.getId()).orElse(null);
     }
 
     // Single item

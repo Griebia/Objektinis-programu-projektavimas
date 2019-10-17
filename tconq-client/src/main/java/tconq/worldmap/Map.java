@@ -1,5 +1,23 @@
 package tconq.worldmap;
 
+import lwjgui.event.EventHandler;
+import lwjgui.event.MouseEvent;
+import org.joml.Math;
+import org.joml.Matrix4f;
+import org.joml.Vector2f;
+import org.joml.Vector3f;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.web.client.RestTemplate;
+import tconq.App;
+import tconq.collision.AABB;
+import tconq.entity.Entity;
+import tconq.io.Window;
+import tconq.render.Camera;
+import tconq.render.Shader;
+
+import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -7,18 +25,8 @@ import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-
-import javax.imageio.ImageIO;
-
-import org.joml.*;
-import org.joml.Math;
-
-import tconq.collision.AABB;
-import tconq.entity.*;
-import tconq.io.Window;
-import tconq.render.Camera;
-import tconq.render.Shader;
 
 public class Map {
 	private int viewX;
@@ -26,7 +34,7 @@ public class Map {
 	private byte[] tiles;
 	private AABB[] bounding_boxes;
 	//private AABB selectedTile;
-	private List<Entity> entities;
+	private static List<Entity> entities;
 	private int width;
 	private int height;
 	private int scale;
@@ -118,6 +126,10 @@ public class Map {
 			}
 		}
 		return false;
+	}
+
+	public List<Entity> getEntities(){
+		return entities;
 	}
 	
 	public Map() {
@@ -225,5 +237,54 @@ public class Map {
 	
 	public int getScale() {
 		return scale;
+	}
+
+	//after pressing end turn button passes all netities to server
+	public static EventHandler<MouseEvent> endTurnPressed(){
+		return new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent mouseEvent) {
+				final String uri = "http://localhost:8080/SEntities";
+				HttpHeaders headers = new HttpHeaders();
+				headers.setContentType(MediaType.APPLICATION_JSON);
+
+				ArrayList<HashMap<String, Object>> list = new ArrayList<HashMap<String, Object>>();
+
+				for (Entity ent : entities) {
+					HashMap<String, Object> map = new HashMap<>();
+
+					String type = "";
+					if (ent.getClass().getSimpleName().contains("Unit"))
+						type = ent.getClass().getSimpleName().replace("Unit", "").toUpperCase();
+					else
+						type = ent.getClass().getSimpleName().toUpperCase();
+
+					map.put("type", type);
+					map.put("x", (int)ent.getPos().pos.x);
+					map.put("y", (int)ent.getPos().pos.y);
+					map.put("player", App.playerID);
+					list.add(map);
+				}
+
+				HashMap<String, Object> map = new HashMap<>();
+				map.put("type", "STRONG");
+				map.put("x", 3);
+				map.put("y", 4);
+				map.put("player", 1);
+				list.add(map);
+				HashMap<String, Object> map1 = new HashMap<>();
+				map1.put("type", "STRONG");
+				map1.put("x", 1);
+				map1.put("y", 2);
+				map1.put("player", 1);
+				list.add(map1);
+
+				// build the request
+				HttpEntity<ArrayList<HashMap<String, Object>>> entity = new HttpEntity<>(list, headers);
+
+				RestTemplate restTemplate = new RestTemplate();
+				restTemplate.postForObject(uri, entity, String.class);
+			}
+		};
 	}
 }

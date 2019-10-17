@@ -1,13 +1,14 @@
 package tconq;
 
-import static org.lwjgl.glfw.GLFW.*;
-import static org.lwjgl.opengl.GL11.*;
-
-import java.net.http.HttpRequest;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-
+import lwjgui.LWJGUI;
+import lwjgui.geometry.Insets;
+import lwjgui.geometry.Pos;
+import lwjgui.paint.Color;
+import lwjgui.scene.Scene;
+import lwjgui.scene.control.Button;
+import lwjgui.scene.control.Label;
+import lwjgui.scene.layout.BorderPane;
+import lwjgui.scene.layout.VBox;
 import org.lwjgl.opengl.GL;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.HttpEntity;
@@ -16,31 +17,30 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-
 import tconq.assets.Assets;
+import tconq.entity.Player;
 import tconq.gui.Gui;
 import tconq.io.Timer;
+import tconq.io.Window;
 import tconq.render.Camera;
 import tconq.render.Shader;
-import tconq.io.Window;
-import tconq.worldmap.TileRender;
 import tconq.worldmap.Map;
+import tconq.worldmap.TileRender;
 
-import lwjgui.LWJGUI;
-import lwjgui.geometry.Insets;
-import lwjgui.geometry.Pos;
-import lwjgui.paint.Color;
-import lwjgui.scene.Scene;
-import lwjgui.scene.control.Label;
-import lwjgui.scene.layout.BorderPane;
-import lwjgui.scene.layout.VBox;
+import java.util.ArrayList;
+import java.util.HashMap;
 
-import org.json.JSONObject;
+import static org.lwjgl.glfw.GLFW.*;
+import static org.lwjgl.opengl.GL11.*;
+
+//import java.net.http.HttpRequest;
 
 
 @EnableWebMvc
 @SpringBootApplication
 public class App {
+	public static Long playerID = 0L;
+
 	private final int WINDOWX = 1280;
 	private final int WINDOWY = 960;
 
@@ -86,9 +86,24 @@ public class App {
 			label1.setFontSize(32);
 			vbox.getChildren().add(label1);
 			int i = 0;
+
+
+			//end turn button
+			VBox vbButtons = new VBox();
+			vbButtons.setAlignment(Pos.CENTER_RIGHT);
+			vbButtons.setBackground(Color.TRANSPARENT);
+			vbButtons.setMinSize(window.getWidth() - 10, 64);
+			pane.setBottom(vbButtons);
+
+			Button endTurn = new Button("End turn");
+			endTurn.setFontSize(32);
+			endTurn.setMinSize(128, 64);
+			endTurn.setOnMouseReleased(Map.endTurnPressed());
+			vbButtons.getChildren().add(endTurn);
 		}
 		
 	 }
+
 
 	public void run() {
 		Window.setCallbacks();
@@ -303,10 +318,15 @@ public class App {
 
 		// build the request
 		HttpEntity<HashMap<String, Object>> entity = new HttpEntity<>(map, headers);
-		
+
+
+
 		RestTemplate restTemplate = new RestTemplate();
 		// send POST request
-		restTemplate.postForEntity(uri, entity, String.class);
+		ResponseEntity<Player> response = restTemplate.postForEntity(uri, entity, Player.class);
+
+		//sets player id
+		playerID = response.getBody().getId();
 
 
 	}
@@ -314,7 +334,7 @@ public class App {
 	public static void main(String[] args) {
 		//getPlayers();
 		addPlayer();
-		addEntity();
+//		addEntity();
 		//addEntities();
 		
 		new App().run();
