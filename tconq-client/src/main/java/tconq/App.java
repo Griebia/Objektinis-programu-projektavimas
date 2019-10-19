@@ -1,5 +1,31 @@
 package tconq;
 
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
+import static org.lwjgl.glfw.GLFW.glfwInit;
+import static org.lwjgl.glfw.GLFW.glfwSetWindowShouldClose;
+import static org.lwjgl.glfw.GLFW.glfwTerminate;
+import static org.lwjgl.opengl.GL11.GL_BLEND;
+import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
+import static org.lwjgl.opengl.GL11.GL_ONE_MINUS_SRC_ALPHA;
+import static org.lwjgl.opengl.GL11.GL_SRC_ALPHA;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
+import static org.lwjgl.opengl.GL11.glBlendFunc;
+import static org.lwjgl.opengl.GL11.glClear;
+import static org.lwjgl.opengl.GL11.glEnable;
+import static org.lwjgl.opengl.GL11.glViewport;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import org.lwjgl.opengl.GL;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+
 import lwjgui.LWJGUI;
 import lwjgui.geometry.Insets;
 import lwjgui.geometry.Pos;
@@ -9,14 +35,6 @@ import lwjgui.scene.control.Button;
 import lwjgui.scene.control.Label;
 import lwjgui.scene.layout.BorderPane;
 import lwjgui.scene.layout.VBox;
-import org.lwjgl.opengl.GL;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import tconq.assets.Assets;
 import tconq.entity.Player;
 import tconq.gui.Gui;
@@ -26,12 +44,6 @@ import tconq.render.Camera;
 import tconq.render.Shader;
 import tconq.worldmap.Map;
 import tconq.worldmap.TileRender;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-
-import static org.lwjgl.glfw.GLFW.*;
-import static org.lwjgl.opengl.GL11.*;
 
 //import java.net.http.HttpRequest;
 
@@ -90,7 +102,7 @@ public class App {
 
 			//end turn button
 			VBox vbButtons = new VBox();
-			vbButtons.setAlignment(Pos.CENTER_RIGHT);
+			vbButtons.setAlignment(Pos.CENTER_LEFT);
 			vbButtons.setBackground(Color.TRANSPARENT);
 			vbButtons.setMinSize(window.getWidth() - 10, 64);
 			pane.setBottom(vbButtons);
@@ -100,6 +112,7 @@ public class App {
 			endTurn.setMinSize(128, 64);
 			endTurn.setOnMouseReleased(Map.endTurnPressed());
 			vbButtons.getChildren().add(endTurn);
+
 		}
 		
 	 }
@@ -251,6 +264,12 @@ public class App {
 		System.out.println(result);
 	}
 
+	public static String getEntities(Long playerId){
+		final String uri = "http://localhost:8080/SEntities/" + playerId.toString();
+		RestTemplate  restTemplate = new RestTemplate();
+		return restTemplate.getForObject(uri, String.class);
+		//System.out.println(result);
+	}
 
 	private static void addEntities() {
 		final String uri = "http://localhost:8080/SEntities";
@@ -300,7 +319,7 @@ public class App {
 		restTemplate.postForObject(uri, entity, String.class);
 	}
 
-	private static void addPlayer(){
+	private static void addPlayer(String name){
 		final String uri = "http://localhost:8080/Player";
 
 		
@@ -312,7 +331,7 @@ public class App {
 		// create a map for post parameters
 		HashMap<String, Object> map = new HashMap<>();
 		map.put("points",1);
-		map.put("name","Karolis");
+		map.put("name",name);
 		map.put("gold",2);
 		map.put("playing","true");
 
@@ -333,7 +352,8 @@ public class App {
 	
 	public static void main(String[] args) {
 		//getPlayers();
-		addPlayer();
+		addPlayer("Karolis");
+		//addPlayer("Tadas");
 //		addEntity();
 		//addEntities();
 		

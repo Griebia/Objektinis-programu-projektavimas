@@ -1,19 +1,21 @@
 package tconqserver.tconqserv.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import tconqserver.tconqserv.entities.SEntity;
-import tconqserver.tconqserv.observer.Observer;
-import tconqserver.tconqserv.observer.Subject;
-import tconqserver.tconqserv.repositories.SEntityRepository;
-
 import java.net.URI;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import tconqserver.tconqserv.entities.SEntity;
+import tconqserver.tconqserv.repositories.SEntityRepository;
 
 @RestController
 public class SEntityController {
@@ -32,31 +34,22 @@ public class SEntityController {
         return repository.findAll();
     }
 
+    @GetMapping("/SEntities/{id}")
+    public ArrayList<SEntity> allById(@PathVariable Long id) {   // gets all entities of player with given id
+        ArrayList<SEntity> entities = (ArrayList<SEntity>)all();
+        ArrayList<SEntity> filtered = new ArrayList<SEntity>() ;
+        for (SEntity entity : entities) {
+            if(entity.getPlayer().getId() == id)
+                filtered.add(entity);
+        }
+        return filtered;
+        //return repository.findAllButByPlayerId(id);
+    }
+
     @PostMapping("/SEntities")
     public ResponseEntity<Object> newSEntity(@RequestBody ArrayList<SEntity> newSEntities){
 
-        //gets all unique ids of players associated with passed entities
-        ArrayList<Long> uniqueID = new ArrayList<>();
-        uniqueID.add(newSEntities.get(0).getPlayer().getId());
-        for (SEntity ent: newSEntities){
-            if (!uniqueID.contains(ent.getPlayer().getId())){
-                uniqueID.add(ent.getPlayer().getId());
-            }
-        }
-
-        //deletes all entities from db that are associated with unique id's
-        for (Long ID: uniqueID){
-            deleteSEntity(ID);
-        }
-
-        //puts new entities to db for players
-        for (SEntity newSEntity : newSEntities) {
-            SEntity savedSEntity = repository.save(newSEntity);
-            URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-                    .buildAndExpand(savedSEntity.getId()).toUri();
-        }
-
-        PlayerController.getSub().setEntity(newSEntities, newSEntities.get(0).getPlayer().getId());
+        PlayerController.getSub().setEntity(newSEntities, newSEntities.get(0).getPlayer().getId(), repository);
 
         return null;
     }
@@ -78,9 +71,12 @@ public class SEntityController {
         List<SEntity> entities = all();
         for (SEntity ent: entities) {
             if (ent.getPlayer().getId().equals(id))
+            {
+                
                 repository.deleteById(ent.getId());
+            }
         }
-        System.out.println("DELETE STUFF");
+        
 
     }
  

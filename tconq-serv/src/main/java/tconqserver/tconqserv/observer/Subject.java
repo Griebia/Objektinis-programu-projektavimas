@@ -1,9 +1,10 @@
 package tconqserver.tconqserv.observer;
 
-import tconqserver.tconqserv.entities.SEntity;
-
 import java.util.ArrayList;
 import java.util.Hashtable;
+
+import tconqserver.tconqserv.entities.SEntity;
+import tconqserver.tconqserv.repositories.SEntityRepository;
 
 public class Subject {
 
@@ -24,12 +25,12 @@ public class Subject {
     }
 
     //calls update method for observer which  was updated
-    public void notifyObserver(ArrayList<SEntity> entities, Long playerId){
-        observers.get(playerId).update(entities);
+    public void notifyObserver(ArrayList<SEntity> entities, Long playerId, SEntityRepository repository){
+        observers.get(playerId).update(entities,repository);
     }
 
     //sets new entity
-    public void setEntity(ArrayList<SEntity> entities, Long playerID){
-        notifyObserver(entities, playerID);
+    public void setEntity(ArrayList<SEntity> entities, Long playerID, SEntityRepository repository){
+        notifyObserver(entities, playerID, repository);
     }
 }

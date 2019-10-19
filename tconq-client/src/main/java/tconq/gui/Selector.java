@@ -2,6 +2,7 @@ package tconq.gui;
 
 import org.joml.Vector2f;
 
+import tconq.App;
 import tconq.assets.Assets;
 import tconq.collision.AABB;
 import tconq.entity.Entity;
@@ -19,10 +20,6 @@ import tconq.render.Shader;
 import tconq.render.TileSheet;
 import tconq.worldmap.Map;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.Button;
-
 
 public class Selector {
 
@@ -35,10 +32,12 @@ public class Selector {
 	private Camera camera;
 	private AABB boundingBox;
 	//private Texture texture; TODO: implement selector textures.
-	private AbstractEntityFactory entityFactory;
+	public static AbstractEntityFactory entityFactory;  // changed from private to public static !!!
 
 	private boolean canUpgrade = true;		//if true unit or building can be upgraded if false can't resets when button is released
-    
+	
+	public static long entityId = 1;
+
     public Selector( Map world2, Camera camera) {
 		//this.boundingBox = new AABB(position, scale);
 		this.world = world2;
@@ -72,7 +71,9 @@ public class Selector {
 					tc.pos.x = (float)Math.floor(v.x)*2;
 					tc.pos.y =  (float)Math.floor(v.y)*-2;
 					IEntity weak = entityFactory.getEntity("WeakUnit",tc);
-					world.addEntity((Entity)weak);
+					Entity entity = (Entity)weak;
+					entity.setId(entityId++);
+					world.addEntity(entity, App.playerID);
 					selectedState = STATE_CLICKED;
 				}
 			}
