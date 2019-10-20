@@ -17,6 +17,8 @@ import static org.lwjgl.opengl.GL11.glViewport;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.lwjgl.opengl.GL;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.HttpEntity;
@@ -58,6 +60,8 @@ public class App {
 
 	private static Window window;
 	private static lwjgui.scene.Window lwjguiWindow;
+
+	private static Boolean sendRequest = true;
 
 	private static void showCursorCoordinates(Map world, Camera cam){
 		//AABB box = world.getTileBoundingBox((int) (pos.x), (int) (pos.y));
@@ -119,6 +123,8 @@ public class App {
 
 
 	public void run() {
+		Long startTime = System.currentTimeMillis();
+
 		Window.setCallbacks();
 		
 		if (!glfwInit()) {
@@ -247,6 +253,16 @@ public class App {
 				window.swapBuffers();
 				frames++;
 			}
+
+			endTurnLogic();
+			/*long estimatedTime = (System.currentTimeMillis() - startTime) / 1000;
+			if((estimatedTime & 2) != 0 && sendRequest == true){
+				sendRequest = false;
+				endTurnLogic();
+			}
+			if((estimatedTime & 2) == 0)
+				sendRequest = true;*/
+			
 		}
 		
 		Assets.deleteAsset();
@@ -254,14 +270,69 @@ public class App {
 		glfwTerminate();
 
 		
-
+			
 	}
 
-	private static void getPlayers(){
-		final String uri = "http://localhost:8080/Players";
+	public void endTurnLogic(){		// puts all opponents entities to map when they've ended theyr turn
+		String opponents = getOpponents();
+		ArrayList<Long> opponentIds = getOpponentIds(opponents);
+
+		if(checkForNextTurns(opponentIds) == true){						
+			for (Long oppId : opponentIds) {
+				Map.fromDbToMap(getEntities(oppId), oppId);				
+			
+				// ------------------Change nextTurn value to false--------------------------------
+				final String uriPlayer = "http://localhost:8080/NextTurn/" + App.playerID.toString();
+				HttpHeaders headers = new HttpHeaders();
+				headers.setContentType(MediaType.APPLICATION_JSON);
+
+				// create a map for post parameters
+				HashMap<String, Object> playerMap = new HashMap<>();
+				playerMap.put("nextTurn","false");
+				playerMap.put("id", oppId);
+
+				// build the request
+				HttpEntity<HashMap<String, Object>> palyerEntity = new HttpEntity<>(playerMap, headers);
+
+				RestTemplate restTemplatePlayer = new RestTemplate();
+				restTemplatePlayer.postForObject(uriPlayer, palyerEntity, String.class);
+			}
+		}
+	}
+
+	public static Boolean checkForNextTurns(ArrayList<Long> opponentIds){
+		
+		for (Long oppId : opponentIds) {
+			final String uri = "http://localhost:8080/Player/" + oppId.toString();
+			RestTemplate  restTemplate = new RestTemplate();
+			String result = restTemplate.getForObject(uri, String.class);	
+			JSONObject jsonEntity = new JSONObject(result);
+			
+			if(jsonEntity.getBoolean("nextTurn") == false)		// checks if opponent kas ended his turn
+				return false;
+			else
+				return true;
+		}
+		
+		return false;
+	}
+
+	public static String getOpponents(){
+		final String uri = "http://localhost:8080/Players/" + playerID.toString();
 		RestTemplate  restTemplate = new RestTemplate();
 		String result = restTemplate.getForObject(uri, String.class);
 		System.out.println(result);
+		return result;
+	}
+
+	public static ArrayList<Long> getOpponentIds(String opponents){
+		JSONArray jsonArray = new JSONArray(opponents); // changes string to jsonArray
+		ArrayList<Long> ids = new ArrayList<Long>();
+		for (int i = 0; i < jsonArray.length(); i++) {
+			JSONObject jsonEntity = jsonArray.getJSONObject(i); // gets one json onject form array
+			ids.add(jsonEntity.getLong("id"));
+		}
+		return ids;
 	}
 
 	public static String getEntities(Long playerId){
@@ -334,6 +405,7 @@ public class App {
 		map.put("name",name);
 		map.put("gold",2);
 		map.put("playing","true");
+		map.put("nextTurn","false");
 
 		// build the request
 		HttpEntity<HashMap<String, Object>> entity = new HttpEntity<>(map, headers);

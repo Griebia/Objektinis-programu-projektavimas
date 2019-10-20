@@ -52,8 +52,7 @@ public class Map {
 	private final String playerURL = "http://localhost:8080/Players/";
 	HttpURLConnection playerCon;
 
-	public static Long opponentId = 2l; // change 2l to 1l in opponents instance
-	
+	//public static Long opponentId = 1l; // change 2l to 1l in opponents instance
 	// private static AbstractEntityFactory entityFactory;
 
 	public Map(String Map) {
@@ -304,36 +303,51 @@ public class Map {
 				RestTemplate restTemplate = new RestTemplate();
 				restTemplate.postForObject(uri, entity, String.class);
 
-				fromDbToMap(App.getEntities(opponentId));
+				//-----------------------NEXT TURN STUFF--------------------------
+				final String uriPlayer = "http://localhost:8080/NextTurn/" + App.playerID.toString();
+
+				// create a map for post parameters
+				HashMap<String, Object> playerMap = new HashMap<>();
+				playerMap.put("nextTurn","true");
+				playerMap.put("id",App.playerID);
+
+				// build the request
+				HttpEntity<HashMap<String, Object>> palyerEntity = new HttpEntity<>(playerMap, headers);
+
+				RestTemplate restTemplatePlayer = new RestTemplate();
+				restTemplatePlayer.postForObject(uriPlayer, palyerEntity, String.class);
+
+				//fromDbToMap(App.getEntities(opponentId));
 			}
 		};
 	}
 
-	private static void fromDbToMap(String dbEntities) { // gets entities from database and adds them to map
-		if (!entities.isEmpty()) {
-			for(int i = 0;i < entities.size();i++){
-				if (entities.get(i).getPlayerId() == opponentId) {
-					entities.remove(i);
+	public static void fromDbToMap(String dbEntities, Long opponentId) { // gets entities from database and adds them to map
+		JSONArray jsonArray = new JSONArray(dbEntities); // changes string to jsonArray
+		for (int i = 0; i < jsonArray.length(); i++) {
+			JSONObject jsonEntity = jsonArray.getJSONObject(i); // gets one json onject form array
+
+			TransformTc tc = new TransformTc();
+			tc.pos.x = jsonEntity.getFloat("x");
+			tc.pos.y = jsonEntity.getFloat("y");
+			String entityType = new StringBuilder().append(jsonEntity.getString("type")).append("unit").toString();
+			IEntity Ient = Selector.entityFactory.getEntity(entityType, tc);
+			Entity ent = (Entity) Ient;
+			ent.setId(jsonEntity.getLong("id"));
+			JSONObject player = (JSONObject)jsonEntity.get("player");
+			Long playerId = player.getLong("id");
+
+			ArrayList<Long> tempIdList = new ArrayList<Long>();
+			if(!entities.isEmpty()){					// checks if local entity list is empty, if yes - adds opponent entity, if no - proceeds with logic
+				for (Entity entLocal : entities) {		// gets all local entities ids
+					tempIdList.add(entLocal.getId());			
 				}
+				if(!tempIdList.contains(ent.getId()))
+					addEntity(ent, playerId);			// changed addEntity fuction to static bcs it told me to :)	
 			}
-			JSONArray jsonArray = new JSONArray(dbEntities); // changes string to jsonArray
-			for (int i = 0; i < jsonArray.length(); i++) {
-				JSONObject jsonEntity = jsonArray.getJSONObject(i); // gets one json onject form array
-
-				TransformTc tc = new TransformTc();
-				tc.pos.x = jsonEntity.getFloat("x");
-				tc.pos.y = jsonEntity.getFloat("y");
-				String entityType = new StringBuilder().append(jsonEntity.getString("type")).append("unit").toString();
-				IEntity Ient = Selector.entityFactory.getEntity(entityType, tc);
-				Entity ent = (Entity) Ient;
-				ent.setId(jsonEntity.getLong("id"));
-				JSONObject player = (JSONObject)jsonEntity.get("player");
-				Long playerId = player.getLong("id");
-
-				if(!entities.contains(ent))
-					addEntity(ent, playerId);	// changed addEntity fuction to static bcs it told me to :)
-			}		
-		}
+			else
+				addEntity(ent, playerId);	
+		}			
 	}
 
 	/*

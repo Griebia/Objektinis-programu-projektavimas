@@ -23,18 +23,19 @@ class Player{
     private Integer gold;
     private boolean playing;
     private Integer points;
+    private Boolean nextTurn;
     
     @OneToMany(mappedBy = "player", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<SEntity> playerEntities;
 
-    public Player(String name, Integer gold, boolean playing, Integer points){
+    public Player(String name, Integer gold, boolean playing, Integer points, Boolean nextTurn){
         super();
         this.name = name;
         this.gold = gold;
         this.playing = playing;
         this.points = points;
-       
+        this.nextTurn = nextTurn;
     }
     public Player(){
     }
@@ -55,7 +56,7 @@ class Player{
     }
     @Override
     public String toString(){
-        return "Player [ id = "+ id + ", name = " + name + ", gold = " + gold + ", playing = " + playing + ", points = " + points + " ]";
+        return "Player [ id = "+ id + ", name = " + name + ", gold = " + gold + ", playing = " + playing + ", points = " + points + ", nextTurn = " + nextTurn + " ]";
     }
 	public String getName() {
 		return this.name;
@@ -68,7 +69,11 @@ class Player{
 	}
 	public Integer getPoints() {
 		return this.points;
-	}
+    }
+    public Boolean getNextTurn(){
+        return this.nextTurn;
+    }
+
 	public void setName(String name2) {
         this.name = name2;
 	}
@@ -80,5 +85,8 @@ class Player{
 	}
 	public void setPoints(Integer points2) {
         this.points = points2;
+    }
+    public void setNextTurn(Boolean turn){
+        this.nextTurn = turn;
     }
 }

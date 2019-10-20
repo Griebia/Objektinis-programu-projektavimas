@@ -70,7 +70,7 @@ public class Selector {
 					Vector2f v = getTileCoordinates(window);
 					tc.pos.x = (float)Math.floor(v.x)*2;
 					tc.pos.y =  (float)Math.floor(v.y)*-2;
-					IEntity weak = entityFactory.getEntity("WeakUnit",tc);
+					IEntity weak = entityFactory.getEntity("weakUnit",tc);
 					Entity entity = (Entity)weak;
 					entity.setId(entityId++);
 					world.addEntity(entity, App.playerID);
@@ -94,20 +94,20 @@ public class Selector {
 
 			//checks what type of unit is on the tile and upgrades it
 			if (world.getEntity(tc.pos) != null) {
-				switch (world.getEntity(tc.pos).getClass().getSimpleName()) {
-					case "House":
+				switch (world.getEntity(tc.pos).getClass().getSimpleName().toLowerCase()) {
+					case "house":
 						world.getEntity(tc.pos).upgrade(world, new HouseToTower());
 						canUpgrade = false;
 						break;
-					case "Tower":
+					case "hower":
 						world.getEntity(tc.pos).upgrade(world, new TowerToCastle());
 						canUpgrade = false;
 						break;
-					case "WeakUnit":
+					case "weakunit":
 						world.getEntity(tc.pos).upgrade(world, new WeakToMedium());
 						canUpgrade = false;
 						break;
-					case "MediumUnit":
+					case "mediumunit":
 						world.getEntity(tc.pos).upgrade(world, new MediumToStrong());
 						canUpgrade = false;
 						break;

@@ -7,7 +7,9 @@ import java.util.Optional;
 
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import tconqserver.tconqserv.entities.Player;
 import tconqserver.tconqserv.entities.SEntity;
+import tconqserver.tconqserv.repositories.PlayerRepository;
 import tconqserver.tconqserv.repositories.SEntityRepository;
 
 public class Observer {
@@ -53,7 +55,7 @@ public class Observer {
     public void update(ArrayList<SEntity> entities, SEntityRepository repository){
 
         //gets all unique ids of players associated with passed entities
-        Long playerId =entities.get(0).getPlayer().getId();
+       // Long playerId =entities.get(0).getPlayer().getId();
         //deleteSEntities(playerId, repository);
         /*
         for (SEntity ent: entities){
@@ -81,6 +83,16 @@ public class Observer {
             System.out.println("Entity id - " + entity.getId()+ " " + entity.getPlayer());
         }
 
+    }
+
+    public void updatePlayerNextTurn(Player player, PlayerRepository repository){
+
+        repository.findById(player.getId())
+            .map(Player -> {
+                Player.setNextTurn(player.getNextTurn());            
+                return repository.save(Player);
+            });
+        
     }
 
     public void deleteSEntities(Long id, SEntityRepository repository) {

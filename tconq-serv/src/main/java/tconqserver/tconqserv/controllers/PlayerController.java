@@ -1,12 +1,11 @@
 package tconqserver.tconqserv.controllers;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -51,6 +50,17 @@ class PlayerController {
         return repository.findAll();
     }
 
+    @GetMapping("/Players/{id}")
+    public ArrayList<Player> allButMe(@PathVariable Long id) {      // returns all players except the one with this id
+        List<Player> allPlayers = all();
+        ArrayList<Player> allPlayersButMe = new ArrayList<Player>();
+        for (Player player : allPlayers) {
+            if(!player.getId().equals(id))
+                allPlayersButMe.add(player);
+        }
+        return allPlayersButMe;
+    }
+
     @PostMapping("/Player")
     public Player newPlayer(@RequestBody Player newPlayer) {
         Player savedPlayer = repository.save(newPlayer);
@@ -79,18 +89,18 @@ class PlayerController {
 
 
     @PutMapping("/Player/{id}")
-    public Player replacePlayer(@RequestBody Player newPlayer, @PathVariable Long id) {
-
-        return repository.findById(id)
+    public Player replacePlayer(@RequestBody Player newPlayer) {
+        return repository.findById(newPlayer.getId())
         .map(Player -> {
             Player.setName(newPlayer.getName());
             Player.setGold(newPlayer.getGold());
             Player.setPlaying(newPlayer.isPlaying());
             Player.setPoints(newPlayer.getPoints());
+            Player.setNextTurn(newPlayer.getNextTurn());            
             return repository.save(Player);
         })
         .orElseGet(() -> {
-            newPlayer.setId(id);
+            newPlayer.setId(newPlayer.getId());
             return repository.save(newPlayer);
         });
     }
@@ -99,4 +109,11 @@ class PlayerController {
     public void deletePlayer(@PathVariable Long id) {
         repository.deleteById(id);
     }
+
+    @PostMapping("/NextTurn/{id}")
+    public Boolean nextTurn(@RequestBody Player player){
+        getSub().notifyObserverPlayer(player, repository);
+        return true;
+    }
+
 }
