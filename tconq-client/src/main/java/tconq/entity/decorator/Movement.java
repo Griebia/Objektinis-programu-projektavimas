@@ -1,12 +1,11 @@
-package tconq.entity.factory;
+package tconq.entity.decorator;
 
 import tconq.collision.AABB;
-import tconq.entity.Entity;
 import tconq.entity.IEntity;
 import tconq.entity.TransformTc;
+import tconq.entity.decorator.UnitDecorator;
 import tconq.entity.strategy.Upgrade;
 import tconq.io.Window;
-import tconq.render.Animation;
 import tconq.render.Camera;
 import tconq.render.Shader;
 import tconq.worldmap.Map;

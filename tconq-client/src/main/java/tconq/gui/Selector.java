@@ -5,9 +5,10 @@ import org.joml.Vector2f;
 import tconq.App;
 import tconq.assets.Assets;
 import tconq.collision.AABB;
-import tconq.entity.Entity;
 import tconq.entity.IEntity;
 import tconq.entity.TransformTc;
+import tconq.entity.decorator.Attack;
+import tconq.entity.decorator.Movement;
 import tconq.entity.factory.*;
 import tconq.entity.strategy.HouseToTower;
 import tconq.entity.strategy.MediumToStrong;
@@ -72,7 +73,7 @@ public class Selector {
 
 
 					//idet i strategy klases
-					IEntity weak = new Attack ( new Movement( entityFactory.getEntity("weakUnit",tc) ));
+					IEntity weak = new Attack( new Movement( entityFactory.getEntity("weakUnit",tc) ));
 
 					System.out.println("-------------------------------------------------------------------------------------");
 					System.out.println(weak.getAttack());

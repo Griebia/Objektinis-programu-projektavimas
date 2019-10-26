@@ -1,4 +1,4 @@
-package tconq.entity.factory;
+package tconq.entity.decorator;
 
 import tconq.entity.Entity;
 import tconq.entity.IEntity;

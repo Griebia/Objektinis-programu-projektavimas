@@ -16,6 +16,7 @@ import tconq.render.Shader;
 import tconq.render.Texture;
 import tconq.worldmap.Map;
 
+
 public abstract class Entity implements IEntity {
 	protected AABB bounding_box;
 	
