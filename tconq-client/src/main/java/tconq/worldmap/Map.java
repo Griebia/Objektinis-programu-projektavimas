@@ -41,8 +41,8 @@ public class Map {
 	private byte[] tiles;
 	private AABB[] bounding_boxes;
 	// private AABB selectedTile;
-	private static List<Entity> entities;
-	private static List<Entity> entitiesOpponent;
+	private static List<IEntity> entities;
+	private static List<IEntity> entitiesOpponent;
 	private int width;
 	private int height;
 	private int scale;
@@ -119,18 +119,18 @@ public class Map {
 		}
 	}
 
-	public static void addEntity(Entity entity, Long playerId) {
+	public static void addEntity(IEntity entity, Long playerId) {
 		entity.setPlayerId(playerId);
 		entities.add(entity);
 	}
 
-	public static void addEntityOpponent(Entity entity, Long playerId) {
+	public static void addEntityOpponent(IEntity entity, Long playerId) {
 		entity.setPlayerId(playerId);
 		entitiesOpponent.add(entity);
 	}
 
-	public Entity getEntity(Vector3f pos) {
-		for (Entity ent : entities) {
+	public IEntity getEntity(Vector3f pos) {
+		for (IEntity ent : entities) {
 			if (ent.getPos().pos.equals(pos))
 				return ent;
 		}
@@ -147,7 +147,7 @@ public class Map {
 		return false;
 	}
 
-	public List<Entity> getEntities() {
+	public List<IEntity> getEntities() {
 		return entities;
 	}
 
@@ -184,13 +184,13 @@ public class Map {
 			}
 		}
 
-		for (Entity entity : entities) {
+		for (IEntity entity : entities) {
 			entity.render(shader, cam, this);
 		}
 	}
 
 	public void update(float delta, Window window, Camera camera) {
-		for (Entity entity : entities) {
+		for (IEntity entity : entities) {
 			entity.update(delta, window, camera, this);
 		}
 
@@ -238,7 +238,7 @@ public class Map {
 	}
 
 	public AABB getEntityBoundungBox(int x, int y) {
-		for (Entity var : entities) {
+		for (IEntity var : entities) {
 			int tcx = (int) Math.floor(var.getPos().pos.x / 2);
 			int tcy = (int) Math.floor(var.getPos().pos.y / 2);
 			if (tcx == x && tcy == -y) {
@@ -271,7 +271,7 @@ public class Map {
 
 				ArrayList<HashMap<String, Object>> list = new ArrayList<HashMap<String, Object>>();
 
-				for (Entity ent : entities) {
+				for (IEntity ent : entities) {
 					if (ent.getPlayerId() == App.playerID) {
 						HashMap<String, Object> map = new HashMap<>();
 
@@ -339,7 +339,7 @@ public class Map {
 
 			ArrayList<Long> tempIdList = new ArrayList<Long>();
 			if(!entities.isEmpty()){					// checks if local entity list is empty, if yes - adds opponent entity, if no - proceeds with logic
-				for (Entity entLocal : entities) {		// gets all local entities ids
+				for (IEntity entLocal : entities) {		// gets all local entities ids
 					tempIdList.add(entLocal.getId());			
 				}
 				if(!tempIdList.contains(ent.getId()))

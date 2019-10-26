@@ -321,7 +321,12 @@ public class App {
 		final String uri = "http://localhost:8080/Players/" + playerID.toString();
 		RestTemplate  restTemplate = new RestTemplate();
 		String result = restTemplate.getForObject(uri, String.class);
-		System.out.println(result);
+
+
+//		System.out.println(result);
+
+
+
 		return result;
 	}
 

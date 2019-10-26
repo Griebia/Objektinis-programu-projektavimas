@@ -168,5 +168,27 @@ public abstract class Entity implements IEntity {
 			entity.transform.pos.set(entity.bounding_box.getCenter().x, entity.bounding_box.getCenter().y, 0);
 		}
 	}
+
+
+
+
+
+
+
+
+
+
+
+	public String getAttack(){
+		String dmg = "5 dmg";
+		System.out.println(dmg);
+		return dmg;
+	}
+
+	public String getMovement() {
+		String mov = "5 spaces";
+		System.out.println(mov);
+		return mov;
+	}
 	
 }

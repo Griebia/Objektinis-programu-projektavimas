@@ -8,8 +8,7 @@ import tconq.collision.AABB;
 import tconq.entity.Entity;
 import tconq.entity.IEntity;
 import tconq.entity.TransformTc;
-import tconq.entity.factory.AbstractEntityFactory;
-import tconq.entity.factory.EntityProducer;
+import tconq.entity.factory.*;
 import tconq.entity.strategy.HouseToTower;
 import tconq.entity.strategy.MediumToStrong;
 import tconq.entity.strategy.TowerToCastle;
@@ -70,10 +69,21 @@ public class Selector {
 					Vector2f v = getTileCoordinates(window);
 					tc.pos.x = (float)Math.floor(v.x)*2;
 					tc.pos.y =  (float)Math.floor(v.y)*-2;
-					IEntity weak = entityFactory.getEntity("weakUnit",tc);
-					Entity entity = (Entity)weak;
-					entity.setId(entityId++);
-					world.addEntity(entity, App.playerID);
+
+
+					//idet i strategy klases
+					IEntity weak = new Attack ( new Movement( entityFactory.getEntity("weakUnit",tc) ));
+
+					System.out.println("-------------------------------------------------------------------------------------");
+					System.out.println(weak.getAttack());
+					System.out.println("-------------------------------------------------------------------------------------");
+
+//					Entity entity = (Entity)weak;
+//					entity.setId(entityId++);
+
+					weak.setId(entityId++);
+
+					world.addEntity((IEntity)weak, App.playerID);
 					selectedState = STATE_CLICKED;
 				}
 			}
