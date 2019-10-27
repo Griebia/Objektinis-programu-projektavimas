@@ -8,6 +8,8 @@ import tconq.App;
 import tconq.assets.Assets;
 import tconq.collision.AABB;
 import tconq.collision.Collision;
+import tconq.entity.command.MovementControl;
+import tconq.entity.decorator.Movement;
 import tconq.entity.strategy.Upgrade;
 import tconq.io.Window;
 import tconq.render.Animation;
@@ -29,6 +31,8 @@ public abstract class Entity implements IEntity {
 	protected TransformTc transform;
 	protected Long playerId;
 	protected Long id;
+
+	protected MovementControl movementControl;
 	
 	public void setPlayerId(Long id){
 		this.playerId = id;
@@ -51,12 +55,14 @@ public abstract class Entity implements IEntity {
 		this.use_animation = 0;
 		
 		bounding_box = new AABB(new Vector2f(transform.pos.x, transform.pos.y), new Vector2f(transform.scale.x, transform.scale.y));
+
 	}
 
 	public Entity(String texturepath, TransformTc transform){
 		this.texture = new Texture(texturepath);
 		this.transform = transform;
 		bounding_box = new AABB(new Vector2f(transform.pos.x, transform.pos.y), new Vector2f(transform.scale.x, transform.scale.y));
+		movementControl = new MovementControl(this);
 	}
 
 	protected void setTexture(String texturepath){
@@ -83,6 +89,10 @@ public abstract class Entity implements IEntity {
 		transform.pos.add(new Vector3f(direction, 0));
 		
 		bounding_box.getCenter().set(transform.pos.x, transform.pos.y);
+	}
+	public void move(String direction)
+	{
+		movementControl.move(direction);
 	}
 	
 	public void collideWithTiles(Map world) {

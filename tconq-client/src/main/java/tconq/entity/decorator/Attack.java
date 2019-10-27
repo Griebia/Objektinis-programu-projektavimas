@@ -52,6 +52,11 @@ public class Attack extends UnitDecorator {
     }
 
     @Override
+    public void move(String direction) {
+         tempUnit.move(direction);
+    }
+
+    @Override
     public AABB getEntityBoundingBox() {
         return tempUnit.getEntityBoundingBox();
     }

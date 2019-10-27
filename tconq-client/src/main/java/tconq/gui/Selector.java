@@ -86,7 +86,15 @@ public class Selector {
 					world.addEntity((IEntity)weak, App.playerID);
 					selectedState = STATE_CLICKED;
 				}
-			}
+		}
+
+//		if (window.getInput().isMouseButtonDown(0))
+//		{
+//			Vector2f v = getTileCoordinates(window);
+//			SelectUnit(v);		//moves the unit to the right
+//		}
+
+
 		if (window.getInput().isMouseButtonDown(1))
 		{
 			Vector2f v = getTileCoordinates(window);
@@ -102,6 +110,19 @@ public class Selector {
 
 		//}
 		//else selectedState = STATE_IDLE;
+	}
+
+	public void SelectUnit(Vector2f v)
+	{
+		TransformTc tc = new TransformTc();
+		tc.pos.x = (float)Math.floor(v.x)*2;
+		tc.pos.y =  (float)Math.floor(v.y)*-2;
+
+		//checks what type of unit is on the tile and upgrades it
+		IEntity entity = world.getEntity(tc.pos);
+		if (entity != null) {
+			entity.move("Right");
+		}
 	}
 
 	//upgrades units and buildings

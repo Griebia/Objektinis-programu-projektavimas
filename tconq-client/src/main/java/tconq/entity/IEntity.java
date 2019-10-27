@@ -1,5 +1,6 @@
 package tconq.entity;
 
+import org.joml.Vector2f;
 import tconq.collision.AABB;
 import tconq.entity.strategy.Upgrade;
 import tconq.io.Window;
@@ -21,6 +22,8 @@ public interface IEntity {
     public Long getId();
 
     public TransformTc getPos();
+
+    public void move(String direction);
 
     public AABB getEntityBoundingBox();
 

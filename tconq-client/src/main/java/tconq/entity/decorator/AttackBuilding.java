@@ -73,6 +73,10 @@ public class AttackBuilding extends UnitDecorator {
     public Class getEntityClass(IEntity entity) {
         return tempUnit.getEntityClass(entity);
     }
+    @Override
+    public void move(String direction) {
+        tempUnit.move(direction);
+    }
 
     public boolean getDestroyBuilding(IEntity enemyBuilding) {
         switch (tempUnit.getEntityClass(tempUnit).getSimpleName().toLowerCase()){

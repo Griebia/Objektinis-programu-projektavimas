@@ -88,4 +88,8 @@ public class Movement extends UnitDecorator {
         }
         return tempUnit.getMovement();
     }
+    @Override
+    public void move(String direction) {
+        tempUnit.move(direction);
+    }
 }

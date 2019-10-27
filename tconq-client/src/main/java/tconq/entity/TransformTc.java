@@ -1,6 +1,8 @@
 package tconq.entity;
 
+import org.joml.Matrix2f;
 import org.joml.Matrix4f;
+import org.joml.Vector2f;
 import org.joml.Vector3f;
 
 public class TransformTc {
@@ -16,5 +18,8 @@ public class TransformTc {
 		target.translate(pos);
 		target.scale(scale);
 		return target;
+	}
+	public Vector2f getVector2f() {
+		return new Vector2f(pos.x,pos.y);
 	}
 }
