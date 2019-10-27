@@ -276,10 +276,10 @@ public class Map {
 						HashMap<String, Object> map = new HashMap<>();
 
 						String type = "";
-						if (ent.getClass().getSimpleName().contains("Unit"))
-							type = ent.getClass().getSimpleName().replace("Unit", "").toUpperCase();
+						if (ent.getEntityClass(ent).getSimpleName().contains("Unit"))
+							type = ent.getEntityClass(ent).getSimpleName().replace("Unit", "").toUpperCase();
 						else
-							type = ent.getClass().getSimpleName().toUpperCase();
+							type = ent.getEntityClass(ent).getSimpleName().toUpperCase();
 
 						// map.put("id", ent.getId());
 						map.put("type", type);
