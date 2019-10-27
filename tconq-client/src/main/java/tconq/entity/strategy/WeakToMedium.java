@@ -13,14 +13,14 @@ import tconq.worldmap.Map;
 public class WeakToMedium implements Upgrade {
 
     @Override
-    public void upgrade(TransformTc tc, Map world, Long playerId) {
+    public void upgrade(TransformTc tc, Map world, Long playerId, Long entityId)  {
         AbstractEntityFactory entityFactory = EntityProducer.getFactory(true);     //creates factory for placing units
 
         //deletes weak unit and places medium unit in it's place
         if (world.removeEntity(tc.pos))
         {
             IEntity medium = new AttackBuilding( new Attack( new Movement( entityFactory.getEntity("MediumUnit",tc) )));
-
+            medium.setId(entityId);
             System.out.println("-------------------------------------------------------------------------------------");
             System.out.println(medium.getMovement());
             System.out.println(medium.getAttack(medium));

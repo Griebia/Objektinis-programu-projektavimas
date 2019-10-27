@@ -13,13 +13,15 @@ import tconq.worldmap.Map;
 public class MediumToStrong implements Upgrade {
 
     @Override
-    public void upgrade(TransformTc tc, Map world, Long playerId) {
+    public void upgrade(TransformTc tc, Map world, Long playerId, Long entityId)  {
         AbstractEntityFactory entityFactory = EntityProducer.getFactory(true);     //creates factory for placing units
 
         //deletes medium unit and places strong unit in it's place
         if (world.removeEntity(tc.pos))
         {
             IEntity strong = new Attack( new AttackBuilding( new Movement( entityFactory.getEntity("StrongUnit",tc) )));
+            strong.setId(entityId);
+
 
             System.out.println("-------------------------------------------------------------------------------------");
             System.out.println(strong.getMovement());

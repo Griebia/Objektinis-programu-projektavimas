@@ -60,8 +60,8 @@ public class AttackBuilding extends UnitDecorator {
     }
 
     @Override
-    public void upgrade(Map world, Upgrade newUpgradeStrategy) {
-        tempUnit.upgrade(world, newUpgradeStrategy);
+    public void upgrade(Map world, Upgrade newUpgradeStrategy, Long entityId) {
+        tempUnit.upgrade(world, newUpgradeStrategy, entityId);
     }
 
     @Override

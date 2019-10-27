@@ -117,19 +117,19 @@ public class Selector {
 				String type = entity.getEntityClass(entity).getSimpleName().toLowerCase();
 				switch (type) {
 					case "house":
-						entity.upgrade(world, new HouseToTower());
+						entity.upgrade(world, new HouseToTower(), entity.getId());
 						canUpgrade = false;
 						break;
 					case "tower":
-						entity.upgrade(world, new TowerToCastle());
+						entity.upgrade(world, new TowerToCastle(), entity.getId());
 						canUpgrade = false;
 						break;
 					case "weakunit":
-						entity.upgrade(world, new WeakToMedium());
+						entity.upgrade(world, new WeakToMedium(), entity.getId());
 						canUpgrade = false;
 						break;
 					case "mediumunit":
-						entity.upgrade(world, new MediumToStrong());
+						entity.upgrade(world, new MediumToStrong(), entity.getId());
 						canUpgrade = false;
 						break;
 					default:

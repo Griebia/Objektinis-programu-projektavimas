@@ -26,7 +26,7 @@ public interface IEntity {
 
     public void collideWithTiles(Map world) ;
 
-    public void upgrade(Map world, Upgrade newUpgradeStrategy);
+    public void upgrade(Map world, Upgrade newUpgradeStrategy, Long entityId);
 
     public void collideWithEntity(IEntity entity) ;
 
