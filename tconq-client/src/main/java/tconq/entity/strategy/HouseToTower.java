@@ -17,7 +17,7 @@ public class HouseToTower implements Upgrade {
         if (world.removeEntity(tc.pos))
         {
             IEntity tower = entityFactory.getEntity("Tower",tc);
-            world.addEntity((Entity)tower,playerId);
+            world.addEntity(tower,playerId);
         }
     }
 

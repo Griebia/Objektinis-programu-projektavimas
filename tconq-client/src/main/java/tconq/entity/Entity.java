@@ -170,26 +170,20 @@ public abstract class Entity implements IEntity {
 		}
 	}
 
-
-
-
-
-
-
-
-
-
-
-	public String getAttack(){
-		String dmg = "5 dmg";
-		System.out.println(dmg);
-		return dmg;
+	public Class getEntityClass(IEntity entity){
+		return entity.getClass();
 	}
 
-	public String getMovement() {
-		String mov = "5 spaces";
-		System.out.println(mov);
-		return mov;
+	public boolean getAttack(IEntity enemyUnit){
+		return false;
+	}
+
+	public boolean getDestroyBuilding(IEntity enemyBuilding){
+		return false;
+	}
+
+	public int getMovement() {
+		return 0;
 	}
 	
 }

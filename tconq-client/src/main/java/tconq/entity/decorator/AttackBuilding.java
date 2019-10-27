@@ -3,18 +3,16 @@ package tconq.entity.decorator;
 import tconq.collision.AABB;
 import tconq.entity.IEntity;
 import tconq.entity.TransformTc;
-import tconq.entity.decorator.UnitDecorator;
 import tconq.entity.strategy.Upgrade;
 import tconq.io.Window;
 import tconq.render.Camera;
 import tconq.render.Shader;
 import tconq.worldmap.Map;
 
-public class Movement extends UnitDecorator {
-    public Movement(IEntity newUnit) {
+public class AttackBuilding extends UnitDecorator {
+    public AttackBuilding(IEntity newUnit) {
         super(newUnit);
     }
-
 
     @Override
     public void render(Shader shader, Camera camera, Map world) {
@@ -76,16 +74,28 @@ public class Movement extends UnitDecorator {
         return tempUnit.getEntityClass(entity);
     }
 
-    public int getMovement() {
-
-        switch (tempUnit.getClass().getSimpleName().toLowerCase()){
+    public boolean getDestroyBuilding(IEntity enemyBuilding) {
+        switch (tempUnit.getEntityClass(tempUnit).getSimpleName().toLowerCase()){
             case "weakunit":
-                return 1;
+                if (enemyBuilding.getEntityClass(enemyBuilding).getSimpleName().toLowerCase().equals("house"))
+                    return true;
+                else
+                    return false;
             case "mediumunit":
-                return 2;
+                if (enemyBuilding.getEntityClass(enemyBuilding).getSimpleName().toLowerCase().equals("house") ||
+                    enemyBuilding.getEntityClass(enemyBuilding).getSimpleName().toLowerCase().equals("tower") ||
+                    enemyBuilding.getEntityClass(enemyBuilding).getSimpleName().toLowerCase().equals("castle") )
+                    return true;
+                else
+                    return false;
             case "strongunit":
-                return 3;
+                if (enemyBuilding.getEntityClass(enemyBuilding).getSimpleName().toLowerCase().equals("house") ||
+                    enemyBuilding.getEntityClass(enemyBuilding).getSimpleName().toLowerCase().equals("tower"))
+                    return true;
+                else
+                    return false;
         }
-        return tempUnit.getMovement();
+
+        return false;
     }
 }

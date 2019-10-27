@@ -25,5 +25,10 @@ public class House extends Entity {
 
     }
 
+    @Override
+    public Class getEntityClass(IEntity entity) {
+        return this.getClass();
+    }
+
 
 }

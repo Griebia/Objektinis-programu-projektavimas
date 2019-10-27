@@ -21,4 +21,9 @@ public class WeakUnit extends Entity {
 	public void collideWithEntity(IEntity entity) {
 
 	}
+
+	@Override
+	public Class getEntityClass(IEntity entity) {
+		return this.getClass();
+	}
 }

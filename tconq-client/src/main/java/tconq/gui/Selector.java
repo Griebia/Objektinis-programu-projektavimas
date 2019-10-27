@@ -8,6 +8,7 @@ import tconq.collision.AABB;
 import tconq.entity.IEntity;
 import tconq.entity.TransformTc;
 import tconq.entity.decorator.Attack;
+import tconq.entity.decorator.AttackBuilding;
 import tconq.entity.decorator.Movement;
 import tconq.entity.factory.*;
 import tconq.entity.strategy.HouseToTower;
@@ -71,16 +72,14 @@ public class Selector {
 					tc.pos.x = (float)Math.floor(v.x)*2;
 					tc.pos.y =  (float)Math.floor(v.y)*-2;
 
-
 					//idet i strategy klases
-					IEntity weak = new Attack( new Movement( entityFactory.getEntity("weakUnit",tc) ));
+					IEntity weak = new AttackBuilding( new Attack( new Movement( entityFactory.getEntity("weakUnit",tc) )));
 
 					System.out.println("-------------------------------------------------------------------------------------");
-					System.out.println(weak.getAttack());
+					System.out.println(weak.getMovement());
+					System.out.println(weak.getAttack(weak));
+					System.out.println(weak.getDestroyBuilding(weak));
 					System.out.println("-------------------------------------------------------------------------------------");
-
-//					Entity entity = (Entity)weak;
-//					entity.setId(entityId++);
 
 					weak.setId(entityId++);
 
@@ -88,38 +87,49 @@ public class Selector {
 					selectedState = STATE_CLICKED;
 				}
 			}
+		if (window.getInput().isMouseButtonDown(1))
+		{
+			Vector2f v = getTileCoordinates(window);
+			UpgradeUnitOrBuilding(v);		//upgrades units or buildings
+		}
 
-		UpgradeUnitOrBuilding(window);		//upgrades units or buildings
+		//resets can upgrade when button is released
+		if (window.getInput().isMouseButtonReleased(1) && !canUpgrade){
+			canUpgrade = true;
+		}
+
+
 
 		//}
 		//else selectedState = STATE_IDLE;
 	}
 
 	//upgrades units and buildings
-	public void UpgradeUnitOrBuilding(Window window){
-		if (window.getInput().isMouseButtonDown(1) && canUpgrade) {
+	public void UpgradeUnitOrBuilding(Vector2f v){
+		if (canUpgrade) {
 			TransformTc tc = new TransformTc();
-			Vector2f v = getTileCoordinates(window);
 			tc.pos.x = (float)Math.floor(v.x)*2;
 			tc.pos.y =  (float)Math.floor(v.y)*-2;
 
 			//checks what type of unit is on the tile and upgrades it
-			if (world.getEntity(tc.pos) != null) {
-				switch (world.getEntity(tc.pos).getClass().getSimpleName().toLowerCase()) {
+			IEntity entity = world.getEntity(tc.pos);
+			if (entity != null) {
+				String type = entity.getEntityClass(entity).getSimpleName().toLowerCase();
+				switch (type) {
 					case "house":
-						world.getEntity(tc.pos).upgrade(world, new HouseToTower());
+						entity.upgrade(world, new HouseToTower());
 						canUpgrade = false;
 						break;
-					case "hower":
-						world.getEntity(tc.pos).upgrade(world, new TowerToCastle());
+					case "tower":
+						entity.upgrade(world, new TowerToCastle());
 						canUpgrade = false;
 						break;
 					case "weakunit":
-						world.getEntity(tc.pos).upgrade(world, new WeakToMedium());
+						entity.upgrade(world, new WeakToMedium());
 						canUpgrade = false;
 						break;
 					case "mediumunit":
-						world.getEntity(tc.pos).upgrade(world, new MediumToStrong());
+						entity.upgrade(world, new MediumToStrong());
 						canUpgrade = false;
 						break;
 					default:
@@ -129,10 +139,7 @@ public class Selector {
 			selectedState = STATE_CLICKED;
 		}
 
-		//resets can upgrade when button is released
-		if (window.getInput().isMouseButtonReleased(1) && !canUpgrade){
-			canUpgrade = true;
-		}
+
 	}
 
 	public void render(Camera camera, TileSheet sheet, Shader shader) {

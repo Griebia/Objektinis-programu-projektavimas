@@ -30,12 +30,14 @@ public interface IEntity {
 
     public void collideWithEntity(IEntity entity) ;
 
+    public Class getEntityClass(IEntity entity);
 
 
 
 
+    public boolean getAttack(IEntity enemyUnit);
 
-    public String getAttack();
+    public boolean getDestroyBuilding(IEntity enemyBuilding);
 
-    public String getMovement();
+    public int getMovement();
 }

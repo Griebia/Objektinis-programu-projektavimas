@@ -17,7 +17,7 @@ public class TowerToCastle implements Upgrade {
         if (world.removeEntity(tc.pos))
         {
             IEntity castle = entityFactory.getEntity("Castle",tc);
-            world.addEntity((Entity)castle,playerId);
+            world.addEntity(castle,playerId);
         }
 
     }

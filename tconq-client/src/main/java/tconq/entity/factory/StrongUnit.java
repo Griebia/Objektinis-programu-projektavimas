@@ -25,4 +25,9 @@ public class StrongUnit extends Entity {
 
     }
 
+    @Override
+    public Class getEntityClass(IEntity entity) {
+        return this.getClass();
+    }
+
 }

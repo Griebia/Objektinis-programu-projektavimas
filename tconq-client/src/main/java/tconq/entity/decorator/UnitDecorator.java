@@ -11,12 +11,18 @@ public abstract class UnitDecorator implements IEntity{
         tempUnit = newUnit;
     }
 
-    public String getAttack(){
-        return tempUnit.getAttack();
+    public boolean getAttack(IEntity enemyUnit){
+        return tempUnit.getAttack(enemyUnit);
     }
 
-    public String getMovement() {
+    public boolean getDestroyBuilding(IEntity enemyBuilding){
+        return tempUnit.getDestroyBuilding(enemyBuilding);
+    }
+
+    public int getMovement() {
         return tempUnit.getMovement();
     }
+
+
 
 }

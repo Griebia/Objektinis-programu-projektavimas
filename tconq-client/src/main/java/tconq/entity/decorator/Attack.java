@@ -71,7 +71,33 @@ public class Attack extends UnitDecorator {
         tempUnit.collideWithEntity(entity);
     }
 
-    public String getAttack() {
-        return tempUnit.getAttack() + "more dmg";
+    @Override
+    public Class getEntityClass(IEntity entity) {
+        return tempUnit.getEntityClass(entity);
+    }
+
+    public boolean getAttack(IEntity enemyUnit) {
+        switch (tempUnit.getEntityClass(tempUnit).getSimpleName().toLowerCase()){
+            case "weakunit":
+                if (enemyUnit.getEntityClass(enemyUnit).getSimpleName().toLowerCase().equals("weakunit"))
+                    return true;
+                else
+                    return false;
+            case "mediumunit":
+                if (enemyUnit.getEntityClass(enemyUnit).getSimpleName().toLowerCase().equals("weakunit") ||
+                    enemyUnit.getEntityClass(enemyUnit).getSimpleName().toLowerCase().equals("mediumunit"))
+                    return true;
+                else
+                    return false;
+            case "strongunit":
+                if (enemyUnit.getEntityClass(enemyUnit).getSimpleName().toLowerCase().equals("weakunit") ||
+                    enemyUnit.getEntityClass(enemyUnit).getSimpleName().toLowerCase().equals("mediumunit") ||
+                    enemyUnit.getEntityClass(enemyUnit).getSimpleName().toLowerCase().equals("strongunit"))
+                    return true;
+                else
+                    return false;
+        }
+
+        return false;
     }
 }
