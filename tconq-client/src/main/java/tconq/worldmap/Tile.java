@@ -11,9 +11,9 @@ public class Tile {
 	
 	private byte id;
 	private boolean solid;
-	private String texture;
+	private Texture texture;
 	
-	public Tile(String texture) {
+	public Tile(Texture texture) {
 		this.id = not;
 		not++;
 		this.texture = texture;
@@ -36,6 +36,6 @@ public class Tile {
 	}
 	
 	public String getTexture() {
-		return texture;
+		return Texture.name();
 	}
 }
