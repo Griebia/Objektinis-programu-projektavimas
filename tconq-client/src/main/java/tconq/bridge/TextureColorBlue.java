@@ -1,4 +1,4 @@
-package tconq.worldmap;
+package tconq.bridge;
 
 public class TextureColorBlue implements ITextureColor {
     @Override

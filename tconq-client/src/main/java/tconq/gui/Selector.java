@@ -1,6 +1,7 @@
 package tconq.gui;
 
 
+import lwjgui.event.Event;
 import org.joml.Vector2f;
 
 import tconq.App;
@@ -39,6 +40,7 @@ public class Selector {
 	public static AbstractEntityFactory entityFactory;  // changed from private to public static !!!
 
 	private boolean canUpgrade = true;		//if true unit or building can be upgraded if false can't resets when button is released
+	private boolean canMove = true;
 	
 	public static long entityId = 1;
 
@@ -106,7 +108,6 @@ public class Selector {
 //		}
 
 
-
 		if (window.getInput().isMouseButtonDown(1))
 		{
 			Vector2f v = getTileCoordinates(window);
@@ -126,25 +127,30 @@ public class Selector {
 
 	public void EnityMovement(Window window)
 	{
-		if(selectedState == STATE_SELECTED)
+		if(selectedState == STATE_SELECTED  && canMove)
 		{
-			if(window.getInput().isKeyPressed(GLFW_KEY_UP))
-			{
+
+			if(window.getInput().isKeyPressed(GLFW_KEY_UP)) {
 				selectedEntity.move("Up");
+				canMove = false;
 			}
-			if(window.getInput().isKeyPressed(GLFW_KEY_DOWN))
-			{
+			if(window.getInput().isKeyPressed(GLFW_KEY_DOWN)) {
 				selectedEntity.move("Down");
+				canMove = false;
 			}
-			if(window.getInput().isKeyPressed(GLFW_KEY_RIGHT))
-			{
+			if(window.getInput().isKeyPressed(GLFW_KEY_RIGHT)) {
 				selectedEntity.move("Right");
+				canMove = false;
 			}
-			if(window.getInput().isKeyPressed(GLFW_KEY_LEFT))
-			{
+			if(window.getInput().isKeyPressed(GLFW_KEY_LEFT)) {
 				selectedEntity.move("Left");
+				canMove = false;
 			}
+
 		}
+		if(window.getInput().isKeyReleased(GLFW_KEY_UP) || window.getInput().isKeyReleased(GLFW_KEY_RIGHT) || window.getInput().isKeyReleased(GLFW_KEY_LEFT) || window.getInput().isKeyReleased(GLFW_KEY_DOWN)) {
+		canMove = true;
+	}
 	}
 	//Selects an entity in the v vector position and makes it selected entity
 	public void SelectUnit(Vector2f v)

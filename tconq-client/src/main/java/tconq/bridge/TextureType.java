@@ -1,4 +1,4 @@
-package tconq.worldmap;
+package tconq.bridge;
 
 public abstract class TextureType {
     ITextureColor color;

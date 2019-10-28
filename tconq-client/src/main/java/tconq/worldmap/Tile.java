@@ -1,5 +1,7 @@
 package tconq.worldmap;
 
+import tconq.bridge.*;
+
 public class Tile {
 	public static Tile tiles[] = new Tile[255];
 	public static byte not = 0;
