@@ -30,10 +30,14 @@ import tconq.collision.AABB;
 import tconq.entity.Entity;
 import tconq.entity.IEntity;
 import tconq.entity.TransformTc;
+import tconq.entity.strategy.MediumToStrong;
+import tconq.entity.strategy.WeakToMedium;
 import tconq.gui.Selector;
 import tconq.io.Window;
 import tconq.render.Camera;
 import tconq.render.Shader;
+
+
 
 public class Map {
 	private int viewX;
@@ -51,6 +55,8 @@ public class Map {
 
 	private final String playerURL = "http://localhost:8080/Players/";
 	HttpURLConnection playerCon;
+
+
 
 	//public static Long opponentId = 1l; // change 2l to 1l in opponents instance
 	// private static AbstractEntityFactory entityFactory;
@@ -339,11 +345,32 @@ public class Map {
 
 			ArrayList<Long> tempIdList = new ArrayList<Long>();
 			if(!entities.isEmpty()){					// checks if local entity list is empty, if yes - adds opponent entity, if no - proceeds with logic
+				IEntity upgradedEnt = null;
 				for (IEntity entLocal : entities) {		// gets all local entities ids
-					tempIdList.add(entLocal.getId());			
+					tempIdList.add(entLocal.getId());	
+					if(entLocal.getId() == ent.getId())	// gets dublicate entity from local entity list
+						upgradedEnt = entLocal;
 				}
-				if(!tempIdList.contains(ent.getId()))
+				if(!tempIdList.contains(ent.getId()))	// checks if this entity is already in map
 					addEntity(ent, playerId);			// changed addEntity fuction to static bcs it told me to :)	
+				else{									// if it is, checks if its type has changed	
+					String upgradedEntType = upgradedEnt.getEntityClass(upgradedEnt).getSimpleName().toUpperCase();				
+					if(!entityType.toLowerCase().equals(upgradedEntType.toLowerCase())){
+						for (IEntity entLocal : entities) {	
+							if(entLocal.getId() == upgradedEnt.getId()){
+								switch(upgradedEntType.toLowerCase())	{
+									case "weakunit":
+										entLocal.upgrade(Selector.world, new WeakToMedium(), entLocal.getId());
+										break;
+									case "mediumunit":
+										entLocal.upgrade(Selector.world, new MediumToStrong(), entLocal.getId());
+										break;
+								}							
+								break;
+							}								
+						}
+					}
+				}
 			}
 			else
 				addEntity(ent, playerId);	

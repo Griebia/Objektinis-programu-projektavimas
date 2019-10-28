@@ -12,7 +12,8 @@ import tconqserver.tconqserv.entities.SEntity;
 public interface SEntityRepository extends JpaRepository<SEntity, Long> {
 
     @Query(value = "SELECT * FROM sentities  WHERE x = ?1 and y = ?2",nativeQuery=true)
-	Optional<SEntity> findbyXY(int x, int y);
+    Optional<SEntity> findbyXY(int x, int y);
+    
     //@Query("select e from sentities e where e.player_id <> ?1")
     //ArrayList<SEntity> findAllByPlayerId(Long playerId);     // gets all entities that are not playerId player's
 }

@@ -45,6 +45,8 @@ public class SEntity {
 
     public void setPlayer(Player player) {this.player = player;}
 
+    public void setType(Type type) {this.type = type;}
+
     public Type getType() {return this.type;}
 
     public int getX(){return this.x;}

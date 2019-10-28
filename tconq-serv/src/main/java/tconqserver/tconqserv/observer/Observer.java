@@ -72,9 +72,16 @@ public class Observer {
 
         //puts new entities to db for players
         for (SEntity entity : entities) {
-            Optional<SEntity> dbEntities = repository.findbyXY(entity.getX(),entity.getY());
-            if(!dbEntities.isPresent()){        // checks if this entity already exists in database
+            Optional<SEntity> dbEntity = repository.findbyXY(entity.getX(),entity.getY());
+            if(!dbEntity.isPresent()){        // checks if this entity already exists in database (doesn't allow dublications in database)
                 SEntity savedSEntity = repository.save(entity);
+                URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+                        .buildAndExpand(savedSEntity.getId()).toUri();
+            }
+            else{
+                Optional<SEntity> upgradedEnt = repository.findById(dbEntity.get().getId());
+                upgradedEnt.get().setType(entity.getType());
+                SEntity savedSEntity = repository.save(upgradedEnt.get());
                 URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                         .buildAndExpand(savedSEntity.getId()).toUri();
             }
