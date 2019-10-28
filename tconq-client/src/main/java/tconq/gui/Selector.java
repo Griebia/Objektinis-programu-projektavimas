@@ -72,7 +72,7 @@ public class Selector {
 					tc.pos.x = (float)Math.floor(v.x)*2;
 					tc.pos.y =  (float)Math.floor(v.y)*-2;
 
-					//idet i strategy klases
+					//creates weak unit and adds decorators
 					IEntity weak = new AttackBuilding( new Attack( new Movement( entityFactory.getEntity("weakUnit",tc) )));
 
 					System.out.println("-------------------------------------------------------------------------------------");
@@ -93,6 +93,7 @@ public class Selector {
 //			Vector2f v = getTileCoordinates(window);
 //			SelectUnit(v);		//moves the unit to the right
 //		}
+
 
 
 		if (window.getInput().isMouseButtonDown(1))
