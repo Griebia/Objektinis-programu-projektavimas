@@ -1,5 +1,6 @@
 package tconq.gui;
 
+
 import org.joml.Vector2f;
 
 import tconq.App;
@@ -21,6 +22,8 @@ import tconq.render.Shader;
 import tconq.render.TileSheet;
 import tconq.worldmap.Map;
 
+import static org.lwjgl.glfw.GLFW.*;
+
 
 public class Selector {
 
@@ -29,7 +32,7 @@ public class Selector {
 	public static final int STATE_CLICKED = 2;
 	
 	private int selectedState;
-	private Map world;
+	public static Map world;
 	private Camera camera;
 	private AABB boundingBox;
 	//private Texture texture; TODO: implement selector textures.
@@ -38,6 +41,8 @@ public class Selector {
 	private boolean canUpgrade = true;		//if true unit or building can be upgraded if false can't resets when button is released
 	
 	public static long entityId = 1;
+
+	public IEntity selectedEntity;
 
     public Selector( Map world2, Camera camera) {
 		//this.boundingBox = new AABB(position, scale);
@@ -86,8 +91,14 @@ public class Selector {
 					world.addEntity((IEntity)weak, App.playerID);
 					selectedState = STATE_CLICKED;
 				}
+		}else{
+			selectedState = STATE_SELECTED;
+			Vector2f v = getTileCoordinates(window);
+			SelectUnit(v);
 		}
 
+		//The movement of the unit
+		EnityMovement(window);
 //		if (window.getInput().isMouseButtonDown(0))
 //		{
 //			Vector2f v = getTileCoordinates(window);
@@ -113,6 +124,29 @@ public class Selector {
 		//else selectedState = STATE_IDLE;
 	}
 
+	public void EnityMovement(Window window)
+	{
+		if(selectedState == STATE_SELECTED)
+		{
+			if(window.getInput().isKeyPressed(GLFW_KEY_UP))
+			{
+				selectedEntity.move("Up");
+			}
+			if(window.getInput().isKeyPressed(GLFW_KEY_DOWN))
+			{
+				selectedEntity.move("Down");
+			}
+			if(window.getInput().isKeyPressed(GLFW_KEY_RIGHT))
+			{
+				selectedEntity.move("Right");
+			}
+			if(window.getInput().isKeyPressed(GLFW_KEY_LEFT))
+			{
+				selectedEntity.move("Left");
+			}
+		}
+	}
+	//Selects an entity in the v vector position and makes it selected entity
 	public void SelectUnit(Vector2f v)
 	{
 		TransformTc tc = new TransformTc();
@@ -120,10 +154,7 @@ public class Selector {
 		tc.pos.y =  (float)Math.floor(v.y)*-2;
 
 		//checks what type of unit is on the tile and upgrades it
-		IEntity entity = world.getEntity(tc.pos);
-		if (entity != null) {
-			entity.move("Right");
-		}
+		selectedEntity = world.getEntity(tc.pos);
 	}
 
 	//upgrades units and buildings
