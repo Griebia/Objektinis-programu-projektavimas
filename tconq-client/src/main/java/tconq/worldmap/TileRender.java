@@ -8,7 +8,7 @@ import org.joml.Vector3f;
 import tconq.render.*;
 
 public class TileRender {
-	private HashMap<String, Grass> tileTextures;
+	private HashMap<String, Texture> tileTextures;
 	private Model tileModel;
 	
 	public TileRender() {
@@ -29,7 +29,7 @@ public class TileRender {
 			if (Tile.tiles[i] != null) {
 				if (!tileTextures.containsKey(Tile.tiles[i].getTexture())) {
 					String tex = Tile.tiles[i].getTexture();
-					tileTextures.put(tex, new Grass(tex + ".png"));
+					tileTextures.put(tex, new Texture(tex + ".png"));
 				}
 			}
 		}
