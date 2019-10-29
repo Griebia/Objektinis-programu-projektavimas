@@ -1,6 +1,5 @@
 package tconq.entity.strategy;
 
-import tconq.entity.Entity;
 import tconq.entity.IEntity;
 import tconq.entity.TransformTc;
 import tconq.entity.factory.AbstractEntityFactory;

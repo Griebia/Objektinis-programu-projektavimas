@@ -5,7 +5,6 @@ import tconq.entity.IEntity;
 import tconq.entity.TransformTc;
 import tconq.io.Window;
 import tconq.render.Camera;
-import tconq.render.Shader;
 import tconq.worldmap.Map;
 
 public class Tower extends Entity {

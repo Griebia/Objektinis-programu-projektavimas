@@ -1,7 +1,6 @@
 package tconq.gui;
 
 
-import lwjgui.event.Event;
 import org.joml.Vector2f;
 
 import tconq.App;
@@ -9,9 +8,6 @@ import tconq.assets.Assets;
 import tconq.collision.AABB;
 import tconq.entity.IEntity;
 import tconq.entity.TransformTc;
-import tconq.entity.decorator.Attack;
-import tconq.entity.decorator.AttackBuilding;
-import tconq.entity.decorator.Movement;
 import tconq.entity.factory.*;
 import tconq.entity.strategy.HouseToTower;
 import tconq.entity.strategy.MediumToStrong;
@@ -80,17 +76,11 @@ public class Selector {
 					tc.pos.y =  (float)Math.floor(v.y)*-2;
 
 					//creates weak unit and adds decorators
-					IEntity weak = new AttackBuilding( new Attack( new Movement( entityFactory.getEntity("weakUnit",tc) )));
-
-					System.out.println("-------------------------------------------------------------------------------------");
-					System.out.println(weak.getMovement());
-					System.out.println(weak.getAttack(weak));
-					System.out.println(weak.getDestroyBuilding(weak));
-					System.out.println("-------------------------------------------------------------------------------------");
+					IEntity weak = entityFactory.getEntity("weakUnit",tc);
 
 					weak.setId(entityId++);
 
-					world.addEntity((IEntity)weak, App.playerID);
+					world.addEntity(weak, App.playerID);
 					selectedState = STATE_CLICKED;
 				}
 		}else{

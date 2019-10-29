@@ -11,6 +11,6 @@ public class Water extends TextureType {
 
     @Override
     public String getName() {
-        return name;
+        return name + color;
     }
 }

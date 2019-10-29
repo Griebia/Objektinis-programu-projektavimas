@@ -27,7 +27,6 @@ import lwjgui.event.EventHandler;
 import lwjgui.event.MouseEvent;
 import tconq.App;
 import tconq.collision.AABB;
-import tconq.entity.Entity;
 import tconq.entity.IEntity;
 import tconq.entity.TransformTc;
 import tconq.entity.strategy.MediumToStrong;
@@ -127,6 +126,13 @@ public class Map {
 
 	public static void addEntity(IEntity entity, Long playerId) {
 		entity.setPlayerId(playerId);
+
+		System.out.println("-------------------------------------------------------------------------------------");
+		System.out.println(entity.getMovement());
+		System.out.println(entity.getAttack(entity));
+		System.out.println(entity.getDestroyBuilding(entity));
+		System.out.println("-------------------------------------------------------------------------------------");
+
 		entities.add(entity);
 	}
 
@@ -338,8 +344,7 @@ public class Map {
 			tc.pos.y = jsonEntity.getFloat("y");
 			String entityType = new StringBuilder().append(jsonEntity.getString("type")).append("unit").toString();
 			IEntity Ient = Selector.entityFactory.getEntity(entityType, tc);
-			Entity ent = (Entity) Ient;
-			ent.setId(jsonEntity.getLong("id"));
+			Ient.setId(jsonEntity.getLong("id"));
 			JSONObject player = (JSONObject)jsonEntity.get("player");
 			Long playerId = player.getLong("id");
 
@@ -348,11 +353,11 @@ public class Map {
 				IEntity upgradedEnt = null;
 				for (IEntity entLocal : entities) {		// gets all local entities ids
 					tempIdList.add(entLocal.getId());	
-					if(entLocal.getId() == ent.getId())	// gets dublicate entity from local entity list
+					if(entLocal.getId() == Ient.getId())	// gets dublicate entity from local entity list
 						upgradedEnt = entLocal;
 				}
-				if(!tempIdList.contains(ent.getId()))	// checks if this entity is already in map
-					addEntity(ent, playerId);			// changed addEntity fuction to static bcs it told me to :)	
+				if(!tempIdList.contains(Ient.getId()))	// checks if this entity is already in map
+					addEntity(Ient, playerId);			// changed addEntity fuction to static bcs it told me to :)
 				else{									// if it is, checks if its type has changed	
 					String upgradedEntType = upgradedEnt.getEntityClass(upgradedEnt).getSimpleName().toUpperCase();				
 					if(!entityType.toLowerCase().equals(upgradedEntType.toLowerCase())){
@@ -373,7 +378,7 @@ public class Map {
 				}
 			}
 			else
-				addEntity(ent, playerId);	
+				addEntity(Ient, playerId);
 		}			
 	}
 

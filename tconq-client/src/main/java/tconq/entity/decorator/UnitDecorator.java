@@ -1,7 +1,6 @@
 package tconq.entity.decorator;
 
 import tconq.collision.AABB;
-import tconq.entity.Entity;
 import tconq.entity.IEntity;
 import tconq.entity.TransformTc;
 import tconq.entity.strategy.Upgrade;
