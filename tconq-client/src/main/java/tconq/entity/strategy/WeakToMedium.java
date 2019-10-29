@@ -18,13 +18,8 @@ public class WeakToMedium implements Upgrade {
         //deletes weak unit and places medium unit in it's place
         if (world.removeEntity(tc.pos))
         {
-            IEntity medium = new AttackBuilding( new Attack( new Movement( entityFactory.getEntity("MediumUnit",tc) )));
+            IEntity medium = entityFactory.getEntity("MediumUnit",tc);
             medium.setId(entityId);
-            System.out.println("-------------------------------------------------------------------------------------");
-            System.out.println(medium.getMovement());
-            System.out.println(medium.getAttack(medium));
-            System.out.println(medium.getDestroyBuilding(medium));
-            System.out.println("-------------------------------------------------------------------------------------");
 
             world.addEntity(medium, playerId);
         }

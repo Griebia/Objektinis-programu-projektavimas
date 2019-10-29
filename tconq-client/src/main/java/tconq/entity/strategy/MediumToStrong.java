@@ -18,16 +18,8 @@ public class MediumToStrong implements Upgrade {
         //deletes medium unit and places strong unit in it's place
         if (world.removeEntity(tc.pos))
         {
-            IEntity strong = new Attack( new AttackBuilding( new Movement( entityFactory.getEntity("StrongUnit",tc) )));
+            IEntity strong = entityFactory.getEntity("StrongUnit",tc);
             strong.setId(entityId);
-
-
-            System.out.println("-------------------------------------------------------------------------------------");
-            System.out.println(strong.getMovement());
-            System.out.println(strong.getAttack(strong));
-            System.out.println(strong.getDestroyBuilding(strong));
-            System.out.println("-------------------------------------------------------------------------------------");
-
 
             world.addEntity(strong, playerId);
         }

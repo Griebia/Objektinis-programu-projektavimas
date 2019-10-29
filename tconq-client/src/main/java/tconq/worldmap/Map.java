@@ -29,6 +29,9 @@ import tconq.App;
 import tconq.collision.AABB;
 import tconq.entity.IEntity;
 import tconq.entity.TransformTc;
+import tconq.entity.decorator.Attack;
+import tconq.entity.decorator.AttackBuilding;
+import tconq.entity.decorator.Movement;
 import tconq.entity.strategy.MediumToStrong;
 import tconq.entity.strategy.WeakToMedium;
 import tconq.gui.Selector;
@@ -126,6 +129,8 @@ public class Map {
 
 	public static void addEntity(IEntity entity, Long playerId) {
 		entity.setPlayerId(playerId);
+		if (entity.getClass().getSimpleName().toLowerCase().contains("unit"))	//checks if entity is a unit
+			entity = new AttackBuilding( new Attack( new Movement(entity)));	//adds decorator to units
 
 		System.out.println("-------------------------------------------------------------------------------------");
 		System.out.println(entity.getMovement());
