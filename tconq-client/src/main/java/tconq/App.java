@@ -117,6 +117,19 @@ public class App {
 			endTurn.setOnMouseReleased(Map.endTurnPressed());
 			vbButtons.getChildren().add(endTurn);
 
+			//undo turn button
+			VBox vbButtonUndo = new VBox();
+			vbButtonUndo.setAlignment(Pos.CENTER_LEFT);
+			vbButtonUndo.setBackground(Color.TRANSPARENT);
+			vbButtonUndo.setMinSize(window.getWidth() - 10, 64);
+			pane.setCenter(vbButtonUndo);
+
+			Button undo = new Button("Undo move");
+			undo.setFontSize(32);
+			undo.setMinSize(128, 64);
+			undo.setOnMouseReleased(Map.endTurnPressed());
+			vbButtonUndo.getChildren().add(undo);
+
 		}
 		
 	 }
@@ -272,6 +285,8 @@ public class App {
 		
 			
 	}
+
+
 
 	public void endTurnLogic(){		// puts all opponents entities to map when they've ended theyr turn
 		String opponents = getOpponents();
