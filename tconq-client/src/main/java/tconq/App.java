@@ -444,7 +444,7 @@ public class App {
 	
 	public static void main(String[] args) {
 		//getPlayers();
-		addPlayer("Karolis");
+		addPlayer("arturas");
 		//addPlayer("Tadas");
 //		addEntity();
 		//addEntities();
