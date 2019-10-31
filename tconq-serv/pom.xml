@@ -8,8 +8,8 @@
 		<version>2.1.9.RELEASE</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>tconq-server</groupId>
-	<artifactId>tconq-serv</artifactId>
+	<groupId>tconqserver</groupId>
+	<artifactId>tconqserv</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>tconq-serv</name>
 	<description>Backend for territory conquest game</description>
