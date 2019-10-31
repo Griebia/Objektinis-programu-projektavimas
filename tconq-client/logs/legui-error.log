@@ -1,0 +1,5 @@
+22:49:11 ERROR	[main   ]	or.li.le.im.BufferedImage               :	44	:	org.liquidengine.legui.exception.LeguiException: Failed to initialize image. (org/liquidengine/legui/demo/1.jpg)
+22:49:11 ERROR	[main   ]	or.li.le.im.BufferedImage               :	44	:	org.liquidengine.legui.exception.LeguiException: Failed to initialize image. (org/liquidengine/legui/demo/1.png)
+22:49:11 ERROR	[main   ]	or.li.le.im.BufferedImage               :	44	:	org.liquidengine.legui.exception.LeguiException: Failed to initialize image. (org/liquidengine/legui/demo/2.png)
+22:49:11 ERROR	[main   ]	or.li.le.im.BufferedImage               :	44	:	org.liquidengine.legui.exception.LeguiException: Failed to initialize image. (org/liquidengine/legui/demo/3.png)
+22:49:11 ERROR	[main   ]	or.li.le.im.BufferedImage               :	44	:	org.liquidengine.legui.exception.LeguiException: Failed to initialize image. (org/liquidengine/legui/demo/toggle.png)
