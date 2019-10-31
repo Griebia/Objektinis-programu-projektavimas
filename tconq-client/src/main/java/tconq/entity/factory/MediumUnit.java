@@ -3,12 +3,14 @@ package tconq.entity.factory;
 import tconq.entity.Entity;
 import tconq.entity.IEntity;
 import tconq.entity.TransformTc;
+import tconq.entity.adapter.IEntityCostAdapter;
+import tconq.entity.adapter.MediumUnitCostAdapter;
 import tconq.entity.strategy.MediumToStrong;
 import tconq.io.Window;
 import tconq.render.Camera;
 import tconq.worldmap.Map;
 
-public class MediumUnit extends Entity {
+public class MediumUnit extends Entity implements IEntityCostAdapter{
 
     public MediumUnit(TransformTc transform) {
         super("mediumWarrior.png", transform);
@@ -30,6 +32,18 @@ public class MediumUnit extends Entity {
     @Override
     public Class getEntityClass(IEntity entity) {
         return this.getClass();
+    }
+
+    @Override
+    public int getCost(){
+        return getCostAdapter();
+    }
+
+    @Override
+    public int getCostAdapter(){
+        IEntity WeakUnit = new WeakUnit(transform);
+        IEntityCostAdapter mediumCostAdapter = new MediumUnitCostAdapter(WeakUnit);
+        return mediumCostAdapter.getCostAdapter();
     }
 
 }

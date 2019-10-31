@@ -102,6 +102,9 @@ public abstract class UnitDecorator implements IEntity{
         return tempUnit.getEntityClass(entity);
     }
 
-
+    @Override
+    public int getCost(){
+        return tempUnit.getCost();
+    }
 
 }

@@ -3,11 +3,13 @@ package tconq.entity.factory;
 import tconq.entity.Entity;
 import tconq.entity.IEntity;
 import tconq.entity.TransformTc;
+import tconq.entity.adapter.IEntityCostAdapter;
+import tconq.entity.adapter.StrongUnitCostAdapter;
 import tconq.io.Window;
 import tconq.render.Camera;
 import tconq.worldmap.Map;
 
-public class StrongUnit extends Entity {
+public class StrongUnit extends Entity implements IEntityCostAdapter{
 
     public StrongUnit(TransformTc transform) {
         super("strongWarrior.png", transform);
@@ -28,6 +30,18 @@ public class StrongUnit extends Entity {
     @Override
     public Class getEntityClass(IEntity entity) {
         return this.getClass();
+    }
+
+    @Override
+    public int getCost(){
+        return getCostAdapter();
+    }
+
+    @Override
+    public int getCostAdapter(){
+        IEntity WeakUnit = new WeakUnit(transform);
+        IEntityCostAdapter strongUnitCostAdapter = new StrongUnitCostAdapter(WeakUnit);
+        return strongUnitCostAdapter.getCostAdapter();
     }
 
 }

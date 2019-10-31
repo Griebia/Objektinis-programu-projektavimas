@@ -43,4 +43,6 @@ public interface IEntity {
     public boolean getDestroyBuilding(IEntity enemyBuilding);
 
     public int getMovement();
+
+    public int getCost();
 }

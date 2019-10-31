@@ -3,12 +3,14 @@ package tconq.entity.factory;
 import tconq.entity.Entity;
 import tconq.entity.IEntity;
 import tconq.entity.TransformTc;
+import tconq.entity.adapter.IEntityCostAdapter;
+import tconq.entity.adapter.TowerCostAdapter;
 import tconq.entity.strategy.TowerToCastle;
 import tconq.io.Window;
 import tconq.render.Camera;
 import tconq.worldmap.Map;
 
-public class Tower extends Entity {
+public class Tower extends Entity implements IEntityCostAdapter{
 
     public Tower( TransformTc transform) {
         super("tower.png", transform);
@@ -30,5 +32,17 @@ public class Tower extends Entity {
     @Override
     public Class getEntityClass(IEntity entity) {
         return this.getClass();
+    }
+
+    @Override
+    public int getCost(){
+        return getCostAdapter();
+    }
+
+    @Override
+    public int getCostAdapter(){
+        IEntity WeakUnit = new WeakUnit(transform);
+        IEntityCostAdapter towerCostAdapter = new TowerCostAdapter(WeakUnit);
+        return towerCostAdapter.getCostAdapter();
     }
 }

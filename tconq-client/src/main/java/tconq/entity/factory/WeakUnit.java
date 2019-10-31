@@ -10,6 +10,8 @@ import tconq.worldmap.Map;
 
 public class WeakUnit extends Entity {
 
+	
+
     public WeakUnit(TransformTc transform) {
 		super("weakWarrior.png", transform);
 		upgradeStrategy = new WeakToMedium();
@@ -27,5 +29,10 @@ public class WeakUnit extends Entity {
 	@Override
 	public Class getEntityClass(IEntity entity) {
 		return this.getClass();
+	}
+
+	@Override
+	public int getCost(){
+		return 1;
 	}
 }

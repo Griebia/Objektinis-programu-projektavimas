@@ -18,7 +18,7 @@ import tconq.server.ServerHandler;
 import tconq.worldmap.Map;
 
 
-public abstract class Entity implements IEntity {
+public abstract class Entity implements IEntity{
 	protected AABB bounding_box;
 	
 	protected Animation[] animations;
@@ -195,5 +195,7 @@ public abstract class Entity implements IEntity {
 	public int getMovement() {
 		return 0;
 	}
+
+
 	
 }
