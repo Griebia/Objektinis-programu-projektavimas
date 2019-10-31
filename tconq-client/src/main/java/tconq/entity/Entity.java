@@ -146,7 +146,8 @@ public abstract class Entity implements IEntity {
 
 
 	public void upgrade(Map world, Long entityId) {
-		upgradeStrategy.upgrade(this.transform, world, App.playerID, entityId);
+		if(upgradeStrategy != null)
+			upgradeStrategy.upgrade(this.transform, world, App.playerID, entityId);
 		//TODO: implement
 	}
 

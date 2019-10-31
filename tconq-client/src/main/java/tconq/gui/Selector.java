@@ -164,6 +164,7 @@ public class Selector {
 			IEntity entity = world.getEntity(tc.pos);
 			if (entity != null) {
 				entity.upgrade(world, entity.getId());
+				canUpgrade = false;
 
 			}
 			selectedState = STATE_CLICKED;
