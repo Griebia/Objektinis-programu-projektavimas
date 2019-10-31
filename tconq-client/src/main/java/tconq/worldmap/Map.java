@@ -32,12 +32,11 @@ import tconq.entity.TransformTc;
 import tconq.entity.decorator.Attack;
 import tconq.entity.decorator.AttackBuilding;
 import tconq.entity.decorator.Movement;
-import tconq.entity.strategy.MediumToStrong;
-import tconq.entity.strategy.WeakToMedium;
 import tconq.gui.Selector;
 import tconq.io.Window;
 import tconq.render.Camera;
 import tconq.render.Shader;
+import tconq.server.ServerHandler;
 
 
 
@@ -55,7 +54,7 @@ public class Map {
 
 	private Matrix4f Map;
 
-	private final String playerURL = "http://40.76.27.38:8080/Players/";
+	private final String playerURL = "http://" + ServerHandler.instance.serverip + "/Players/";
 	HttpURLConnection playerCon;
 
 
@@ -282,14 +281,14 @@ public class Map {
 		return new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent mouseEvent) {
-				final String uri = "http://40.76.27.38:8080/SEntities";
+				final String uri = "http://" + ServerHandler.instance.serverip + "/SEntities";
 				HttpHeaders headers = new HttpHeaders();
 				headers.setContentType(MediaType.APPLICATION_JSON);
 
 				ArrayList<HashMap<String, Object>> list = new ArrayList<HashMap<String, Object>>();
 
 				for (IEntity ent : entities) {
-					if (ent.getPlayerId() == App.playerID) {
+					if (ent.getPlayerId() == ServerHandler.instance.playerID) {
 						HashMap<String, Object> map = new HashMap<>();
 
 						String type = "";
@@ -302,7 +301,7 @@ public class Map {
 						map.put("type", type);
 						map.put("x", (int) ent.getPos().pos.x);
 						map.put("y", (int) ent.getPos().pos.y);
-						map.put("player", App.playerID);
+						map.put("player", ServerHandler.instance.playerID);
 						list.add(map);
 					}
 				}
@@ -321,12 +320,12 @@ public class Map {
 				restTemplate.postForObject(uri, entity, String.class);
 
 				//-----------------------NEXT TURN STUFF--------------------------
-				final String uriPlayer = "http://40.76.27.38:8080/NextTurn/" + App.playerID.toString();
+				final String uriPlayer = "http://" + ServerHandler.instance.serverip + "/NextTurn/" + ServerHandler.instance.playerID.toString();
 
 				// create a map for post parameters
 				HashMap<String, Object> playerMap = new HashMap<>();
 				playerMap.put("nextTurn","true");
-				playerMap.put("id",App.playerID);
+				playerMap.put("id",ServerHandler.instance.playerID);
 
 				// build the request
 				HttpEntity<HashMap<String, Object>> palyerEntity = new HttpEntity<>(playerMap, headers);
@@ -396,7 +395,7 @@ public class Map {
 					addEntity((Entity)unit, 1l);
 				}							
 
-				final String uri = "http://40.76.27.38:8080/SEntities";
+				final String uri = "http://" + ServerHandler.instance.serverip + "/SEntities";
 				HttpHeaders headers = new HttpHeaders();
 				headers.setContentType(MediaType.APPLICATION_JSON);
 

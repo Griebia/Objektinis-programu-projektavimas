@@ -44,6 +44,7 @@ import tconq.io.Timer;
 import tconq.io.Window;
 import tconq.render.Camera;
 import tconq.render.Shader;
+import tconq.server.ServerHandler;
 import tconq.worldmap.Map;
 import tconq.worldmap.TileRender;
 
@@ -53,7 +54,6 @@ import tconq.worldmap.TileRender;
 @EnableWebMvc
 @SpringBootApplication
 public class App {
-	public static Long playerID = 0L;
 
 	private final int WINDOWX = 1280;
 	private final int WINDOWY = 960;
@@ -289,15 +289,15 @@ public class App {
 
 
 	public void endTurnLogic(){		// puts all opponents entities to map when they've ended theyr turn
-		String opponents = getOpponents();
+		String opponents = ServerHandler.instance.getOpponents();
 		ArrayList<Long> opponentIds = getOpponentIds(opponents);
 
-		if(checkForNextTurns(opponentIds) == true){						
+		if(ServerHandler.instance.checkForNextTurns(opponentIds) == true){						
 			for (Long oppId : opponentIds) {
-				Map.fromDbToMap(getEntities(oppId), oppId);				
+				Map.fromDbToMap(ServerHandler.instance.getEntities(oppId), oppId);				
 			
 				// ------------------Change nextTurn value to false--------------------------------
-				final String uriPlayer = "http://40.76.27.38:8080/NextTurn/" + App.playerID.toString();
+				final String uriPlayer = "http://" + ServerHandler.instance.serverip + "/NextTurn/" + ServerHandler.instance.playerID.toString();
 				HttpHeaders headers = new HttpHeaders();
 				headers.setContentType(MediaType.APPLICATION_JSON);
 
@@ -315,35 +315,9 @@ public class App {
 		}
 	}
 
-	public static Boolean checkForNextTurns(ArrayList<Long> opponentIds){
-		
-		for (Long oppId : opponentIds) {
-			final String uri = "http://40.76.27.38:8080/Player/" + oppId.toString();
-			RestTemplate  restTemplate = new RestTemplate();
-			String result = restTemplate.getForObject(uri, String.class);	
-			JSONObject jsonEntity = new JSONObject(result);
-			
-			if(jsonEntity.getBoolean("nextTurn") == false)		// checks if opponent kas ended his turn
-				return false;
-			else
-				return true;
-		}
-		
-		return false;
-	}
-
-	public static String getOpponents(){
-		final String uri = "http://40.76.27.38:8080/Players/" + playerID.toString();
-		RestTemplate  restTemplate = new RestTemplate();
-		String result = restTemplate.getForObject(uri, String.class);
+	
 
 
-//		System.out.println(result);
-
-
-
-		return result;
-	}
 
 	public static ArrayList<Long> getOpponentIds(String opponents){
 		JSONArray jsonArray = new JSONArray(opponents); // changes string to jsonArray
@@ -355,96 +329,11 @@ public class App {
 		return ids;
 	}
 
-	public static String getEntities(Long playerId){
-		final String uri = "http://40.76.27.38:8080/SEntities/" + playerId.toString();
-		RestTemplate  restTemplate = new RestTemplate();
-		return restTemplate.getForObject(uri, String.class);
-		//System.out.println(result);
-	}
 
-	private static void addEntities() {
-		final String uri = "http://40.76.27.38:8080/SEntities";
-		HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(MediaType.APPLICATION_JSON);
-
-		// create a map for post parameters
-		HashMap<String, Object> map = new HashMap<>();
-		map.put("x",5);
-		map.put("type","WEAK");
-		map.put("y",1);
-		map.put("player",2);
-		HashMap<String, Object> map2 = new HashMap<>();
-		map2.put("x",8);
-		map2.put("type","STRONG");
-		map2.put("y",4);
-		map2.put("player",2);
-
-		ArrayList<HashMap<String, Object>> list = new ArrayList<HashMap<String, Object>>();
-
-		list.add(map);
-		list.add(map2);
-
-		// build the request
-		HttpEntity<ArrayList<HashMap<String, Object>>> entity = new HttpEntity<>(list, headers);
-
-		RestTemplate restTemplate = new RestTemplate();
-		restTemplate.postForObject(uri, entity, String.class);
-	}
-
-	private static void addEntity() {
-		final String uri = "http://40.76.27.38:8080/SEntity";
-		HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(MediaType.APPLICATION_JSON);
-
-		// create a map for post parameters
-		HashMap<String, Object> map = new HashMap<>();
-		map.put("x",12);
-		map.put("type","CASTLE");
-		map.put("y",10);
-		map.put("player",2);
-
-		// build the request
-		HttpEntity<HashMap<String, Object>> entity = new HttpEntity<>(map, headers);
-
-		RestTemplate restTemplate = new RestTemplate();
-		restTemplate.postForObject(uri, entity, String.class);
-	}
-
-	private static void addPlayer(String name){
-		final String uri = "http://40.76.27.38:8080/Player";
-
-		
-		// create headers
-		HttpHeaders headers = new HttpHeaders();
-		// set `content-type` header
-		headers.setContentType(MediaType.APPLICATION_JSON);
-
-		// create a map for post parameters
-		HashMap<String, Object> map = new HashMap<>();
-		map.put("points",1);
-		map.put("name",name);
-		map.put("gold",2);
-		map.put("playing","true");
-		map.put("nextTurn","false");
-
-		// build the request
-		HttpEntity<HashMap<String, Object>> entity = new HttpEntity<>(map, headers);
-
-
-
-		RestTemplate restTemplate = new RestTemplate();
-		// send POST request
-		ResponseEntity<Player> response = restTemplate.postForEntity(uri, entity, Player.class);
-
-		//sets player id
-		playerID = response.getBody().getId();
-
-
-	}
 	
 	public static void main(String[] args) {
 		//getPlayers();
-		addPlayer("karolis");
+		ServerHandler.instance.addPlayer("karolis");
 		//addPlayer("Tadas");
 //		addEntity();
 		//addEntities();

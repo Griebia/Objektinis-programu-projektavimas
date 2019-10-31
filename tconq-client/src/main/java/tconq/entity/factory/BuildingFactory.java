@@ -6,12 +6,12 @@ import tconq.entity.TransformTc;
 public class BuildingFactory extends AbstractEntityFactory {
     @Override
     public IEntity getEntity(String entityType, TransformTc transform){
-        switch(entityType){
-            case "Castle":
+        switch(entityType.toLowerCase()){
+            case "castle":
                 return new Castle(transform);
-            case "Tower":
+            case "tower":
                 return new Tower(transform);
-            case "House":
+            case "house":
                 return new House(transform);
             default:
                 return null;

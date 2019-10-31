@@ -4,18 +4,17 @@ import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
-import tconq.App;
 import tconq.assets.Assets;
 import tconq.collision.AABB;
 import tconq.collision.Collision;
 import tconq.entity.command.MovementControl;
-import tconq.entity.decorator.Movement;
 import tconq.entity.strategy.Upgrade;
 import tconq.io.Window;
 import tconq.render.Animation;
 import tconq.render.Camera;
 import tconq.render.Shader;
 import tconq.render.Texture;
+import tconq.server.ServerHandler;
 import tconq.worldmap.Map;
 
 
@@ -147,7 +146,7 @@ public abstract class Entity implements IEntity {
 
 	public void upgrade(Map world, Long entityId) {
 		if(upgradeStrategy != null)
-			upgradeStrategy.upgrade(this.transform, world, App.playerID, entityId);
+			upgradeStrategy.upgrade(this.transform, world, ServerHandler.instance.playerID, entityId);
 		//TODO: implement
 	}
 

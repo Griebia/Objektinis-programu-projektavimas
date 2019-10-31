@@ -17,6 +17,7 @@ import tconq.io.Window;
 import tconq.render.Camera;
 import tconq.render.Shader;
 import tconq.render.TileSheet;
+import tconq.server.ServerHandler;
 import tconq.worldmap.Map;
 
 import static org.lwjgl.glfw.GLFW.*;
@@ -80,7 +81,7 @@ public class Selector {
 
 					weak.setId(entityId++);
 
-					world.addEntity(weak, App.playerID);
+					world.addEntity(weak, ServerHandler.instance.playerID);
 					selectedState = STATE_CLICKED;
 				}
 		}else{
