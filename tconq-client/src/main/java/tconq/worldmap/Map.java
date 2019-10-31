@@ -55,7 +55,7 @@ public class Map {
 
 	private Matrix4f Map;
 
-	private final String playerURL = "http://localhost:8080/Players/";
+	private final String playerURL = "http://40.76.27.38:8080/Players/";
 	HttpURLConnection playerCon;
 
 
@@ -282,7 +282,7 @@ public class Map {
 		return new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent mouseEvent) {
-				final String uri = "http://localhost:8080/SEntities";
+				final String uri = "http://40.76.27.38:8080/SEntities";
 				HttpHeaders headers = new HttpHeaders();
 				headers.setContentType(MediaType.APPLICATION_JSON);
 
@@ -321,7 +321,7 @@ public class Map {
 				restTemplate.postForObject(uri, entity, String.class);
 
 				//-----------------------NEXT TURN STUFF--------------------------
-				final String uriPlayer = "http://localhost:8080/NextTurn/" + App.playerID.toString();
+				final String uriPlayer = "http://40.76.27.38:8080/NextTurn/" + App.playerID.toString();
 
 				// create a map for post parameters
 				HashMap<String, Object> playerMap = new HashMap<>();
@@ -368,14 +368,7 @@ public class Map {
 					if(!entityType.toLowerCase().equals(upgradedEntType.toLowerCase())){
 						for (IEntity entLocal : entities) {	
 							if(entLocal.getId() == upgradedEnt.getId()){
-								switch(upgradedEntType.toLowerCase())	{
-									case "weakunit":
-										entLocal.upgrade(Selector.world, new WeakToMedium(), entLocal.getId());
-										break;
-									case "mediumunit":
-										entLocal.upgrade(Selector.world, new MediumToStrong(), entLocal.getId());
-										break;
-								}							
+								entLocal.upgrade(Selector.world, entLocal.getId());
 								break;
 							}								
 						}
@@ -403,7 +396,7 @@ public class Map {
 					addEntity((Entity)unit, 1l);
 				}							
 
-				final String uri = "http://localhost:8080/SEntities";
+				final String uri = "http://40.76.27.38:8080/SEntities";
 				HttpHeaders headers = new HttpHeaders();
 				headers.setContentType(MediaType.APPLICATION_JSON);
 

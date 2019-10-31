@@ -163,27 +163,8 @@ public class Selector {
 			//checks what type of unit is on the tile and upgrades it
 			IEntity entity = world.getEntity(tc.pos);
 			if (entity != null) {
-				String type = entity.getEntityClass(entity).getSimpleName().toLowerCase();
-				switch (type) {
-					case "house":
-						entity.upgrade(world, new HouseToTower(), entity.getId());
-						canUpgrade = false;
-						break;
-					case "tower":
-						entity.upgrade(world, new TowerToCastle(), entity.getId());
-						canUpgrade = false;
-						break;
-					case "weakunit":
-						entity.upgrade(world, new WeakToMedium(), entity.getId());
-						canUpgrade = false;
-						break;
-					case "mediumunit":
-						entity.upgrade(world, new MediumToStrong(), entity.getId());
-						canUpgrade = false;
-						break;
-					default:
-						break;
-				}
+				entity.upgrade(world, entity.getId());
+
 			}
 			selectedState = STATE_CLICKED;
 		}

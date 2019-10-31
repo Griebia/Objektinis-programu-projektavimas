@@ -297,7 +297,7 @@ public class App {
 				Map.fromDbToMap(getEntities(oppId), oppId);				
 			
 				// ------------------Change nextTurn value to false--------------------------------
-				final String uriPlayer = "http://localhost:8080/NextTurn/" + App.playerID.toString();
+				final String uriPlayer = "http://40.76.27.38:8080/NextTurn/" + App.playerID.toString();
 				HttpHeaders headers = new HttpHeaders();
 				headers.setContentType(MediaType.APPLICATION_JSON);
 
@@ -318,7 +318,7 @@ public class App {
 	public static Boolean checkForNextTurns(ArrayList<Long> opponentIds){
 		
 		for (Long oppId : opponentIds) {
-			final String uri = "http://localhost:8080/Player/" + oppId.toString();
+			final String uri = "http://40.76.27.38:8080/Player/" + oppId.toString();
 			RestTemplate  restTemplate = new RestTemplate();
 			String result = restTemplate.getForObject(uri, String.class);	
 			JSONObject jsonEntity = new JSONObject(result);
@@ -333,7 +333,7 @@ public class App {
 	}
 
 	public static String getOpponents(){
-		final String uri = "http://localhost:8080/Players/" + playerID.toString();
+		final String uri = "http://40.76.27.38:8080/Players/" + playerID.toString();
 		RestTemplate  restTemplate = new RestTemplate();
 		String result = restTemplate.getForObject(uri, String.class);
 
@@ -356,14 +356,14 @@ public class App {
 	}
 
 	public static String getEntities(Long playerId){
-		final String uri = "http://localhost:8080/SEntities/" + playerId.toString();
+		final String uri = "http://40.76.27.38:8080/SEntities/" + playerId.toString();
 		RestTemplate  restTemplate = new RestTemplate();
 		return restTemplate.getForObject(uri, String.class);
 		//System.out.println(result);
 	}
 
 	private static void addEntities() {
-		final String uri = "http://localhost:8080/SEntities";
+		final String uri = "http://40.76.27.38:8080/SEntities";
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
 
@@ -392,7 +392,7 @@ public class App {
 	}
 
 	private static void addEntity() {
-		final String uri = "http://localhost:8080/SEntity";
+		final String uri = "http://40.76.27.38:8080/SEntity";
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
 
@@ -411,7 +411,7 @@ public class App {
 	}
 
 	private static void addPlayer(String name){
-		final String uri = "http://localhost:8080/Player";
+		final String uri = "http://40.76.27.38:8080/Player";
 
 		
 		// create headers
@@ -444,7 +444,7 @@ public class App {
 	
 	public static void main(String[] args) {
 		//getPlayers();
-		addPlayer("arturas");
+		addPlayer("karolis");
 		//addPlayer("Tadas");
 //		addEntity();
 		//addEntities();

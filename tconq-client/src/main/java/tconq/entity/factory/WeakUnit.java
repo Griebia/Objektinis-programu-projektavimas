@@ -3,6 +3,7 @@ package tconq.entity.factory;
 import tconq.entity.Entity;
 import tconq.entity.IEntity;
 import tconq.entity.TransformTc;
+import tconq.entity.strategy.WeakToMedium;
 import tconq.io.Window;
 import tconq.render.Camera;
 import tconq.worldmap.Map;
@@ -11,6 +12,7 @@ public class WeakUnit extends Entity {
 
     public WeakUnit(TransformTc transform) {
 		super("weakWarrior.png", transform);
+		upgradeStrategy = new WeakToMedium();
 	}
 	
 	@Override

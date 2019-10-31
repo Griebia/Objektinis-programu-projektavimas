@@ -87,8 +87,8 @@ public abstract class UnitDecorator implements IEntity{
 
 
     @Override
-    public void upgrade(Map world, Upgrade newUpgradeStrategy, Long entityId) {
-        tempUnit.upgrade(world, newUpgradeStrategy, entityId);
+    public void upgrade(Map world, Long entityId) {
+        tempUnit.upgrade(world, entityId);
     }
 
 

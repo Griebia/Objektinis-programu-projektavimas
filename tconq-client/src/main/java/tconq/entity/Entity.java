@@ -25,7 +25,7 @@ public abstract class Entity implements IEntity {
 	protected Animation[] animations;
 	private int use_animation;
 	protected Texture texture;
-	private Upgrade upgradeStrategy;
+	protected Upgrade upgradeStrategy;
 
 	
 	protected TransformTc transform;
@@ -145,8 +145,7 @@ public abstract class Entity implements IEntity {
 	}
 
 
-	public void upgrade(Map world, Upgrade newUpgradeStrategy, Long entityId) {
-		upgradeStrategy = newUpgradeStrategy;
+	public void upgrade(Map world, Long entityId) {
 		upgradeStrategy.upgrade(this.transform, world, App.playerID, entityId);
 		//TODO: implement
 	}

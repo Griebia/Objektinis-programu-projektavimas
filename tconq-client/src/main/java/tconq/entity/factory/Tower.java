@@ -3,6 +3,7 @@ package tconq.entity.factory;
 import tconq.entity.Entity;
 import tconq.entity.IEntity;
 import tconq.entity.TransformTc;
+import tconq.entity.strategy.TowerToCastle;
 import tconq.io.Window;
 import tconq.render.Camera;
 import tconq.worldmap.Map;
@@ -11,6 +12,7 @@ public class Tower extends Entity {
 
     public Tower( TransformTc transform) {
         super("tower.png", transform);
+        upgradeStrategy = new TowerToCastle();
         // TODO Auto-generated constructor stub
     }
 

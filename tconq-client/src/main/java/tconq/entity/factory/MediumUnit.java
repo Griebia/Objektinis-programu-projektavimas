@@ -3,6 +3,7 @@ package tconq.entity.factory;
 import tconq.entity.Entity;
 import tconq.entity.IEntity;
 import tconq.entity.TransformTc;
+import tconq.entity.strategy.MediumToStrong;
 import tconq.io.Window;
 import tconq.render.Camera;
 import tconq.worldmap.Map;
@@ -11,6 +12,7 @@ public class MediumUnit extends Entity {
 
     public MediumUnit(TransformTc transform) {
         super("mediumWarrior.png", transform);
+        upgradeStrategy = new MediumToStrong();
         // TODO Auto-generated constructor stub
     }
 
