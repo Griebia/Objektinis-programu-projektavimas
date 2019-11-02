@@ -276,6 +276,7 @@ public class Map {
 		return scale;
 	}
 
+
 	// after pressing end turn button passes all netities to server
 	public static EventHandler<MouseEvent> endTurnPressed() {
 		return new EventHandler<MouseEvent>() {

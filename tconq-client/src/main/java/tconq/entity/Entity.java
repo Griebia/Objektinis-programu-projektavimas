@@ -93,6 +93,7 @@ public abstract class Entity implements IEntity{
 	{
 		movementControl.move(direction);
 	}
+	public void undo(){movementControl.undo();};
 	
 	public void collideWithTiles(Map world) {
 		AABB[] boxes = new AABB[25];

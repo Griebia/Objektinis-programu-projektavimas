@@ -41,7 +41,7 @@ public class Selector {
 	
 	public static long entityId = 1;
 
-	public IEntity selectedEntity;
+	public static IEntity selectedEntity;
 
     public Selector( Map world2, Camera camera) {
 		//this.boundingBox = new AABB(position, scale);
@@ -91,7 +91,7 @@ public class Selector {
 		}
 
 		//The movement of the unit
-		EnityMovement(window);
+		entityMovement(window);
 //		if (window.getInput().isMouseButtonDown(0))
 //		{
 //			Vector2f v = getTileCoordinates(window);
@@ -116,7 +116,7 @@ public class Selector {
 		//else selectedState = STATE_IDLE;
 	}
 
-	public void EnityMovement(Window window)
+	public void entityMovement(Window window)
 	{
 		if(selectedState == STATE_SELECTED  && canMove)
 		{
@@ -140,8 +140,12 @@ public class Selector {
 
 		}
 		if(window.getInput().isKeyReleased(GLFW_KEY_UP) || window.getInput().isKeyReleased(GLFW_KEY_RIGHT) || window.getInput().isKeyReleased(GLFW_KEY_LEFT) || window.getInput().isKeyReleased(GLFW_KEY_DOWN)) {
-		canMove = true;
+			canMove = true;
+		}
 	}
+	public static void undoMove()
+	{
+		selectedEntity.undo();
 	}
 	//Selects an entity in the v vector position and makes it selected entity
 	public void SelectUnit(Vector2f v)

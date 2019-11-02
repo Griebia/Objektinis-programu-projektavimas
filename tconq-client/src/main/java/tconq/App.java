@@ -17,6 +17,8 @@ import static org.lwjgl.opengl.GL11.glViewport;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import lwjgui.event.EventHandler;
+import lwjgui.event.MouseEvent;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.lwjgl.opengl.GL;
@@ -40,6 +42,7 @@ import lwjgui.scene.layout.VBox;
 import tconq.assets.Assets;
 import tconq.entity.Player;
 import tconq.gui.Gui;
+import tconq.gui.Selector;
 import tconq.io.Timer;
 import tconq.io.Window;
 import tconq.render.Camera;
@@ -127,13 +130,23 @@ public class App {
 			Button undo = new Button("Undo move");
 			undo.setFontSize(32);
 			undo.setMinSize(128, 64);
-			undo.setOnMouseReleased(Map.endTurnPressed());
+			undo.setOnMouseReleased(undoMovePressed());
 			vbButtonUndo.getChildren().add(undo);
 
 		}
 		
 	 }
 
+
+	//Logic that goes if the undoMover button is pressed
+	public static EventHandler<MouseEvent> undoMovePressed() {
+		return new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent mouseEvent) {
+			Selector.undoMove();
+			}
+		};
+	}
 
 	public void run() {
 		Long startTime = System.currentTimeMillis();

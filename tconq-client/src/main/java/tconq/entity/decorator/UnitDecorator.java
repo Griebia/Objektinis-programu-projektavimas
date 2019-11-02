@@ -76,6 +76,11 @@ public abstract class UnitDecorator implements IEntity{
     }
 
     @Override
+    public void undo() {
+        tempUnit.undo();
+    }
+
+    @Override
     public AABB getEntityBoundingBox() {
         return tempUnit.getEntityBoundingBox();
     }
@@ -106,5 +111,7 @@ public abstract class UnitDecorator implements IEntity{
     public int getCost(){
         return tempUnit.getCost();
     }
+
+
 
 }

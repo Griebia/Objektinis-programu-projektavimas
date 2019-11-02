@@ -24,6 +24,7 @@ public interface IEntity {
     public TransformTc getPos();
 
     public void move(String direction);
+    public void undo();
 
     public AABB getEntityBoundingBox();
 
