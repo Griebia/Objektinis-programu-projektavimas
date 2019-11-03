@@ -15,7 +15,7 @@ public class Tile {
 	private boolean solid;
 	private String texture;
 
-	public Tile(TextureType texture) {
+	private Tile(TextureType texture) {
 		this.id = not;
 		not++;
 		this.texture = texture.getName();

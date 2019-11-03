@@ -69,7 +69,7 @@ class PlayerController {
 
         System.out.println(newPlayer);
 
-        Observer observer1 = new Observer(sub, savedPlayer.getId());
+        Observer observer1 = new Observer(sub, savedPlayer.getId(), savedPlayer.getSessionId());
 
 //        return ResponseEntity.created(location).build();
 

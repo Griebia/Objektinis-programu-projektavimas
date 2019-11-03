@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import tconqserver.tconqserv.entities.Player;
@@ -20,7 +21,13 @@ public class Observer {
 
     private Subject entityGrabber;
 
-    public Observer(Subject entityGrabber, Long playerID) {
+    private String sessionId;
+
+    private NotificationService notificationService;
+
+    public Observer(Subject entityGrabber, Long playerID, String sessionId) {
+        this.sessionId = sessionId;
+
         this.entityGrabber = entityGrabber; // gets entities for observer
 
         this.observerID = playerID; // sets observer id to player id
@@ -28,6 +35,8 @@ public class Observer {
         System.out.println("New Observer " + this.observerID);
 
         entityGrabber.register(this, playerID); // creates new observer
+
+        notificationService = new NotificationService();
     }
 
     public Long getObserverId() {
@@ -52,6 +61,7 @@ public class Observer {
     // turi pasalint obijektus kurie buvo pakeisti ir palikt tik naujus arba istrint
     // visus senus playerio obijektus ir palikt tik naujus
     // arba atnaujint senus obijektus
+//    @SendTo("/Entities/")
     public void update(ArrayList<SEntity> entities, SEntityRepository repository){
 
         //gets all unique ids of players associated with passed entities
@@ -89,6 +99,8 @@ public class Observer {
         for (SEntity entity : entities){
             System.out.println("Entity id - " + entity.getId()+ " " + entity.getPlayer());
         }
+
+        notificationService.notifyClient("Message", sessionId);
 
     }
 

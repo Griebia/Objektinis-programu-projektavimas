@@ -24,6 +24,7 @@ class Player{
     private boolean playing;
     private Integer points;
     private Boolean nextTurn;
+    private String sessionId;
     
     @OneToMany(mappedBy = "player", cascade = CascadeType.ALL)
     @JsonIgnore
@@ -73,8 +74,11 @@ class Player{
     public Boolean getNextTurn(){
         return this.nextTurn;
     }
+    public String getSessionId() {
+        return sessionId;
+    }
 
-	public void setName(String name2) {
+    public void setName(String name2) {
         this.name = name2;
 	}
 	public void setGold(Integer gold2) {
@@ -88,5 +92,8 @@ class Player{
     }
     public void setNextTurn(Boolean turn){
         this.nextTurn = turn;
+    }
+    public void setSessionId(String sessionId) {
+        this.sessionId = sessionId;
     }
 }

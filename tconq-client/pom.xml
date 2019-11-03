@@ -80,6 +80,36 @@
 	</repositories>
 
   <dependencies>
+
+
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-messaging</artifactId>
+      <version>5.2.1.RELEASE</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-websocket</artifactId>
+      <version>5.2.1.RELEASE</version>
+    </dependency>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
       <dependency>
         <groupId>com.github.orange451</groupId>
         <artifactId>LWJGUI</artifactId>

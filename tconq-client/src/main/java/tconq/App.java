@@ -302,30 +302,30 @@ public class App {
 
 
 	public void endTurnLogic(){		// puts all opponents entities to map when they've ended theyr turn
-		String opponents = ServerHandler.instance.getOpponents();
-		ArrayList<Long> opponentIds = getOpponentIds(opponents);
-
-		if(ServerHandler.instance.checkForNextTurns(opponentIds) == true){						
-			for (Long oppId : opponentIds) {
-				Map.fromDbToMap(ServerHandler.instance.getEntities(oppId), oppId);				
-			
-				// ------------------Change nextTurn value to false--------------------------------
-				final String uriPlayer = "http://" + ServerHandler.instance.serverip + "/NextTurn/" + ServerHandler.instance.playerID.toString();
-				HttpHeaders headers = new HttpHeaders();
-				headers.setContentType(MediaType.APPLICATION_JSON);
-
-				// create a map for post parameters
-				HashMap<String, Object> playerMap = new HashMap<>();
-				playerMap.put("nextTurn","false");
-				playerMap.put("id", oppId);
-
-				// build the request
-				HttpEntity<HashMap<String, Object>> palyerEntity = new HttpEntity<>(playerMap, headers);
-
-				RestTemplate restTemplatePlayer = new RestTemplate();
-				restTemplatePlayer.postForObject(uriPlayer, palyerEntity, String.class);
-			}
-		}
+//		String opponents = ServerHandler.instance.getOpponents();
+//		ArrayList<Long> opponentIds = getOpponentIds(opponents);
+//
+//		if(ServerHandler.instance.checkForNextTurns(opponentIds) == true){
+//			for (Long oppId : opponentIds) {
+//				Map.fromDbToMap(ServerHandler.instance.getEntities(oppId), oppId);
+//
+//				// ------------------Change nextTurn value to false--------------------------------
+//				final String uriPlayer = "http://" + ServerHandler.instance.serverip + "/NextTurn/" + ServerHandler.instance.playerID.toString();
+//				HttpHeaders headers = new HttpHeaders();
+//				headers.setContentType(MediaType.APPLICATION_JSON);
+//
+//				// create a map for post parameters
+//				HashMap<String, Object> playerMap = new HashMap<>();
+//				playerMap.put("nextTurn","false");
+//				playerMap.put("id", oppId);
+//
+//				// build the request
+//				HttpEntity<HashMap<String, Object>> palyerEntity = new HttpEntity<>(playerMap, headers);
+//
+//				RestTemplate restTemplatePlayer = new RestTemplate();
+//				restTemplatePlayer.postForObject(uriPlayer, palyerEntity, String.class);
+//			}
+//		}
 	}
 
 	
