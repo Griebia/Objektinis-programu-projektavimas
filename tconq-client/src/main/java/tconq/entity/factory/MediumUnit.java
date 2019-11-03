@@ -10,7 +10,7 @@ import tconq.io.Window;
 import tconq.render.Camera;
 import tconq.worldmap.Map;
 
-public class MediumUnit extends Entity implements IEntityCostAdapter{
+public class MediumUnit extends Entity {
 
     public MediumUnit(TransformTc transform) {
         super("mediumWarrior.png", transform);
@@ -39,8 +39,8 @@ public class MediumUnit extends Entity implements IEntityCostAdapter{
         return getCostAdapter();
     }
 
-    @Override
-    public int getCostAdapter(){
+    
+    private int getCostAdapter(){
         IEntity WeakUnit = new WeakUnit(transform);
         IEntityCostAdapter mediumCostAdapter = new MediumUnitCostAdapter(WeakUnit);
         return mediumCostAdapter.getCostAdapter();

@@ -10,7 +10,7 @@ import tconq.io.Window;
 import tconq.render.Camera;
 import tconq.worldmap.Map;
 
-public class Tower extends Entity implements IEntityCostAdapter{
+public class Tower extends Entity {
 
     public Tower( TransformTc transform) {
         super("tower.png", transform);
@@ -39,8 +39,8 @@ public class Tower extends Entity implements IEntityCostAdapter{
         return getCostAdapter();
     }
 
-    @Override
-    public int getCostAdapter(){
+   
+    private int getCostAdapter(){
         IEntity WeakUnit = new WeakUnit(transform);
         IEntityCostAdapter towerCostAdapter = new TowerCostAdapter(WeakUnit);
         return towerCostAdapter.getCostAdapter();

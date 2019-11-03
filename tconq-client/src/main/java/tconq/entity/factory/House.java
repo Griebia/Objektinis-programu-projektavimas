@@ -10,7 +10,7 @@ import tconq.io.Window;
 import tconq.render.Camera;
 import tconq.worldmap.Map;
 
-public class House extends Entity implements IEntityCostAdapter{
+public class House extends Entity {
 
     public House(TransformTc transform) {
         super("house.png", transform);
@@ -39,8 +39,8 @@ public class House extends Entity implements IEntityCostAdapter{
         return getCostAdapter();
     }
 
-    @Override
-    public int getCostAdapter(){
+    
+    private int getCostAdapter(){
         IEntity WeakUnit = new WeakUnit(transform);
         IEntityCostAdapter houseCostAdapter = new HouseCostAdapter(WeakUnit);
         return houseCostAdapter.getCostAdapter();
