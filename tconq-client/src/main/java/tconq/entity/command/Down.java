@@ -9,6 +9,7 @@ public class Down implements ICommand {
 
     //Units info
     private final IEntity unit;
+    Vector2f movement = new Vector2f(0,-2);
 
     //Constructor
     public Down(IEntity newUnit)
@@ -18,7 +19,7 @@ public class Down implements ICommand {
 
     @Override
     public void move() {
-        Vector2f movement = new Vector2f(0,-2);
+        
         unit.move(movement);
     }
 
@@ -26,5 +27,10 @@ public class Down implements ICommand {
     public void undo() {
         Vector2f movement = new Vector2f(0,2);
         unit.move(movement);
+    }
+
+    @Override
+    public Vector2f getMovement(){
+        return movement;
     }
 }
