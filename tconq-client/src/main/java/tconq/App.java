@@ -47,6 +47,7 @@ import tconq.io.Timer;
 import tconq.io.Window;
 import tconq.render.Camera;
 import tconq.render.Shader;
+import tconq.server.RequestThread;
 import tconq.server.ServerHandler;
 import tconq.worldmap.Map;
 import tconq.worldmap.TileRender;
@@ -302,10 +303,11 @@ public class App {
 
 
 	public void endTurnLogic(){		// puts all opponents entities to map when they've ended theyr turn
-		String opponents = ServerHandler.instance.getOpponents();
-		ArrayList<Long> opponentIds = getOpponentIds(opponents);
-
-		if(ServerHandler.instance.checkForNextTurns(opponentIds) == true){						
+		
+	
+		if(ServerHandler.instance.checkForNextTurns() == true){				
+			String opponents = ServerHandler.instance.getOpponents();
+			ArrayList<Long> opponentIds = ServerHandler.getOpponentIds(opponents);		
 			for (Long oppId : opponentIds) {
 				Map.fromDbToMap(ServerHandler.instance.getEntities(oppId), oppId);				
 			
@@ -328,30 +330,19 @@ public class App {
 		}
 	}
 
-	
-
-
-
-	public static ArrayList<Long> getOpponentIds(String opponents){
-		JSONArray jsonArray = new JSONArray(opponents); // changes string to jsonArray
-		ArrayList<Long> ids = new ArrayList<Long>();
-		for (int i = 0; i < jsonArray.length(); i++) {
-			JSONObject jsonEntity = jsonArray.getJSONObject(i); // gets one json onject form array
-			ids.add(jsonEntity.getLong("id"));
-		}
-		return ids;
-	}
 
 
 	
 	public static void main(String[] args) {
 		//getPlayers();
-		ServerHandler.instance.addPlayer("karolis");
+		ServerHandler.instance.addPlayer("lopas");
+		RequestThread.instance.start();
 		//addPlayer("Tadas");
 //		addEntity();
 		//addEntities();
 		
 		new App().run();
+		RequestThread.instance.cancel();
 	}
 
 	

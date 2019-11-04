@@ -3,6 +3,7 @@ package tconq.server;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -21,21 +22,9 @@ public class ServerHandler {
         
     }
 
-    public  Boolean checkForNextTurns(ArrayList<Long> opponentIds){
+    public  Boolean checkForNextTurns(){
 		
-		for (Long oppId : opponentIds) {
-			final String uri = "http://" + serverip + "/Player/" + oppId.toString();
-			RestTemplate  restTemplate = new RestTemplate();
-			String result = restTemplate.getForObject(uri, String.class);	
-			JSONObject jsonEntity = new JSONObject(result);
-			
-			if(jsonEntity.getBoolean("nextTurn") == false)		// checks if opponent kas ended his turn
-				return false;
-			else
-				return true;
-		}
-		
-		return false;
+		return RequestThread.instance.GetNextTurn();
     }
     
     public  String getOpponents(){
@@ -49,7 +38,17 @@ public class ServerHandler {
 
 
 		return result;
-    }
+	}
+	
+	public static ArrayList<Long> getOpponentIds(String opponents){
+		JSONArray jsonArray = new JSONArray(opponents); // changes string to jsonArray
+		ArrayList<Long> ids = new ArrayList<Long>();
+		for (int i = 0; i < jsonArray.length(); i++) {
+			JSONObject jsonEntity = jsonArray.getJSONObject(i); // gets one json onject form array
+			ids.add(jsonEntity.getLong("id"));
+		}
+		return ids;
+	}
     
     public  String getEntities(Long playerId){
 		final String uri = "http://" + serverip + "/SEntities/" + playerId.toString();
