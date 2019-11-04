@@ -2,15 +2,16 @@ package tconq.entity.command;
 
 import org.joml.Vector2f;
 import tconq.entity.Entity;
+import tconq.entity.IEntity;
 import tconq.entity.TransformTc;
 
 public class Down implements ICommand {
 
     //Units info
-    private final Entity unit;
+    private final IEntity unit;
 
     //Constructor
-    public Down(Entity newUnit)
+    public Down(IEntity newUnit)
     {
         unit = newUnit;
     }

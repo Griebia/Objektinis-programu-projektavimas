@@ -194,7 +194,7 @@ public abstract class Entity implements IEntity{
 	}
 
 	public int getMovement() {
-		return 0;
+		return 5;
 	}
 
 

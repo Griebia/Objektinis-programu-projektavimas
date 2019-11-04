@@ -1,5 +1,6 @@
 package tconq.entity.decorator;
 
+import org.joml.Vector2f;
 import tconq.collision.AABB;
 import tconq.entity.IEntity;
 import tconq.entity.TransformTc;
@@ -72,6 +73,11 @@ public abstract class UnitDecorator implements IEntity{
 
     @Override
     public void move(String direction) {
+        tempUnit.move(direction);
+    }
+    
+    @Override
+    public void move(Vector2f direction) {
         tempUnit.move(direction);
     }
 
