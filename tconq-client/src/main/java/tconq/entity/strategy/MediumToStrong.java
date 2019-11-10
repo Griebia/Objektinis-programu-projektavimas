@@ -22,6 +22,8 @@ public class MediumToStrong implements Upgrade {
             strong.setId(entityId);
 
             world.addEntity(strong, playerId);
+
+            System.out.println("Used strategy MediumToStrong");
         }
 
     }

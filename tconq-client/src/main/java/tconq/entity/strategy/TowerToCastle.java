@@ -18,6 +18,8 @@ public class TowerToCastle implements Upgrade {
             IEntity castle = entityFactory.getEntity("Castle",tc);
             castle.setId(entityId);
             world.addEntity(castle,playerId);
+
+            System.out.println("Used strategy TowerToCastle");
         }
 
     }

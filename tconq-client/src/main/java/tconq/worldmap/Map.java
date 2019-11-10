@@ -132,9 +132,9 @@ public class Map {
 			entity = new AttackBuilding( new Attack( new Movement(entity)));	//adds decorator to units
 
 		System.out.println("-------------------------------------------------------------------------------------");
-		System.out.println(entity.getMovement());
-		System.out.println(entity.getAttack(entity));
-		System.out.println(entity.getDestroyBuilding(entity));
+		System.out.println("Can move: " + entity.getMovement() + " spaces");
+		System.out.println("If attacks self with attack function: " + entity.getAttack(entity));
+		System.out.println("If attacks self with attack building function: " + entity.getDestroyBuilding(entity));
 		System.out.println("-------------------------------------------------------------------------------------");
 
 		entities.add(entity);

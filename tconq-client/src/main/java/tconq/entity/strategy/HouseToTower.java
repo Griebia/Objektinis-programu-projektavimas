@@ -17,6 +17,8 @@ public class HouseToTower implements Upgrade {
             IEntity tower = entityFactory.getEntity("Tower",tc);
             tower.setId(entityId);
             world.addEntity(tower,playerId);
+
+            System.out.println("Used strategy HouseToTower");
         }
     }
 
