@@ -27,13 +27,17 @@ public class MovementControl {
         }
         commandSequence.add(command);
         command.move();
+        System.out.println("The unit is moved to the " + direction);
     };
 
     //Undoes the last made move
     public void undo(){
         if (commandSequence.size() > 0){
             ICommand command = commandSequence.removeLast();
+            System.out.println("The unit movement to the "+ command.getClass().getName() + " was undone");
             command.undo();
+
+
         }
     }
 }
