@@ -34,7 +34,7 @@ public class Selector {
 	private Camera camera;
 	private AABB boundingBox;
 	//private Texture texture; TODO: implement selector textures.
-	public static AbstractEntityFactory entityFactory;  // changed from private to public static !!!
+	public static AbstractEntityFactory entityFactory = EntityProducer.getFactory(true);  // changed from private to public static !!!
 
 	private boolean canUpgrade = true;		//if true unit or building can be upgraded if false can't resets when button is released
 	private boolean canMove = true;
@@ -67,7 +67,6 @@ public class Selector {
 		this.boundingBox = data;
 		if (data == null) {
 			selectedState = STATE_SELECTED;
-			entityFactory = EntityProducer.getFactory(true);
 
 			//System.out.println(data.getCollision(window.getInput().getMousePosition()).toString());
 				if (window.getInput().isMouseButtonDown(0)) {

@@ -9,13 +9,14 @@ import tconq.entity.strategy.MediumToStrong;
 import tconq.entity.strategy.TowerToCastle;
 import tconq.entity.strategy.Upgrade;
 import tconq.entity.strategy.WeakToMedium;
+import tconq.io.DebugHandler;
 
 public class EntityFacade {
 
-    private AbstractEntityFactory unitfactory = EntityProducer.getFactory(true);
-    private AbstractEntityFactory buildingfactoryl = EntityProducer.getFactory(false);
+    private static AbstractEntityFactory unitfactory = EntityProducer.getFactory(true);
+    private static AbstractEntityFactory buildingfactoryl = EntityProducer.getFactory(false);
     
-    private Upgrade upgrade;
+    private static Upgrade upgrade;
 
     public EntityFacade(){
     }
@@ -36,41 +37,51 @@ public class EntityFacade {
         MEDIUMTOSTRONG
     }
 
-    public Entity createEntity(EntityType type, TransformTc tc){
+    public static Entity createEntity(EntityType type, TransformTc tc){
         switch(type){
             case HOUSE :
+                if(DebugHandler.debugmode.facadeDebug) System.out.println("Spawning house using Facade");
                 return (Entity) buildingfactoryl.getEntity("house", tc);
             case TOWER :
+                if(DebugHandler.debugmode.facadeDebug) System.out.println("Spawning tower using Facade");
                 return (Entity) buildingfactoryl.getEntity("tower", tc);
             case CASTLE :
+                if(DebugHandler.debugmode.facadeDebug) System.out.println("Spawning castle using Facade");
                 return (Entity) buildingfactoryl.getEntity("castle", tc);
             case WEAKUNIT :
+                if(DebugHandler.debugmode.facadeDebug) System.out.println("Spawning weak unit using Facade");
                 return (Entity) unitfactory.getEntity("weakunit", tc);
             case MEDIUMUNIT :
+                if(DebugHandler.debugmode.facadeDebug) System.out.println("Spawning medium unit using Facade");
                 return (Entity) unitfactory.getEntity("mediumunit", tc);
             case STRONGUNIT :
+                if(DebugHandler.debugmode.facadeDebug) System.out.println("Spawning strong unit using Facade");
                 return (Entity) unitfactory.getEntity("strongunit", tc);  
             default :
                 return null; //will not execute
         }
     }
 
-    public Upgrade changeUpdateBehavior(UpdateBehavior behavior){
+    public static Upgrade changeUpdateBehavior(UpdateBehavior behavior){
         switch(behavior){
             case HOUSETOTOWER :
+            if(DebugHandler.debugmode.facadeDebug) System.out.println("Upgrading house to tower using Facade");
                 return new HouseToTower();
             case TOWERTOCASTLE :
+                if(DebugHandler.debugmode.facadeDebug) System.out.println("Upgrading tower to castle using Facade");
                 return new TowerToCastle();
             case WEAKTOMEDIUM :
+                if(DebugHandler.debugmode.facadeDebug) System.out.println("Upgrading weak to medium using Facade");
                 return new WeakToMedium();
             case MEDIUMTOSTRONG :
+                if(DebugHandler.debugmode.facadeDebug) System.out.println("Upgrading medium to strong using Facade");
                 return new MediumToStrong();
             default :
                 return null; //will not execute.
         }
     }
 
-    public Upgrade showUpgrade(){
-        return this.upgrade;
+    public static Upgrade showUpgrade(){
+        return upgrade;
     }
 }

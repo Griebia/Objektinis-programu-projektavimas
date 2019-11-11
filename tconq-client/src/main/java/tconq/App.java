@@ -43,6 +43,7 @@ import tconq.assets.Assets;
 import tconq.entity.Player;
 import tconq.gui.Gui;
 import tconq.gui.Selector;
+import tconq.io.DebugHandler;
 import tconq.io.Timer;
 import tconq.io.Window;
 import tconq.render.Camera;
@@ -254,7 +255,7 @@ public class App {
 				
 				window.update();
 				
-				if (frame_time >= 1.0) {
+				if (frame_time >= 1.0 && DebugHandler.debugmode.fpsDebug) {
 					frame_time = 0;
 					System.out.println("FPS: " + frames);
 					frames = 0;

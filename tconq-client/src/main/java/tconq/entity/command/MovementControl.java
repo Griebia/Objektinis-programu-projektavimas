@@ -36,8 +36,6 @@ public class MovementControl {
             ICommand command = commandSequence.removeLast();
             System.out.println("The unit movement to the "+ command.getClass().getName() + " was undone");
             command.undo();
-
-
         }
     }
 }
