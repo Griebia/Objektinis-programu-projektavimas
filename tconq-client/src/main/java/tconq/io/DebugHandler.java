@@ -10,6 +10,7 @@ public class DebugHandler {
     public final boolean factoryDebug = true;
     public final boolean facadeDebug = false;
     public final boolean fpsDebug = false;
+    public final boolean prototypeDebug = true;
 
     public static DebugHandler debugmode = new DebugHandler();
 

@@ -94,9 +94,9 @@ public class Map {
 					// int entity_index = (colorEntitySheet[x + y * width] >> 16) & 0xFF;
 					// int entity_alpha = (colorEntitySheet[x + y * width] >> 24) & 0xFF;
 
-					Tile t;
+					TilePrototype t;
 					try {
-						t = Tile.tiles[red];
+						t = Tile.tile.tiles[red];
 					} catch (ArrayIndexOutOfBoundsException e) {
 						t = null;
 					}
@@ -194,7 +194,7 @@ public class Map {
 
 		for (int i = 0; i < viewX; i++) {
 			for (int j = 0; j < viewY; j++) {
-				Tile t = getTile(i - posX - (viewX / 2) + 1, j + posY - (viewY / 2));
+				TilePrototype t = getTile(i - posX - (viewX / 2) + 1, j + posY - (viewY / 2));
 				if (t != null)
 					render.renderTile(t, i - posX - (viewX / 2) + 1, -j - posY + (viewY / 2), shader, Map, cam);
 			}
@@ -236,7 +236,7 @@ public class Map {
 			pos.y = h - (window.getHeight() / 2) - scale;
 	}
 
-	public void setTile(Tile tile, int x, int y) {
+	public void setTile(TilePrototype tile, int x, int y) {
 		tiles[x + y * width] = tile.getId();
 		if (tile.isSelectable()) {
 			bounding_boxes[x + y * width] = new AABB(new Vector2f(x * 2, -y * 2), new Vector2f(1, 1));
@@ -245,9 +245,9 @@ public class Map {
 		}
 	}
 
-	public Tile getTile(int x, int y) {
+	public TilePrototype getTile(int x, int y) {
 		try {
-			return Tile.tiles[tiles[x + y * width]];
+			return Tile.tile.tiles[tiles[x + y * width]];
 		} catch (ArrayIndexOutOfBoundsException e) {
 			return null;
 		}

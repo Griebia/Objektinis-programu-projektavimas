@@ -1,43 +1,20 @@
 package tconq.worldmap;
 
 import tconq.bridge.*;
+import tconq.io.DebugHandler;
 
 public class Tile {
-	public static Tile tiles[] = new Tile[255];
-	public static byte not = 0;
+	public TilePrototype tiles[] = new TilePrototype[255];
 	
-	public static final Tile water = new Tile( new Water( new TextureColorDefault() ) );
-	public static final Tile grass = new Tile( new Grass( new TextureColorDefault() ) );//.setSelectable();
-	public static final Tile yellowgrass = new Tile( new Grass( new TextureColorYellow() ) ).setSelectable();
-	public static final Tile bluegrass = new Tile( new Grass( new TextureColorBlue() ) ).setSelectable();
+	public static Tile tile = new Tile();
 	
-	private byte id;
-	private boolean solid;
-	private String texture;
+	public Tile() {
+		if(DebugHandler.debugmode.prototypeDebug) System.out.println("Cloning tiles");
+		tiles[0] = TilePrototype.water.clone();
+		tiles[1] = TilePrototype.grass.clone();
+		tiles[2] = TilePrototype.yellow.clone();
+		tiles[3] = TilePrototype.blue.clone();
+	}
+	
 
-	public Tile(TextureType texture) {
-		this.id = not;
-		not++;
-		this.texture = texture.getName();
-		this.solid = false;
-		if (tiles[id] != null) throw new IllegalStateException("Tiles at [" + id + "] is already being used!");
-		tiles[id] = this;
-	}
-	
-	public Tile setSelectable() {
-		this.solid = true;
-		return this;
-	}
-	
-	public boolean isSelectable() {
-		return solid;
-	}
-	
-	public byte getId() {
-		return id;
-	}
-	
-	public String getTexture() {
-		return texture;
-	}
 }

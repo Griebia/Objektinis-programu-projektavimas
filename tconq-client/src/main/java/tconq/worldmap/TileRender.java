@@ -25,17 +25,17 @@ public class TileRender {
 		
 		tileModel = new Model(vertices, texture, indices);
 		
-		for (int i = 0; i < Tile.tiles.length; i++) {
-			if (Tile.tiles[i] != null) {
-				if (!tileTextures.containsKey(Tile.tiles[i].getTexture())) {
-					String tex = Tile.tiles[i].getTexture();
+		for (int i = 0; i < Tile.tile.tiles.length; i++) {
+			if (Tile.tile.tiles[i] != null) {
+				if (!tileTextures.containsKey(Tile.tile.tiles[i].getTexture())) {
+					String tex = Tile.tile.tiles[i].getTexture();
 					tileTextures.put(tex, new Texture(tex + ".png"));
 				}
 			}
 		}
 	}
 	
-	public void renderTile(Tile tile, int x, int y, Shader shader, Matrix4f world, Camera cam) {
+	public void renderTile(TilePrototype tile, int x, int y, Shader shader, Matrix4f world, Camera cam) {
 		shader.bind();
 		if (tileTextures.containsKey(tile.getTexture())) tileTextures.get(tile.getTexture()).bind(0);
 		
