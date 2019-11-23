@@ -1,5 +1,7 @@
 package tconq.entity;
 
+import java.util.ArrayList;
+
 public class Player {
     private Long id;
     private String name;
@@ -7,6 +9,7 @@ public class Player {
     private boolean playing;
     private int points;
     private String playerName;
+    private ArrayList<Player> opponents;
 
     public Player(){
 
@@ -19,6 +22,7 @@ public class Player {
         this.playing = playing;
         this.points = points;
         this.playerName = playerName;
+        opponents = new ArrayList<Player>();
     }
 
     public Long getId() {
@@ -68,4 +72,21 @@ public class Player {
     public void setPlayerName(String playerName) {
         this.playerName = playerName;
     }
+
+    public void addOpponent(Player op){
+        opponents.add(op);
+    }
+
+    public void removeOpponent(Player op){
+        opponents.remove(op);
+    }
+
+    public ArrayList<Player> getOpponents(){
+        return opponents;
+    }
+
+    public String toString(){
+        return ("Player :[ Id : " + id + ",name : " + name + ", gold : " + gold + ", points :" + points +" ]");
+     } 
+
 }

@@ -6,6 +6,8 @@ import org.hibernate.validator.internal.util.privilegedactions.NewInstance;
 import org.json.JSONObject;
 import org.springframework.web.client.RestTemplate;
 
+import tconq.entity.Player;
+
 public class RequestThread extends Thread {
     private boolean nextTurn = false;
     private boolean canceled = false;
@@ -21,14 +23,14 @@ public class RequestThread extends Thread {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
-            ArrayList<Long> opponentIds = ServerHandler.getOpponentIds(ServerHandler.instance.getOpponents());
-            for (Long oppId : opponentIds) {
-                final String uri = "http://" + ServerHandler.instance.serverip + "/Player/" + oppId.toString();
+            ArrayList<Player> opponentList = ServerHandler.getOpponents(ServerHandler.instance.getOpponents());
+            for (Player opp : opponentList) {
+                final String uri = "http://" + ServerHandler.instance.serverip + "/Player/" + opp.getId().toString();
                 RestTemplate  restTemplate = new RestTemplate();
                 String result = restTemplate.getForObject(uri, String.class);	
                 JSONObject jsonEntity = new JSONObject(result);
                 
-                if(jsonEntity.getBoolean("nextTurn") == false)		// checks if opponent kas ended his turn
+                if(jsonEntity.getBoolean("nextTurn") == false)		// checks if opponent has ended his turn
                     nextTurn = false;
                 else
                     nextTurn = true;

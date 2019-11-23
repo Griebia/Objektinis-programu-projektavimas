@@ -14,6 +14,7 @@ import static org.lwjgl.opengl.GL11.glClear;
 import static org.lwjgl.opengl.GL11.glEnable;
 import static org.lwjgl.opengl.GL11.glViewport;
 
+import java.io.Console;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -67,21 +68,23 @@ public class App {
 
 	private static Boolean sendRequest = true;
 
-	private static void showCursorCoordinates(Map world, Camera cam){
-		//AABB box = world.getTileBoundingBox((int) (pos.x), (int) (pos.y));
+	private static Player player;
+
+	private static void showCursorCoordinates(Map world, Camera cam) {
+		// AABB box = world.getTileBoundingBox((int) (pos.x), (int) (pos.y));
 		// BorderPane bd = (BorderPane) lwjguiWindow.getScene().getRoot();
 		// VBox vbox = (VBox)bd.getChildren().get(0);
 		// VBox vboxtop = (VBox)vbox.getChildren().get(0);
 		// Label label1 = (Label) vboxtop.getChildren().get(0);
 		// String s = "null";
 		// if (box != null){
-		// 	s = box.toString();
+		// s = box.toString();
 		// }else{
-		// 	s = "null";
+		// s = "null";
 		// }
-		// label1.setText( s + "camera x."+cam.getPosition().x + " y."+cam.getPosition().y);
+		// label1.setText( s + "camera x."+cam.getPosition().x + "
+		// y."+cam.getPosition().y);
 	}
-	
 
 	private static void addComponents(Scene scene) {
 		// Create a simple pane
@@ -98,17 +101,16 @@ public class App {
 			vbox.setAlignment(Pos.BOTTOM_LEFT);
 			vbox.setBackground(Color.BLUE.alpha(0.4f));
 			vbox.setMinSize(window.getWidth() - 10, 64);
-			//vbox.setPadding(new Insets(0, 10, 10, 0));
+			// vbox.setPadding(new Insets(0, 10, 10, 0));
 			pane.setTop(vbox);
 
-			Label label1 = new Label("Gold"); //TODO: write income and balance
+			Label label1 = new Label("Gold"); // TODO: write income and balance
 			label1.setTextFill(Color.YELLOW);
 			label1.setFontSize(32);
 			vbox.getChildren().add(label1);
 			int i = 0;
 
-
-			//end turn button
+			// end turn button
 			VBox vbButtons = new VBox();
 			vbButtons.setAlignment(Pos.CENTER_LEFT);
 			vbButtons.setBackground(Color.TRANSPARENT);
@@ -121,7 +123,7 @@ public class App {
 			endTurn.setOnMouseReleased(Map.endTurnPressed());
 			vbButtons.getChildren().add(endTurn);
 
-			//undo turn button
+			// undo turn button
 			VBox vbButtonUndo = new VBox();
 			vbButtonUndo.setAlignment(Pos.CENTER_LEFT);
 			vbButtonUndo.setBackground(Color.TRANSPARENT);
@@ -135,16 +137,15 @@ public class App {
 			vbButtonUndo.getChildren().add(undo);
 
 		}
-		
-	 }
 
+	}
 
-	//Logic that goes if the undoMover button is pressed
+	// Logic that goes if the undoMover button is pressed
 	public static EventHandler<MouseEvent> undoMovePressed() {
 		return new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent mouseEvent) {
-			Selector.undoMove();
+				Selector.undoMove();
 			}
 		};
 	}
@@ -153,36 +154,34 @@ public class App {
 		Long startTime = System.currentTimeMillis();
 
 		Window.setCallbacks();
-		
+
 		if (!glfwInit()) {
 			System.err.println("GLFW Failed to initialize!");
 			System.exit(1);
 		}
-		
+
 		window = new Window();
 		window.setSize(WINDOWX, WINDOWY);
 		window.setFullscreen(false);
 		window.createWindow("Territory Conquest");
-		
+
 		GL.createCapabilities();
-		
-		
+
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		
+
 		glEnable(GL_TEXTURE_2D);
-		
+
 		TileRender tiles = new TileRender();
 		Assets.initAsset();
 
-	    lwjguiWindow = LWJGUI.initialize(window.getWindow());
+		lwjguiWindow = LWJGUI.initialize(window.getWindow());
 		lwjguiWindow.setWindowAutoClear(false); // We must call glClear ourselves.
 		lwjguiWindow.setWindowAutoDraw(false); // We must call glfwSwapBuffers ourselves.
 		lwjguiWindow.show(); // Display window if it's invisible.
 		// Add some components
 		addComponents(lwjguiWindow.getScene());
-		
-		
+
 		// float[] vertices = new float[] {
 		// -1f, 1f, 0, //TOP LEFT 0
 		// 1f, 1f, 0, //TOP RIGHT 1
@@ -204,56 +203,53 @@ public class App {
 		//
 		// Model model = new Model(vertices, texture, indices);
 		Shader shader = new Shader("shader");
-		
+
 		Map world = new Map("test_level");
 		world.calculateView(window);
 		Gui gui = new Gui(this.window, world);
-		
-		//Gui gui = new Gui(window);
-		
+
+		// Gui gui = new Gui(window);
+
 		double frame_cap = 1.0 / 60.0;
-		
+
 		double frame_time = 0;
 		int frames = 0;
-		
+
 		double time = Timer.getTime();
 		double unprocessed = 0;
-		
+
 		while (!window.shouldClose()) {
 			boolean can_render = false;
-			
+
 			double time_2 = Timer.getTime();
 			double passed = time_2 - time;
 			unprocessed += passed;
 			frame_time += passed;
-			
+
 			time = time_2;
 
-
-			
-			
 			while (unprocessed >= frame_cap) {
 				if (window.hasResized()) {
 					gui.resizeCamera(window);
 					world.calculateView(window);
 					glViewport(0, 0, window.getWidth(), window.getHeight());
 				}
-				
+
 				unprocessed -= frame_cap;
 				can_render = true;
-				
+
 				if (window.getInput().isKeyReleased(GLFW_KEY_ESCAPE)) {
 					glfwSetWindowShouldClose(window.getWindow(), true);
 				}
-				
+
 				gui.update(window.getInput());
 
 				world.update((float) frame_cap, window, gui.getCamera());
-				
+
 				world.correctCamera(gui.getCamera(), window);
-				
+
 				window.update();
-				
+
 				if (frame_time >= 1.0) {
 					frame_time = 0;
 					System.out.println("FPS: " + frames);
@@ -262,7 +258,7 @@ public class App {
 			}
 			if (can_render) {
 				glClear(GL_COLOR_BUFFER_BIT);
-				
+
 				// shader.bind();
 				// shader.setUniform("sampler", 0);
 				// shader.setUniform("projection",
@@ -272,54 +268,51 @@ public class App {
 				gui.update(window.getInput());
 				world.render(tiles, shader, gui.getCamera());
 				gui.render();
-				//gui.render();
+				// gui.render();
 				showCursorCoordinates(world, gui.getCamera());
 
 				LWJGUI.render();
-				
+
 				window.swapBuffers();
 				frames++;
 			}
 
 			endTurnLogic();
-			/*long estimatedTime = (System.currentTimeMillis() - startTime) / 1000;
-			if((estimatedTime & 2) != 0 && sendRequest == true){
-				sendRequest = false;
-				endTurnLogic();
-			}
-			if((estimatedTime & 2) == 0)
-				sendRequest = true;*/
-			
+			/*
+			 * long estimatedTime = (System.currentTimeMillis() - startTime) / 1000;
+			 * if((estimatedTime & 2) != 0 && sendRequest == true){ sendRequest = false;
+			 * endTurnLogic(); } if((estimatedTime & 2) == 0) sendRequest = true;
+			 */
+
 		}
-		
+
 		Assets.deleteAsset();
-		
+
 		glfwTerminate();
 
-		
-			
 	}
 
+	public void endTurnLogic() { // puts all opponents entities to map when they've ended theyr turn
 
-
-	public void endTurnLogic(){		// puts all opponents entities to map when they've ended theyr turn
-		
-	
-		if(ServerHandler.instance.checkForNextTurns() == true){				
+		if (ServerHandler.instance.checkForNextTurns() == true) {
 			String opponents = ServerHandler.instance.getOpponents();
-			ArrayList<Long> opponentIds = ServerHandler.getOpponentIds(opponents);		
-			for (Long oppId : opponentIds) {
-				Map.fromDbToMap(ServerHandler.instance.getEntities(oppId), oppId);				
-			
-				// ------------------Change nextTurn value to false--------------------------------
-				final String uriPlayer = "http://" + ServerHandler.instance.serverip + "/NextTurn/" + ServerHandler.instance.playerID.toString();
+			ArrayList<Player> opponentList = ServerHandler.getOpponents(opponents);		// gets all opponents
+			for (Player opp : opponentList) {
+				Map.fromDbToMap(ServerHandler.instance.getEntities(opp.getId()), opp.getId());
+
+				player.addOpponent(opp);	// adds opponent to this player's opponent list
+
+				// ------------------Change nextTurn value to
+				// false--------------------------------
+				final String uriPlayer = "http://" + ServerHandler.instance.serverip + "/NextTurn/"
+						+ ServerHandler.instance.playerID.toString();
 				HttpHeaders headers = new HttpHeaders();
 				headers.setContentType(MediaType.APPLICATION_JSON);
 
 				// create a map for post parameters
 				HashMap<String, Object> playerMap = new HashMap<>();
-				playerMap.put("nextTurn","false");
-				playerMap.put("id", oppId);
+				playerMap.put("nextTurn", "false");
+				playerMap.put("id", opp.getId());
 
 				// build the request
 				HttpEntity<HashMap<String, Object>> palyerEntity = new HttpEntity<>(playerMap, headers);
@@ -327,19 +320,25 @@ public class App {
 				RestTemplate restTemplatePlayer = new RestTemplate();
 				restTemplatePlayer.postForObject(uriPlayer, palyerEntity, String.class);
 			}
+
+			/*for (Player ply : player.getOpponents()) {
+				System.out.println(ply.toString());
+			}*/
 		}
+		
+		
 	}
 
-
-
-	
 	public static void main(String[] args) {
-		//getPlayers();
-		ServerHandler.instance.addPlayer("lopas");
+		// getPlayers();
+		player = ServerHandler.instance.addPlayer("bbbbb");
+		
 		RequestThread.instance.start();
+		
+		
 		//addPlayer("Tadas");
 //		addEntity();
-		//addEntities();
+		//addEntities(); 
 		
 		new App().run();
 		RequestThread.instance.cancel();

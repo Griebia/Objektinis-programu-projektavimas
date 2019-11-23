@@ -14,7 +14,7 @@ import org.springframework.web.client.RestTemplate;
 import tconq.entity.Player;
 
 public class ServerHandler {
-    public String serverip = "40.76.27.38:8080";
+    public String serverip = "localhost:8080";//"40.76.27.38:8080";
     public Long playerID = 0L;
     public static ServerHandler instance = new ServerHandler();
 
@@ -40,14 +40,23 @@ public class ServerHandler {
 		return result;
 	}
 	
-	public static ArrayList<Long> getOpponentIds(String opponents){
+	public static ArrayList<Player> getOpponents(String opponents){
 		JSONArray jsonArray = new JSONArray(opponents); // changes string to jsonArray
-		ArrayList<Long> ids = new ArrayList<Long>();
+		ArrayList<Player> opponentList = new ArrayList<Player>();
+		Player opp = new Player();
 		for (int i = 0; i < jsonArray.length(); i++) {
 			JSONObject jsonEntity = jsonArray.getJSONObject(i); // gets one json onject form array
-			ids.add(jsonEntity.getLong("id"));
+			String name = jsonEntity.getString("name");
+			int gold = jsonEntity.getInt("gold");
+			int points = jsonEntity.getInt("points");
+			String playername = jsonEntity.getString("name");
+			boolean playing = jsonEntity.getBoolean("playing");
+			long id = jsonEntity.getLong("id");
+
+			opp = new Player(id, name, gold, playing, points, playername);
+			opponentList.add(opp);
 		}
-		return ids;
+		return opponentList;
 	}
     
     public  String getEntities(Long playerId){
@@ -105,7 +114,7 @@ public class ServerHandler {
 		restTemplate.postForObject(uri, entity, String.class);
 	}
 
-	public void addPlayer(String name){
+	public Player addPlayer(String name) {
 		final String uri = "http://" + serverip + "/Player";
 
 		
@@ -125,8 +134,6 @@ public class ServerHandler {
 		// build the request
 		HttpEntity<HashMap<String, Object>> entity = new HttpEntity<>(map, headers);
 
-
-
 		RestTemplate restTemplate = new RestTemplate();
 		// send POST request
 		ResponseEntity<Player> response = restTemplate.postForEntity(uri, entity, Player.class);
@@ -134,6 +141,11 @@ public class ServerHandler {
 		//sets player id
 		playerID = response.getBody().getId();
 
+		Player newPlayer = new Player(response.getBody().getId(), response.getBody().getName(), response.getBody().getGold(),
+		 	response.getBody().getPLaying(), response.getBody().getPoints(), response.getBody().getPlayerName());
 
+		return newPlayer;
 	}
+
+	
 }

@@ -84,7 +84,7 @@ class PlayerController {
         if(!player.isPresent()){
             throw new PlayerNotFoundExeption("id-"+id);
         }
-        return player.get();
+        return repository.findById(id).orElse(null);
     }
 
 
