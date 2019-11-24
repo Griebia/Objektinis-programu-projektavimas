@@ -22,6 +22,8 @@ public class WeakToMedium implements Upgrade {
             medium.setId(entityId);
 
             world.addEntity(medium, playerId);
+
+            System.out.println("Used strategy WeakToMedium");
         }
     }
 
