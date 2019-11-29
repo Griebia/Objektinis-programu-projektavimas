@@ -5,6 +5,8 @@ import tconq.entity.IEntity;
 import tconq.entity.TransformTc;
 import tconq.entity.adapter.IEntityCostAdapter;
 import tconq.entity.adapter.StrongUnitCostAdapter;
+import tconq.entity.state.MediumUnitState;
+import tconq.entity.state.StateContext;
 import tconq.io.Window;
 import tconq.render.Camera;
 import tconq.worldmap.Map;
@@ -13,6 +15,7 @@ public class StrongUnit extends Entity {
 
     public StrongUnit(TransformTc transform) {
         super("strongWarrior.png", transform);
+        stateContext = new StateContext(new MediumUnitState());
         // TODO Auto-generated constructor stub
     }
 

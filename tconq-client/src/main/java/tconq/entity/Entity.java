@@ -8,6 +8,8 @@ import tconq.assets.Assets;
 import tconq.collision.AABB;
 import tconq.collision.Collision;
 import tconq.entity.command.MovementControl;
+import tconq.entity.state.State;
+import tconq.entity.state.StateContext;
 import tconq.entity.strategy.Upgrade;
 import tconq.io.Window;
 import tconq.render.Animation;
@@ -25,6 +27,7 @@ public abstract class Entity implements IEntity{
 	private int use_animation;
 	protected Texture texture;
 	protected Upgrade upgradeStrategy;
+	protected StateContext stateContext;
 
 	
 	protected TransformTc transform;
@@ -63,6 +66,7 @@ public abstract class Entity implements IEntity{
 		bounding_box = new AABB(new Vector2f(transform.pos.x, transform.pos.y), new Vector2f(transform.scale.x, transform.scale.y));
 		movementControl = new MovementControl(this);
 	}
+
 
 	protected void setTexture(String texturepath){
 		this.texture = new Texture(texturepath);
@@ -146,13 +150,13 @@ public abstract class Entity implements IEntity{
 
 
 	public void upgrade(Map world, Long entityId) {
-		if(upgradeStrategy != null)
-			upgradeStrategy.upgrade(this.transform, world, ServerHandler.instance.playerID, entityId);
+// Strategy Upgrade
+//		if(upgradeStrategy != null)
+//			upgradeStrategy.upgrade(this.transform, world, ServerHandler.instance.playerID, entityId);
 		//TODO: implement
+		this.stateContext.upgrade(this.transform, world, ServerHandler.instance.playerID, entityId);
 	}
 
-
-	
 	public abstract void update(float delta, Window window, Camera camera, Map world);
 	
 	public void render(Shader shader, Camera camera, Map world) {
