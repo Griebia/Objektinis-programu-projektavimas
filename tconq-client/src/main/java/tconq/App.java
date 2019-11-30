@@ -331,7 +331,7 @@ public class App {
 
 	public static void main(String[] args) {
 		// getPlayers();
-		player = ServerHandler.instance.addPlayer("bbbbb");
+		player = ServerHandler.instance.addPlayer("aaaa");
 		
 		RequestThread.instance.start();
 		

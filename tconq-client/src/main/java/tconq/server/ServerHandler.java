@@ -14,7 +14,7 @@ import org.springframework.web.client.RestTemplate;
 import tconq.entity.Player;
 
 public class ServerHandler {
-    public String serverip = "localhost:8080";//"40.76.27.38:8080";
+    public String serverip = "212.12.201.159:8080";//"40.76.27.38:8080";
     public Long playerID = 0L;
     public static ServerHandler instance = new ServerHandler();
 
@@ -146,6 +146,5 @@ public class ServerHandler {
 
 		return newPlayer;
 	}
-
 	
 }
