@@ -1,14 +1,16 @@
 package tconq.gui;
 
-
 import org.joml.Vector2f;
 
 import tconq.App;
 import tconq.assets.Assets;
 import tconq.collision.AABB;
+import tconq.entity.Entity;
 import tconq.entity.IEntity;
+import tconq.entity.IEntityUpgrade;
 import tconq.entity.TransformTc;
 import tconq.entity.factory.*;
+import tconq.entity.proxy.EntityProxy;
 import tconq.entity.strategy.HouseToTower;
 import tconq.entity.strategy.MediumToStrong;
 import tconq.entity.strategy.TowerToCastle;
@@ -166,10 +168,11 @@ public class Selector {
 
 			//checks what type of unit is on the tile and upgrades it
 			IEntity entity = world.getEntity(tc.pos);
+			//IEntityUpgrade entityupgrade = (IEntityUpgrade)entity;
+			EntityProxy proxy = new EntityProxy((IEntityUpgrade)entity);
 			if (entity != null) {
-				entity.upgrade(world, entity.getId());
+				proxy.upgrade(world, entity.getId());
 				canUpgrade = false;
-
 			}
 			selectedState = STATE_CLICKED;
 		}

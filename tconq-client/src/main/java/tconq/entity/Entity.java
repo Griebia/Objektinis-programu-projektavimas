@@ -20,7 +20,7 @@ import tconq.server.ServerHandler;
 import tconq.worldmap.Map;
 
 
-public abstract class Entity implements IEntity{
+public abstract class Entity implements IEntity, IEntityUpgrade{
 	protected AABB bounding_box;
 	
 	protected Animation[] animations;

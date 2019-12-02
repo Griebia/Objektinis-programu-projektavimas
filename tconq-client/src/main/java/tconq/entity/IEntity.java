@@ -31,13 +31,11 @@ public interface IEntity {
 
     public void collideWithTiles(Map world) ;
 
-    public void upgrade(Map world, Long entityId);
+
 
     public void collideWithEntity(IEntity entity) ;
 
     public Class getEntityClass(IEntity entity);
-
-
 
 
     public boolean getAttack(IEntity enemyUnit);
