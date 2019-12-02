@@ -3,6 +3,7 @@ package tconq.entity.decorator;
 import org.joml.Vector2f;
 import tconq.collision.AABB;
 import tconq.entity.IEntity;
+import tconq.entity.IEntityUpgrade;
 import tconq.entity.TransformTc;
 import tconq.entity.strategy.Upgrade;
 import tconq.io.Window;
@@ -10,12 +11,14 @@ import tconq.render.Camera;
 import tconq.render.Shader;
 import tconq.worldmap.Map;
 
-public abstract class UnitDecorator implements IEntity{
+public abstract class UnitDecorator implements IEntity, IEntityUpgrade{
 
     protected IEntity tempUnit;
+    protected IEntityUpgrade tempUnitUpgrade;
 
     public UnitDecorator(IEntity newUnit){
         tempUnit = newUnit;
+        tempUnitUpgrade = (IEntityUpgrade) newUnit;
     }
 
     //checks if current unit can beat passed unit
@@ -99,7 +102,7 @@ public abstract class UnitDecorator implements IEntity{
 
     @Override
     public void upgrade(Map world, Long entityId) {
-        tempUnit.upgrade(world, entityId);
+        tempUnitUpgrade.upgrade(world, entityId);
     }
 
 

@@ -28,6 +28,7 @@ import lwjgui.event.MouseEvent;
 import tconq.App;
 import tconq.collision.AABB;
 import tconq.entity.IEntity;
+import tconq.entity.IEntityUpgrade;
 import tconq.entity.TransformTc;
 import tconq.entity.decorator.Attack;
 import tconq.entity.decorator.AttackBuilding;
@@ -368,7 +369,8 @@ public class Map {
 					if(!entityType.toLowerCase().equals(upgradedEntType.toLowerCase())){
 						for (IEntity entLocal : entities) {	
 							if(entLocal.getId() == upgradedEnt.getId()){
-								entLocal.upgrade(Selector.world, entLocal.getId());
+								IEntityUpgrade e = (IEntityUpgrade) entLocal;
+								e.upgrade(Selector.world, entLocal.getId());
 								break;
 							}								
 						}
