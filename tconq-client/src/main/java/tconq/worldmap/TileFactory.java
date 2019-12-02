@@ -26,6 +26,10 @@ public class TileFactory {
                 break;
                 case 3 :
                 t = new Tile(new Grass( new TextureColorBlue() ));
+                break;
+                default:
+                t = new Tile(new Water( new TextureColorDefault() ) );
+
             }
             hash.put(id, t);   
 

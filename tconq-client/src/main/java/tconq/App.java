@@ -14,20 +14,17 @@ import static org.lwjgl.opengl.GL11.glClear;
 import static org.lwjgl.opengl.GL11.glEnable;
 import static org.lwjgl.opengl.GL11.glViewport;
 
-import java.io.Console;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import lwjgui.event.EventHandler;
 import lwjgui.event.MouseEvent;
-import org.json.JSONArray;
-import org.json.JSONObject;
+
 import org.lwjgl.opengl.GL;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
@@ -205,7 +202,7 @@ public class App {
 		// Model model = new Model(vertices, texture, indices);
 		Shader shader = new Shader("shader");
 
-		Map world = new Map("test_level");
+		Map world = new Map("test_level2");
 		TileRender tiles = new TileRender(world);
 		Assets.initAsset();
 		world.calculateView(window);
@@ -213,7 +210,7 @@ public class App {
 
 		// Gui gui = new Gui(window);
 
-		double frame_cap = 1.0 / 60.0;
+		double frame_cap = 1.0 / 1000.0;
 
 		double frame_time = 0;
 		int frames = 0;
@@ -255,7 +252,8 @@ public class App {
 
 				if (frame_time >= 1.0) {
 					frame_time = 0;
-					System.out.println("FPS: " + frames);
+					System.out.println("FPS: " + frames + " Memory used: " + 
+					(Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory())/1048576 + " mb");
 					frames = 0;
 				}
 			}
@@ -334,7 +332,7 @@ public class App {
 
 	public static void main(String[] args) {
 		// getPlayers();
-		player = ServerHandler.instance.addPlayer("bb");
+		player = ServerHandler.instance.addPlayer("aa");
 		
 		RequestThread.instance.start();
 		
