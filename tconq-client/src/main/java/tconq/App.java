@@ -172,9 +172,6 @@ public class App {
 
 		glEnable(GL_TEXTURE_2D);
 
-		TileRender tiles = new TileRender();
-		Assets.initAsset();
-
 		lwjguiWindow = LWJGUI.initialize(window.getWindow());
 		lwjguiWindow.setWindowAutoClear(false); // We must call glClear ourselves.
 		lwjguiWindow.setWindowAutoDraw(false); // We must call glfwSwapBuffers ourselves.
@@ -205,6 +202,8 @@ public class App {
 		Shader shader = new Shader("shader");
 
 		Map world = new Map("test_level");
+		TileRender tiles = new TileRender(world);
+		Assets.initAsset();
 		world.calculateView(window);
 		Gui gui = new Gui(this.window, world);
 

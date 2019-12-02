@@ -44,7 +44,7 @@ import tconq.server.ServerHandler;
 public class Map {
 	private int viewX;
 	private int viewY;
-	private byte[] tiles;
+	private int[] tiles;
 	private AABB[] bounding_boxes;
 	// private AABB selectedTile;
 	private static List<IEntity> entities;
@@ -52,6 +52,7 @@ public class Map {
 	private int width;
 	private int height;
 	private int scale;
+	private TileFactory tileFactory = new TileFactory();
 
 	private Matrix4f Map;
 
@@ -82,7 +83,7 @@ public class Map {
 			// int[] colorEntitySheet = entity_sheet.getRGB(0, 0, width, height, null, 0,
 			// width);
 
-			tiles = new byte[width * height];
+			tiles = new int[width * height];
 			bounding_boxes = new AABB[width * height];
 			entities = new ArrayList<>();
 			entitiesOpponent = new ArrayList<>();
@@ -97,7 +98,7 @@ public class Map {
 
 					Tile t;
 					try {
-						t = Tile.tiles[red];
+						t = tileFactory.getTile(red);
 					} catch (ArrayIndexOutOfBoundsException e) {
 						t = null;
 					}
@@ -173,7 +174,7 @@ public class Map {
 		height = 64;
 		scale = 16;
 
-		tiles = new byte[width * height];
+		tiles = new int[width * height];
 		bounding_boxes = new AABB[width * height];
 
 		Map = new Matrix4f().setTranslation(new Vector3f(0));
@@ -248,7 +249,7 @@ public class Map {
 
 	public Tile getTile(int x, int y) {
 		try {
-			return Tile.tiles[tiles[x + y * width]];
+			return tileFactory.getTile(tiles[x + y * width]);
 		} catch (ArrayIndexOutOfBoundsException e) {
 			return null;
 		}
@@ -379,8 +380,12 @@ public class Map {
 			}
 			else
 				addEntity(Ient, playerId);
-		}			
+		}	
+
+		
 	}
+
+	public TileFactory getTileFactory() {return tileFactory;}
 
 	/*
 	public static EventHandler<MouseEvent> endTurnPressedOpponent() { // replace with some event listener when normal multiplayer is implemented

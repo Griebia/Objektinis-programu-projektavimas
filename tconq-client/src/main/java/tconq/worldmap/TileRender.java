@@ -10,8 +10,10 @@ import tconq.render.*;
 public class TileRender {
 	private HashMap<String, Texture> tileTextures;
 	private Model tileModel;
+	private Map map;
 	
-	public TileRender() {
+	public TileRender(Map map) {
+		this.map = map;
 		tileTextures = new HashMap<>();
 		float[] vertices = new float[]{-1f, 1f, 0, // TOP LEFT 0
 			1f, 1f, 0,  // TOP RIGHT 1
@@ -25,10 +27,10 @@ public class TileRender {
 		
 		tileModel = new Model(vertices, texture, indices);
 		
-		for (int i = 0; i < Tile.tiles.length; i++) {
-			if (Tile.tiles[i] != null) {
-				if (!tileTextures.containsKey(Tile.tiles[i].getTexture())) {
-					String tex = Tile.tiles[i].getTexture();
+		for (int i = 0; i < map.getTileFactory().getHashLenght(); i++) {
+			if (map.getTileFactory().getTile(i) != null) {
+				if (!tileTextures.containsKey(map.getTileFactory().getTile(i).getTexture())) {
+					String tex = map.getTileFactory().getTile(i).getTexture();
 					tileTextures.put(tex, new Texture(tex + ".png"));
 				}
 			}
