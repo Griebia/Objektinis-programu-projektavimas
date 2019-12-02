@@ -15,7 +15,7 @@ public class MediumUnitState implements State {
         //deletes weak unit and places medium unit in it's place
         if (world.removeEntity(tc.pos))
         {
-            IEntity medium = entityFactory.getEntity("MediumUnit",tc);
+            IEntity medium = entityFactory.getEntity("StrongUnit",tc);
             medium.setId(entityId);
 
             world.addEntity(medium, playerId);

@@ -50,8 +50,9 @@ public class Castle extends Entity{
 
     @Override
     public void addPoints() {
-        App.instance.player.addPoints(10);
+        App.player.addPoints(10);
         
     }
+
 
 }

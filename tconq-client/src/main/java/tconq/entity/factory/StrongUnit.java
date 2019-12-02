@@ -50,8 +50,10 @@ public class StrongUnit extends Entity {
 
     @Override
     public void addPoints() {
-        App.instance.player.addPoints(5);
+        App.player.addPoints(5);
         
     }
+
+
 
 }

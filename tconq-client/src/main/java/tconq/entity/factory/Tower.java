@@ -49,7 +49,8 @@ public class Tower extends Entity {
 
     @Override
     public void addPoints() {
-        App.instance.player.addPoints(7);
+        App.player.addPoints(7);
         
     }
+
 }
