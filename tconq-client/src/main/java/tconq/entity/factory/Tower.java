@@ -1,5 +1,6 @@
 package tconq.entity.factory;
 
+import tconq.App;
 import tconq.entity.Entity;
 import tconq.entity.IEntity;
 import tconq.entity.TransformTc;
@@ -44,5 +45,11 @@ public class Tower extends Entity {
         IEntity WeakUnit = new WeakUnit(transform);
         IEntityCostAdapter towerCostAdapter = new TowerCostAdapter(WeakUnit);
         return towerCostAdapter.getCostAdapter();
+    }
+
+    @Override
+    public void addPoints() {
+        App.instance.player.addPoints(7);
+        
     }
 }

@@ -321,6 +321,8 @@ public class Map {
 				RestTemplate restTemplate = new RestTemplate();
 				restTemplate.postForObject(uri, entity, String.class);
 
+				ServerHandler.instance.updatePlayer(App.instance.player);		// updates player atributes
+
 				//-----------------------NEXT TURN STUFF--------------------------
 				final String uriPlayer = "http://" + ServerHandler.instance.serverip + "/NextTurn/" + ServerHandler.instance.playerID.toString();
 

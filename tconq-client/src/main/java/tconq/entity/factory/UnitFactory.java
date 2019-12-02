@@ -11,13 +11,19 @@ public class UnitFactory extends AbstractEntityFactory {
         switch(entityType.toLowerCase()){
             case "strongunit":
                 if(DebugHandler.debugmode.factoryDebug) System.out.println("Spawning strong unit using Unit Factory");
-                return new StrongUnit(transform);
+                StrongUnit newStrongUnit = new StrongUnit(transform);
+                newStrongUnit.processEntity();
+                return newStrongUnit;
             case "mediumunit":
                 if(DebugHandler.debugmode.factoryDebug) System.out.println("Spawning medium unit using Unit Factory");
-                return new MediumUnit(transform);
+                MediumUnit newMediumUnit = new MediumUnit(transform);
+                newMediumUnit.processEntity();
+                return newMediumUnit;
             case "weakunit":
                 if(DebugHandler.debugmode.factoryDebug) System.out.println("Spawning weak unit using Unit Factory");
-                return new WeakUnit(transform);
+                WeakUnit newWeakUnit = new WeakUnit(transform);
+                newWeakUnit.processEntity();
+                return newWeakUnit;
             default:
                 if(DebugHandler.debugmode.factoryDebug) System.out.println("No such unit type");
                 return null;

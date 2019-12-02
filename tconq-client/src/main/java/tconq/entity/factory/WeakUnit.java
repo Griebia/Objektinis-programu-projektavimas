@@ -1,5 +1,6 @@
 package tconq.entity.factory;
 
+import tconq.App;
 import tconq.entity.Entity;
 import tconq.entity.IEntity;
 import tconq.entity.TransformTc;
@@ -39,4 +40,10 @@ public class WeakUnit extends Entity {
 	public int getCost(){
 		return 1;
 	}
+
+	@Override
+    public void addPoints() {
+        App.instance.player.addPoints(1);
+        
+    }
 }

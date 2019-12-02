@@ -201,6 +201,10 @@ public abstract class Entity implements IEntity, IEntityUpgrade{
 		return 5;
 	}
 
+	public abstract void addPoints();
 
+	public final void processEntity(){
+		addPoints();
+	}
 	
 }

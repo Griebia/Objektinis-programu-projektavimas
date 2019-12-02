@@ -1,5 +1,8 @@
 package tconq.entity.factory;
 
+import org.springframework.web.client.RestTemplate;
+
+import tconq.App;
 import tconq.entity.Entity;
 import tconq.entity.IEntity;
 import tconq.entity.TransformTc;
@@ -7,9 +10,10 @@ import tconq.entity.adapter.CastleCostAdapter;
 import tconq.entity.adapter.IEntityCostAdapter;
 import tconq.io.Window;
 import tconq.render.Camera;
+import tconq.server.ServerHandler;
 import tconq.worldmap.Map;
 
-public class Castle extends Entity {
+public class Castle extends Entity{
 
     public Castle(TransformTc transform) {
         super("castle.png", transform);
@@ -43,4 +47,11 @@ public class Castle extends Entity {
         IEntityCostAdapter castleCostAdapter = new CastleCostAdapter(WeakUnit);
         return castleCostAdapter.getCostAdapter();
     }
+
+    @Override
+    public void addPoints() {
+        App.instance.player.addPoints(10);
+        
+    }
+
 }

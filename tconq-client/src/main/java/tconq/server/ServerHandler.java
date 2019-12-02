@@ -32,11 +32,6 @@ public class ServerHandler {
 		RestTemplate  restTemplate = new RestTemplate();
 		String result = restTemplate.getForObject(uri, String.class);
 
-
-//		System.out.println(result);
-
-
-
 		return result;
 	}
 	
@@ -145,6 +140,32 @@ public class ServerHandler {
 		 	response.getBody().getPLaying(), response.getBody().getPoints(), response.getBody().getPlayerName());
 
 		return newPlayer;
+	}
+
+	public void updatePlayer(Player player){
+		final String uri = "http://" + serverip + "/Player/" + player.getId();
+
+		
+		// create headers
+		HttpHeaders headers = new HttpHeaders();
+		// set `content-type` header
+		headers.setContentType(MediaType.APPLICATION_JSON);
+
+		// create a map for post parameters
+		HashMap<String, Object> map = new HashMap<>();
+		map.put("id",player.getId());
+		map.put("points",player.getPoints());
+		map.put("name",player.getName());
+		map.put("gold",player.getGold());
+		map.put("playing",player.getPLaying());
+
+		// build the request
+		HttpEntity<HashMap<String, Object>> entity = new HttpEntity<>(map, headers);
+
+		RestTemplate restTemplate = new RestTemplate();
+		// send POST request
+		restTemplate.put(uri, entity);
+
 	}
 	
 }

@@ -68,7 +68,11 @@ public class App {
 
 	private static Boolean sendRequest = true;
 
-	private static Player player;
+	public static Player player;
+
+	public static App instance = new App();
+
+	private App(){};
 
 	private static void showCursorCoordinates(Map world, Camera cam) {
 		// AABB box = world.getTileBoundingBox((int) (pos.x), (int) (pos.y));
@@ -331,7 +335,7 @@ public class App {
 
 	public static void main(String[] args) {
 		// getPlayers();
-		player = ServerHandler.instance.addPlayer("asd");
+		player = ServerHandler.instance.addPlayer("bb");
 		
 		RequestThread.instance.start();
 		

@@ -10,13 +10,19 @@ public class BuildingFactory extends AbstractEntityFactory {
         switch(entityType.toLowerCase()){
             case "castle":
                 if(DebugHandler.debugmode.factoryDebug) System.out.println("Spawning castle using Building Factory");
-                return new Castle(transform);
+                Castle newCastle = new Castle(transform);
+                newCastle.processEntity();
+                return newCastle;
             case "tower":
                 if(DebugHandler.debugmode.factoryDebug) System.out.println("Spawning tower using Building Factory");
-                return new Tower(transform);
+                Tower newTower = new Tower(transform);
+                newTower.processEntity();
+                return newTower;
             case "house":
                 if(DebugHandler.debugmode.factoryDebug) System.out.println("Spawning house using Building Factory");
-                return new House(transform);
+                House newHouse = new House(transform);
+                newHouse.processEntity();
+                return newHouse;
             default:
                 System.out.println("no such building type");
                 return null;
