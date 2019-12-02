@@ -23,6 +23,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.web.client.RestTemplate;
 
+import tconq.entity.Player;
 import lwjgui.event.EventHandler;
 import lwjgui.event.MouseEvent;
 import tconq.App;
@@ -322,7 +323,10 @@ public class Map {
 				RestTemplate restTemplate = new RestTemplate();
 				restTemplate.postForObject(uri, entity, String.class);
 
-				ServerHandler.instance.updatePlayer(App.instance.player);		// updates player atributes
+				Player updatedPlayer = ServerHandler.instance.updatePlayer(App.player);		// updates player atributes
+
+				App.gold.setText("Gold: " + updatedPlayer.getGold());
+				App.points.setText("Points: " + updatedPlayer.getPoints());
 
 				//-----------------------NEXT TURN STUFF--------------------------
 				final String uriPlayer = "http://" + ServerHandler.instance.serverip + "/NextTurn/" + ServerHandler.instance.playerID.toString();
@@ -352,7 +356,7 @@ public class Map {
 			tc.pos.x = jsonEntity.getFloat("x");
 			tc.pos.y = jsonEntity.getFloat("y");
 			String entityType = new StringBuilder().append(jsonEntity.getString("type")).append("unit").toString();
-			IEntity Ient = Selector.entityFactory.getEntity(entityType, tc);
+			IEntity Ient = Selector.entityFactory.getEntityFromDb(entityType, tc);
 			Ient.setId(jsonEntity.getLong("id"));
 			JSONObject player = (JSONObject)jsonEntity.get("player");
 			Long playerId = player.getLong("id");

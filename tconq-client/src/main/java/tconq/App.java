@@ -70,9 +70,8 @@ public class App {
 
 	public static Player player;
 
-	public static App instance = new App();
-
-	private App(){};
+	public static Label gold ;
+	public static Label points; 
 
 	private static void showCursorCoordinates(Map world, Camera cam) {
 		// AABB box = world.getTileBoundingBox((int) (pos.x), (int) (pos.y));
@@ -108,10 +107,16 @@ public class App {
 			// vbox.setPadding(new Insets(0, 10, 10, 0));
 			pane.setTop(vbox);
 
-			Label label1 = new Label("Gold"); // TODO: write income and balance
-			label1.setTextFill(Color.YELLOW);
-			label1.setFontSize(32);
-			vbox.getChildren().add(label1);
+			//Label label1 = new Label("Gold" + player.getGold()); // TODO: write income and balance
+			gold = new Label("Gold: " + player.getGold());
+			gold.setTextFill(Color.YELLOW);
+			gold.setFontSize(32);
+			vbox.getChildren().add(gold);
+
+			points = new Label("Points: " + player.getPoints());
+			points.setTextFill(Color.GREEN);
+			points.setFontSize(32);
+			vbox.getChildren().add(points);
 			int i = 0;
 
 			// end turn button
