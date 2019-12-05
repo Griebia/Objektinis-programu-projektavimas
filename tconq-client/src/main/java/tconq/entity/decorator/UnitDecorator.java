@@ -75,8 +75,8 @@ public abstract class UnitDecorator implements IEntity, IEntityUpgrade{
     }
 
     @Override
-    public void move(String direction) {
-        tempUnit.move(direction);
+    public boolean move(String direction) {
+        return tempUnit.move(direction);
     }
     
     @Override
@@ -121,6 +121,9 @@ public abstract class UnitDecorator implements IEntity, IEntityUpgrade{
         return tempUnit.getCost();
     }
 
-
+    @Override
+    public boolean attackChain(IEntity opponent) {
+        return tempUnit.attackChain(opponent);
+    }
 
 }

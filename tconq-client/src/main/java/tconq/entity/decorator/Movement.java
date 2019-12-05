@@ -20,4 +20,6 @@ public class Movement extends UnitDecorator {
         }
         return tempUnit.getMovement();
     }
+
+
 }

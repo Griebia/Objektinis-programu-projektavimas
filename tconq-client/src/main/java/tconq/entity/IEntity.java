@@ -23,7 +23,7 @@ public interface IEntity {
 
     public TransformTc getPos();
 
-    public void move(String direction);
+    public boolean move(String direction);
     public void move(Vector2f direction);
     public void undo();
 
@@ -45,4 +45,6 @@ public interface IEntity {
     public int getMovement();
 
     public int getCost();
+
+    public boolean attackChain(IEntity opponent);
 }

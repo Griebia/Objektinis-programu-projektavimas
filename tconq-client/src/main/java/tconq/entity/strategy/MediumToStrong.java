@@ -2,8 +2,8 @@ package tconq.entity.strategy;
 
 import tconq.entity.IEntity;
 import tconq.entity.TransformTc;
-import tconq.entity.decorator.Attack;
-import tconq.entity.decorator.AttackBuilding;
+//import tconq.entity.decorator.Attack;
+//import tconq.entity.decorator.AttackBuilding;
 import tconq.entity.decorator.Movement;
 import tconq.entity.factory.AbstractEntityFactory;
 import tconq.entity.factory.EntityProducer;

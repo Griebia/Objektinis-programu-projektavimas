@@ -15,10 +15,10 @@ public class MediumUnitState implements State {
         //deletes weak unit and places medium unit in it's place
         if (world.removeEntity(tc.pos))
         {
-            IEntity medium = entityFactory.getEntity("StrongUnit",tc);
-            medium.setId(entityId);
+            IEntity strong = entityFactory.getEntity("StrongUnit",tc);
+            strong.setId(entityId);
 
-            world.addEntity(medium, playerId);
+            world.addEntity(strong, playerId);
             System.out.println("Used state to upgrade the medium to strong unit");
             context.setState(new StrongUnitState());
         }

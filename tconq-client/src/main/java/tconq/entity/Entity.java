@@ -7,6 +7,7 @@ import org.joml.Vector3f;
 import tconq.assets.Assets;
 import tconq.collision.AABB;
 import tconq.collision.Collision;
+import tconq.entity.chain_of_responsibility.*;
 import tconq.entity.command.MovementControl;
 import tconq.entity.state.State;
 import tconq.entity.state.StateContext;
@@ -93,9 +94,9 @@ public abstract class Entity implements IEntity, IEntityUpgrade{
 		
 		bounding_box.getCenter().set(transform.pos.x, transform.pos.y);
 	}
-	public void move(String direction)
+	public boolean move(String direction)
 	{
-		movementControl.move(direction);
+		return movementControl.move(direction);
 	}
 	public void undo(){movementControl.undo();};
 	
@@ -205,6 +206,26 @@ public abstract class Entity implements IEntity, IEntityUpgrade{
 
 	public final void processEntity(){
 		addPoints();
+	}
+
+
+
+	public boolean attackChain(IEntity opponent){
+		Chain weakUnit = new AttackWeak();
+		Chain mediumUnit = new AttackMedium();
+		Chain stringUnit = new AttackStrong();
+		Chain house = new AttackHouse();
+		Chain tower = new AttackTower();
+		Chain castle = new AttackCastle();
+
+
+		weakUnit.setNextChain(mediumUnit);
+		mediumUnit.setNextChain(stringUnit);
+		stringUnit.setNextChain(house);
+		house.setNextChain(tower);
+		tower.setNextChain(castle);
+
+		return weakUnit.attack(this, opponent);
 	}
 	
 }

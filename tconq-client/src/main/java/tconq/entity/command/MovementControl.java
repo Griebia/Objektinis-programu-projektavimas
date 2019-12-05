@@ -21,7 +21,7 @@ public class MovementControl {
     }
 
     //Moves the entity to one of the directions
-    public void move(String direction){
+    public boolean move(String direction){
         if(commandSequence.size() < unit.getMovement()) {
             ICommand command = commands.get(direction);
             //If there is no such command throws and exception
@@ -30,7 +30,9 @@ public class MovementControl {
             }
             commandSequence.add(command);
             command.move();
+            return true;
         }
+        return false;
     };
 
     //Undoes the last made move

@@ -9,6 +9,7 @@ import tconq.entity.Entity;
 import tconq.entity.IEntity;
 import tconq.entity.IEntityUpgrade;
 import tconq.entity.TransformTc;
+import tconq.entity.chain_of_responsibility.Null;
 import tconq.entity.factory.*;
 import tconq.entity.proxy.EntityProxy;
 import tconq.entity.strategy.HouseToTower;
@@ -43,7 +44,7 @@ public class Selector {
 	
 	public static long entityId = 1;
 
-	public static IEntity selectedEntity;
+	public static IEntity selectedEntity = new Null();
 
     public Selector( Map world2, Camera camera) {
 		//this.boundingBox = new AABB(position, scale);
@@ -78,7 +79,7 @@ public class Selector {
 					tc.pos.y =  (float)Math.floor(v.y)*-2;
 
 					//creates weak unit and adds decorators
-					IEntity weak = entityFactory.getEntity("weakUnit",tc);
+					IEntity weak = entityFactory.getEntity("weakunit",tc);
 
 					weak.setId(entityId++);
 
@@ -92,7 +93,7 @@ public class Selector {
 		}
 
 		//The movement of the unit
-		entityMovement(window);
+		entityMovement(window, world);
 //		if (window.getInput().isMouseButtonDown(0))
 //		{
 //			Vector2f v = getTileCoordinates(window);
@@ -117,33 +118,74 @@ public class Selector {
 		//else selectedState = STATE_IDLE;
 	}
 
-	public void entityMovement(Window window)
+	public void entityMovement(Window window, Map world)
 	{
-		if(selectedState == STATE_SELECTED  && canMove)
+		if(selectedState == STATE_SELECTED  && canMove && !selectedEntity.getClass().equals(Null.class) )
 		{
-
 			if(window.getInput().isKeyPressed(GLFW_KEY_UP)) {
-				selectedEntity.move("Up");
-				canMove = false;
+				moveAndAttack(world, "Up");
 			}
 			if(window.getInput().isKeyPressed(GLFW_KEY_DOWN)) {
-				selectedEntity.move("Down");
-				canMove = false;
+				moveAndAttack(world, "Down");
 			}
 			if(window.getInput().isKeyPressed(GLFW_KEY_RIGHT)) {
-				selectedEntity.move("Right");
-				canMove = false;
+				moveAndAttack(world, "Right");
 			}
 			if(window.getInput().isKeyPressed(GLFW_KEY_LEFT)) {
-				selectedEntity.move("Left");
-				canMove = false;
+				moveAndAttack(world, "Left");
 			}
-
 		}
 		if(window.getInput().isKeyReleased(GLFW_KEY_UP) || window.getInput().isKeyReleased(GLFW_KEY_RIGHT) || window.getInput().isKeyReleased(GLFW_KEY_LEFT) || window.getInput().isKeyReleased(GLFW_KEY_DOWN)) {
 			canMove = true;
 		}
 	}
+
+	public void moveAndAttack(Map world, String direction){
+		TransformTc tc = new TransformTc();
+
+		switch (direction){
+			case "Up":
+				tc.pos.x = selectedEntity.getPos().pos.x;
+				tc.pos.y = selectedEntity.getPos().pos.y + 2;
+				break;
+			case "Down":
+				tc.pos.x = selectedEntity.getPos().pos.x;
+				tc.pos.y = selectedEntity.getPos().pos.y - 2;
+				break;
+			case "Left":
+				tc.pos.x = selectedEntity.getPos().pos.x - 2;
+				tc.pos.y = selectedEntity.getPos().pos.y;
+				break;
+			case "Right":
+				tc.pos.x = selectedEntity.getPos().pos.x + 2;
+				tc.pos.y = selectedEntity.getPos().pos.y;
+				break;
+			default:
+				tc.pos.x = selectedEntity.getPos().pos.x;
+				tc.pos.y = selectedEntity.getPos().pos.y;
+				break;
+		}
+
+		IEntity opponent = world.getEntity(tc.pos);
+
+		boolean canAttack = selectedEntity.move(direction);
+
+		if (opponent != null && canAttack){
+			if (selectedEntity.attackChain(opponent)){
+				undoMove();
+				world.removeEntity(opponent.getPos().pos);
+				selectedEntity.move(direction);
+			}
+			else {
+				undoMove();
+				world.removeEntity(selectedEntity.getPos().pos);
+				selectedEntity = new Null();
+			}
+		}
+		canMove = false;
+	}
+
+
 	public static void undoMove()
 	{
 		selectedEntity.undo();

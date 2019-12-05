@@ -31,9 +31,10 @@ import tconq.collision.AABB;
 import tconq.entity.IEntity;
 import tconq.entity.IEntityUpgrade;
 import tconq.entity.TransformTc;
-import tconq.entity.decorator.Attack;
-import tconq.entity.decorator.AttackBuilding;
+//import tconq.entity.decorator.AttackBuilding;
 import tconq.entity.decorator.Movement;
+import tconq.entity.factory.AbstractEntityFactory;
+import tconq.entity.factory.EntityProducer;
 import tconq.gui.Selector;
 import tconq.io.Window;
 import tconq.render.Camera;
@@ -132,13 +133,16 @@ public class Map {
 	public static void addEntity(IEntity entity, Long playerId) {
 		entity.setPlayerId(playerId);
 		if (entity.getClass().getSimpleName().toLowerCase().contains("unit"))	//checks if entity is a unit
-			entity = new AttackBuilding( new Attack( new Movement(entity)));	//adds decorator to units
+			entity = new Movement(entity);	//adds decorator to units
+			//entity = new AttackBuilding( new Attack( new Movement(entity)));	//adds decorator to units
 
-		System.out.println("-------------------------------------------------------------------------------------");
-		System.out.println("Can move: " + entity.getMovement() + " spaces");
-		System.out.println("If attacks self with attack function: " + entity.getAttack(entity));
-		System.out.println("If attacks self with attack building function: " + entity.getDestroyBuilding(entity));
-		System.out.println("-------------------------------------------------------------------------------------");
+
+
+//		System.out.println("-------------------------------------------------------------------------------------");
+//		System.out.println("Can move: " + entity.getMovement() + " spaces");
+//		System.out.println("If attacks self with attack function: " + entity.getAttack(entity));
+//		System.out.println("If attacks self with attack building function: " + entity.getDestroyBuilding(entity));
+//		System.out.println("-------------------------------------------------------------------------------------");
 
 		entities.add(entity);
 	}
@@ -156,7 +160,7 @@ public class Map {
 		return null;
 	}
 
-	public static boolean removeEntity(Vector3f pos) {
+	public boolean removeEntity(Vector3f pos) {
 		for (int i = 0; i < entities.size(); i++) {
 			if (entities.get(i).getPos().pos.equals(pos)) {
 				entities.remove(i);
@@ -349,14 +353,27 @@ public class Map {
 
 	public static void fromDbToMap(String dbEntities, Long opponentId) { // gets entities from database and adds them to map
 		JSONArray jsonArray = new JSONArray(dbEntities); // changes string to jsonArray
+
+		AbstractEntityFactory unitFactory = EntityProducer.getFactory(true);
+		AbstractEntityFactory buildingFactory = EntityProducer.getFactory(false);
+		IEntity Ient = null;
 		for (int i = 0; i < jsonArray.length(); i++) {
 			JSONObject jsonEntity = jsonArray.getJSONObject(i); // gets one json onject form array
 
 			TransformTc tc = new TransformTc();
 			tc.pos.x = jsonEntity.getFloat("x");
 			tc.pos.y = jsonEntity.getFloat("y");
-			String entityType = new StringBuilder().append(jsonEntity.getString("type")).append("unit").toString();
-			IEntity Ient = Selector.entityFactory.getEntityFromDb(entityType, tc);
+
+			String entityType = jsonEntity.getString("type");
+			if ( entityType.equals("WEAK") || entityType.equals("MEDIUM") || entityType.equals("STRONG")){
+				entityType += "unit";
+				Ient = unitFactory.getEntityFromDb(entityType, tc);
+			}
+			else
+			{
+				Ient = buildingFactory.getEntityFromDb(entityType, tc);
+			}
+
 			Ient.setId(jsonEntity.getLong("id"));
 			JSONObject player = (JSONObject)jsonEntity.get("player");
 			Long playerId = player.getLong("id");
