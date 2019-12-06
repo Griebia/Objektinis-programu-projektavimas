@@ -9,9 +9,9 @@ import tconq.collision.AABB;
 import tconq.collision.Collision;
 import tconq.entity.chain_of_responsibility.*;
 import tconq.entity.command.MovementControl;
-import tconq.entity.state.State;
 import tconq.entity.state.StateContext;
 import tconq.entity.strategy.Upgrade;
+import tconq.entity.visitor.Visitor;
 import tconq.io.Window;
 import tconq.render.Animation;
 import tconq.render.Camera;
@@ -21,7 +21,7 @@ import tconq.server.ServerHandler;
 import tconq.worldmap.Map;
 
 
-public abstract class Entity implements IEntity, IEntityUpgrade{
+public abstract class Entity implements IEntity, IEntityUpgrade {
 	protected AABB bounding_box;
 	
 	protected Animation[] animations;
@@ -226,6 +226,10 @@ public abstract class Entity implements IEntity, IEntityUpgrade{
 		tower.setNextChain(castle);
 
 		return weakUnit.attack(this, opponent);
+	}
+
+	public int accept(Visitor visitor){
+		return visitor.visit(this);
 	}
 	
 }

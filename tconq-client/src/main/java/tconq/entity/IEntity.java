@@ -3,6 +3,7 @@ package tconq.entity;
 import org.joml.Vector2f;
 import tconq.collision.AABB;
 import tconq.entity.strategy.Upgrade;
+import tconq.entity.visitor.Visitor;
 import tconq.io.Window;
 import tconq.render.Animation;
 import tconq.render.Camera;
@@ -47,4 +48,6 @@ public interface IEntity {
     public int getCost();
 
     public boolean attackChain(IEntity opponent);
+
+    public int accept(Visitor visitor);
 }

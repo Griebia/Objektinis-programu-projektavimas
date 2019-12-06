@@ -5,10 +5,7 @@ import org.joml.Vector2f;
 import tconq.App;
 import tconq.assets.Assets;
 import tconq.collision.AABB;
-import tconq.entity.Entity;
-import tconq.entity.IEntity;
-import tconq.entity.IEntityUpgrade;
-import tconq.entity.TransformTc;
+import tconq.entity.*;
 import tconq.entity.chain_of_responsibility.Null;
 import tconq.entity.factory.*;
 import tconq.entity.proxy.EntityProxy;
@@ -16,12 +13,18 @@ import tconq.entity.strategy.HouseToTower;
 import tconq.entity.strategy.MediumToStrong;
 import tconq.entity.strategy.TowerToCastle;
 import tconq.entity.strategy.WeakToMedium;
+import tconq.entity.visitor.DeathTax;
+import tconq.entity.visitor.HouseIncome;
+import tconq.entity.visitor.WarriorTax;
 import tconq.io.Window;
 import tconq.render.Camera;
 import tconq.render.Shader;
 import tconq.render.TileSheet;
 import tconq.server.ServerHandler;
 import tconq.worldmap.Map;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 import static org.lwjgl.glfw.GLFW.*;
 
@@ -46,6 +49,9 @@ public class Selector {
 
 	public static IEntity selectedEntity = new Null();
 
+	public boolean timerStarted = false;
+	public Timer timer = new Timer();
+
     public Selector( Map world2, Camera camera) {
 		//this.boundingBox = new AABB(position, scale);
 		this.world = world2;
@@ -65,6 +71,7 @@ public class Selector {
 
 
 	public void update(Window window) {
+
 		Vector2f coords = getTileCoordinates(window);
 		AABB data = world.getEntityBoundungBox((int)coords.x, (int)coords.y);
 		this.boundingBox = data;
@@ -112,15 +119,53 @@ public class Selector {
 			canUpgrade = true;
 		}
 
+//		new EventHandler<MouseEvent>() {
+//			@Override
+//			public void handle(MouseEvent mouseEvent) {
+//				final String uri = "http://" + ServerHandler.instance.serverip + "/SEntities";
+//				HttpHeaders headers = new HttpHeaders();
+//				headers.setContentType(MediaType.APPLICATION_JSON);
+//
+//				ArrayList<HashMap<String, Object>> list = new ArrayList<HashMap<String, Object>>();
+//			};
+
+
 
 
 		//}
 		//else selectedState = STATE_IDLE;
+
+		if (!timerStarted){
+			timerStarted = true;
+			timer.schedule(new TimerTask() {
+				@Override
+				public void run() {
+					TaxAndIncome(world);
+				}
+			}, 4000, 4000 );
+
+		}
+	}
+
+	public void TaxAndIncome(Map world){
+		HouseIncome houseIncome = new HouseIncome();
+		WarriorTax warriorTax = new WarriorTax();
+    	for (IEntity ent : world.getEntities()){
+			if (ent.getEntityClass(ent).getSimpleName().toLowerCase().contains("unit")){
+				App.player.addGold(ent.accept(warriorTax));
+			}
+			else{
+				App.player.addGold(ent.accept(houseIncome));
+			}
+
+		}
+
+    	System.out.println("Current gold: " + App.player.getGold());
 	}
 
 	public void entityMovement(Window window, Map world)
 	{
-		if(selectedState == STATE_SELECTED  && canMove && !selectedEntity.getClass().equals(Null.class) )
+		if(selectedState == STATE_SELECTED  && canMove && selectedEntity != null && !selectedEntity.getClass().equals(Null.class) )
 		{
 			if(window.getInput().isKeyPressed(GLFW_KEY_UP)) {
 				moveAndAttack(world, "Up");
@@ -171,16 +216,20 @@ public class Selector {
 		boolean canAttack = selectedEntity.move(direction);
 
 		if (opponent != null && canAttack){
+			DeathTax deathTax = new DeathTax();
 			if (selectedEntity.attackChain(opponent)){
 				undoMove();
+				App.player.addGold(opponent.accept(deathTax));
 				world.removeEntity(opponent.getPos().pos);
 				selectedEntity.move(direction);
 			}
 			else {
 				undoMove();
+				App.player.addGold(selectedEntity.accept(deathTax));
 				world.removeEntity(selectedEntity.getPos().pos);
 				selectedEntity = new Null();
 			}
+			System.out.println("Current gold: " + App.player.getGold());
 		}
 		canMove = false;
 	}

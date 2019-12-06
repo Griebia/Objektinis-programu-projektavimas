@@ -6,6 +6,7 @@ import tconq.entity.IEntity;
 import tconq.entity.IEntityUpgrade;
 import tconq.entity.TransformTc;
 import tconq.entity.strategy.Upgrade;
+import tconq.entity.visitor.Visitor;
 import tconq.io.Window;
 import tconq.render.Camera;
 import tconq.render.Shader;
@@ -126,4 +127,8 @@ public abstract class UnitDecorator implements IEntity, IEntityUpgrade{
         return tempUnit.attackChain(opponent);
     }
 
+    @Override
+    public int accept(Visitor visitor) {
+        return tempUnit.accept(visitor);
+    }
 }

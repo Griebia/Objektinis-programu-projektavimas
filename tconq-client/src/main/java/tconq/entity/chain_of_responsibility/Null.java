@@ -4,6 +4,7 @@ import org.joml.Vector2f;
 import tconq.collision.AABB;
 import tconq.entity.IEntity;
 import tconq.entity.TransformTc;
+import tconq.entity.visitor.Visitor;
 import tconq.io.Window;
 import tconq.render.Camera;
 import tconq.render.Shader;
@@ -103,5 +104,10 @@ public class Null implements IEntity {
     @Override
     public boolean attackChain(IEntity opponent) {
         return false;
+    }
+
+    @Override
+    public int accept(Visitor visitor) {
+        return 0;
     }
 }

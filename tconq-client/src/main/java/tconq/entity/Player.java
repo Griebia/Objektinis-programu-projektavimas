@@ -49,6 +49,10 @@ public class Player {
         this.gold = gold;
     }
 
+    public void addGold(int gold) {
+        this.gold += gold;
+    }
+
     public boolean getPLaying(){
         return playing;
     }
