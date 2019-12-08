@@ -8,6 +8,9 @@ import tconq.entity.IEntity;
 import tconq.entity.TransformTc;
 import tconq.entity.adapter.CastleCostAdapter;
 import tconq.entity.adapter.IEntityCostAdapter;
+import tconq.entity.state.CastleState;
+import tconq.entity.state.MediumUnitState;
+import tconq.entity.state.StateContext;
 import tconq.io.Window;
 import tconq.render.Camera;
 import tconq.server.ServerHandler;
@@ -17,6 +20,7 @@ public class Castle extends Entity{
 
     public Castle(TransformTc transform) {
         super("castle.png", transform);
+        stateContext = new StateContext(new CastleState());
         // TODO Auto-generated constructor stub
     }
 

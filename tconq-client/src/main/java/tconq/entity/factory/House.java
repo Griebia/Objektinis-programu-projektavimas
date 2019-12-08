@@ -6,6 +6,9 @@ import tconq.entity.IEntity;
 import tconq.entity.TransformTc;
 import tconq.entity.adapter.HouseCostAdapter;
 import tconq.entity.adapter.IEntityCostAdapter;
+import tconq.entity.state.HouseState;
+import tconq.entity.state.MediumUnitState;
+import tconq.entity.state.StateContext;
 import tconq.entity.strategy.HouseToTower;
 import tconq.io.Window;
 import tconq.render.Camera;
@@ -16,6 +19,7 @@ public class House extends Entity {
     public House(TransformTc transform) {
         super("house.png", transform);
         upgradeStrategy = new HouseToTower();
+        stateContext = new StateContext(new HouseState());
         // TODO Auto-generated constructor stub
     }
 
