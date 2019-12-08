@@ -340,14 +340,14 @@ public class App {
 	public static void main(String[] args) {
 		// getPlayers();
 		player = ServerHandler.instance.addPlayer("bb");
-		
+
 		RequestThread.instance.start();
-		
-		
+
+
 		//addPlayer("Tadas");
 //		addEntity();
-		//addEntities(); 
-		
+		//addEntities();
+
 		new App().run();
 		RequestThread.instance.cancel();
 	}
