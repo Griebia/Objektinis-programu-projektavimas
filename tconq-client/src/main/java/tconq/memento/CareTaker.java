@@ -7,7 +7,7 @@ public class CareTaker {
     private int currState = -1;
 
     public CareTaker(){
-        this.history = new ArrayList<Memento>();
+        this.history = new ArrayList<>();
     }
 
     //Adds a memento to the memory

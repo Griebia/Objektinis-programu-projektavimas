@@ -15,7 +15,7 @@ public class Originator {
         return entities;
     }
 
-    public void setArticle(List<IEntity> entities) {
+    public void setEntities(List<IEntity> entities) {
         this.entities = entities;
     }
     //Puts in a memento class the current object
