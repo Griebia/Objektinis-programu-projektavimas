@@ -16,6 +16,9 @@ import tconq.entity.strategy.WeakToMedium;
 import tconq.entity.visitor.DeathTax;
 import tconq.entity.visitor.HouseIncome;
 import tconq.entity.visitor.WarriorTax;
+import tconq.interpreter.Context;
+import tconq.interpreter.Gold;
+import tconq.interpreter.Points;
 import tconq.io.Window;
 import tconq.render.Camera;
 import tconq.render.Shader;
@@ -23,6 +26,10 @@ import tconq.render.TileSheet;
 import tconq.server.ServerHandler;
 import tconq.worldmap.Map;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Scanner;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -41,6 +48,7 @@ public class Selector {
 	private AABB boundingBox;
 	//private Texture texture; TODO: implement selector textures.
 	public static AbstractEntityFactory entityFactory = EntityProducer.getFactory(true);  // changed from private to public static !!!
+	private BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
 	private boolean canUpgrade = true;		//if true unit or building can be upgraded if false can't resets when button is released
 	private boolean canMove = true;
@@ -142,9 +150,53 @@ public class Selector {
 				public void run() {
 					TaxAndIncome(world);
 				}
-			}, 4000, 4000 );
+			}, 10000, 10000 );
 
 		}
+
+
+		//interpreter
+
+
+
+		try {
+			if (reader.ready()){
+				String input = reader.readLine();
+
+				Context context = input.equals("") ? null : new Context(input);
+				if (context != null && context.getWhatToAdd() != null && !context.getWrongInput()) {
+					switch (context.getWhatToAdd()) {
+						case "gold":
+							Gold gold = new Gold();
+							switch (context.getCommand()) {
+								case "add":
+									gold.add(context.getAmount());
+									break;
+								case "remove":
+									gold.remove(context.getAmount());
+									break;
+							}
+							break;
+						case "points":
+							Points points = new Points();
+							switch (context.getCommand()) {
+								case "add":
+									points.add(context.getAmount());
+									break;
+								case "remove":
+									points.remove(context.getAmount());
+									break;
+							}
+							break;
+					}
+				}
+			}
+
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+		}
+
 	}
 
 	public void TaxAndIncome(Map world){
