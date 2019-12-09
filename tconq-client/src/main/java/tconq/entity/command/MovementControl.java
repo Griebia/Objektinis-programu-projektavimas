@@ -2,6 +2,7 @@ package tconq.entity.command;
 
 import tconq.entity.Entity;
 import tconq.entity.IEntity;
+import tconq.worldmap.Map;
 
 import javax.swing.*;
 import java.util.HashMap;
@@ -30,6 +31,7 @@ public class MovementControl {
             }
             commandSequence.add(command);
             command.move();
+            Map.save(unit,true);
             return true;
         }
         return false;

@@ -1,6 +1,7 @@
 package tconq.memento;
 
 import tconq.entity.IEntity;
+import tconq.worldmap.Map;
 
 public class Data {
     private IEntity entity;
@@ -9,6 +10,10 @@ public class Data {
     public Data(IEntity entity, boolean isMovement){
         this.entity = entity;
         this.isMovement = isMovement;
+    }
+
+    public void undo(Map map){
+        entity.undo(isMovement,map);
     }
 
     public IEntity getEntity() {

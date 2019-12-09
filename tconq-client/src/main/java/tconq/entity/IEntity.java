@@ -26,7 +26,8 @@ public interface IEntity {
 
     public boolean move(String direction);
     public void move(Vector2f direction);
-    public void undo();
+    public void undo(boolean isMovement, Map world);
+    public void undoMove();
 
     public AABB getEntityBoundingBox();
 

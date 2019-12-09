@@ -86,8 +86,13 @@ public abstract class UnitDecorator implements IEntity, IEntityUpgrade{
     }
 
     @Override
-    public void undo() {
-        tempUnit.undo();
+    public void undo(boolean isMovement,Map map) {
+        tempUnit.undo(isMovement,map);
+    }
+
+    @Override
+    public void undoMove() {
+        tempUnit.undoMove();
     }
 
     @Override

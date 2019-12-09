@@ -98,7 +98,24 @@ public abstract class Entity implements IEntity, IEntityUpgrade {
 	{
 		return movementControl.move(direction);
 	}
-	public void undo(){movementControl.undo();};
+
+	public void undoMove(){movementControl.undo();}
+
+	public void undo(boolean isMovement,Map world){
+		if (isMovement){
+		movementControl.undo();
+		}else{
+			downgrade(world);
+		}
+	};
+
+	public void downgrade(Map world) {
+// Strategy Upgrade
+//		if(upgradeStrategy != null)
+//			upgradeStrategy.upgrade(this.transform, world, ServerHandler.instance.playerID, entityId);
+		//TODO: implement
+		this.stateContext.downgrade(this.transform, world, ServerHandler.instance.playerID, this.id);
+	}
 	
 	public void collideWithTiles(Map world) {
 		AABB[] boxes = new AABB[25];

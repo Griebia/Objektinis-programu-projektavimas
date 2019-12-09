@@ -5,17 +5,17 @@ import tconq.entity.IEntity;
 import java.util.List;
 
 public class Memento {
-    private List<IEntity> state;
+    private Data state;
 
-    public Memento(List<IEntity> state) {
+    public Memento(Data state) {
         this.state = state;
     }
 
-    public List<IEntity> getState() {
+    public Data getState() {
         return state;
     }
 
-    public void setState(List<IEntity> state) {
+    public void setState(Data state) {
         this.state = state;
     }
 }

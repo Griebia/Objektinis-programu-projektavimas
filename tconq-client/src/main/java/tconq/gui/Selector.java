@@ -17,6 +17,7 @@ import tconq.entity.visitor.DeathTax;
 import tconq.entity.visitor.HouseIncome;
 import tconq.entity.visitor.WarriorTax;
 import tconq.io.Window;
+import tconq.memento.Data;
 import tconq.render.Camera;
 import tconq.render.Shader;
 import tconq.render.TileSheet;
@@ -237,8 +238,13 @@ public class Selector {
 
 	public static void undoMove()
 	{
-		selectedEntity.undo();
+		selectedEntity.undoMove();
 	}
+
+	public static void undo(Data data){
+    	data.undo(world);
+	}
+
 	//Selects an entity in the v vector position and makes it selected entity
 	public void SelectUnit(Vector2f v)
 	{

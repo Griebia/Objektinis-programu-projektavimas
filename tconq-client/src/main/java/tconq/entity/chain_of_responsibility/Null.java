@@ -57,9 +57,15 @@ public class Null implements IEntity {
     }
 
     @Override
-    public void undo() {
+    public void undo(boolean isMovement, Map world) {
 
     }
+
+    @Override
+    public void undoMove() {
+
+    }
+
 
     @Override
     public AABB getEntityBoundingBox() {

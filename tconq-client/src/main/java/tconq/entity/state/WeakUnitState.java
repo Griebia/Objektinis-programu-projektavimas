@@ -25,4 +25,9 @@ public class WeakUnitState implements State {
         }
 
     }
+
+    @Override
+    public void downgrade(StateContext context, TransformTc tc, Map world, Long playerId, Long entityId) {
+        world.removeEntity(tc.pos);
+    }
 }

@@ -154,7 +154,8 @@ public class App {
 		return new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent mouseEvent) {
-				Selector.undoMove();
+				Map.undo();
+				//Selector.undoMove();
 			}
 		};
 	}

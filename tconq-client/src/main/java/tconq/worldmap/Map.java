@@ -37,6 +37,9 @@ import tconq.entity.factory.AbstractEntityFactory;
 import tconq.entity.factory.EntityProducer;
 import tconq.gui.Selector;
 import tconq.io.Window;
+import tconq.memento.CareTaker;
+import tconq.memento.Data;
+import tconq.memento.Originator;
 import tconq.render.Camera;
 import tconq.render.Shader;
 import tconq.server.ServerHandler;
@@ -49,6 +52,8 @@ public class Map {
 	private int[] tiles;
 	private AABB[] bounding_boxes;
 	// private AABB selectedTile;
+	private static Originator originator;
+	private static CareTaker careTaker;
 	private static List<IEntity> entities;
 	private static List<IEntity> entitiesOpponent;
 	private int width;
@@ -89,6 +94,10 @@ public class Map {
 			bounding_boxes = new AABB[width * height];
 			entities = new ArrayList<>();
 			entitiesOpponent = new ArrayList<>();
+
+			originator = new Originator();
+			careTaker = new CareTaker();
+
 
 			// TransformTc transform;
 
@@ -145,6 +154,19 @@ public class Map {
 //		System.out.println("-------------------------------------------------------------------------------------");
 
 		entities.add(entity);
+		save(entity, false);
+	}
+
+	public static void undo(){
+		originator.restore(careTaker.undo());
+		Data current = originator.getData();
+		Selector.undo(current);
+	}
+
+	public static void save(IEntity last, boolean isMovement){
+		Data data = new Data(last,isMovement);
+		originator.setData(data);
+		careTaker.addMemento(originator.save());
 	}
 
 	public static void addEntityOpponent(IEntity entity, Long playerId) {

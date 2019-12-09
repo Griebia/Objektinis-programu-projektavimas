@@ -6,16 +6,16 @@ import java.util.List;
 
 public class Originator {
 
-    private List<IEntity> entities;
+    private Data entities;
 
     public Originator(){}
 
 
-    public List<IEntity> getEntities() {
+    public Data getData() {
         return entities;
     }
 
-    public void setEntities(List<IEntity> entities) {
+    public void setData(Data entities) {
         this.entities = entities;
     }
     //Puts in a memento class the current object
