@@ -3,26 +3,31 @@ package tconq.entity.factory;
 import tconq.entity.IEntity;
 import tconq.entity.TransformTc;
 import tconq.io.DebugHandler;
+import tconq.mediator.Mediator;
 
 public class UnitFactory extends AbstractEntityFactory {
 
     @Override
     public IEntity getEntity(String entityType, TransformTc transform){
+        Mediator mediator = new Mediator();
         switch(entityType.toLowerCase()){
             case "strongunit":
                 if(DebugHandler.debugmode.factoryDebug) System.out.println("Spawning strong unit using Unit Factory");
-                StrongUnit newStrongUnit = new StrongUnit(transform);
-                newStrongUnit.processEntity();      // execute template method
+                StrongUnit newStrongUnit = new StrongUnit(transform);               
+                mediator.executeStrongUnitTemplate(newStrongUnit);
+                //newStrongUnit.processEntity();      // execute template method
                 return newStrongUnit;
             case "mediumunit":
                 if(DebugHandler.debugmode.factoryDebug) System.out.println("Spawning medium unit using Unit Factory");
                 MediumUnit newMediumUnit = new MediumUnit(transform);
-                newMediumUnit.processEntity();      // execute template method
+                mediator.executeMediumUnitTemplate(newMediumUnit);
+                //newMediumUnit.processEntity();      // execute template method
                 return newMediumUnit;
             case "weakunit":
                 if(DebugHandler.debugmode.factoryDebug) System.out.println("Spawning weak unit using Unit Factory");
                 WeakUnit newWeakUnit = new WeakUnit(transform);
-                newWeakUnit.processEntity();        // execute template method
+                mediator.executeWeakUnitTemplate(newWeakUnit);
+                //newWeakUnit.processEntity();        // execute template method
                 return newWeakUnit;
             default:
                 if(DebugHandler.debugmode.factoryDebug) System.out.println("No such unit type");
