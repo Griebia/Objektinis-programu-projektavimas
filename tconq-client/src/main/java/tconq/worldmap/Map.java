@@ -182,6 +182,14 @@ public class Map {
 		return null;
 	}
 
+	public IEntity getEntity(int id) {
+		for (IEntity ent : entities) {
+			if (ent.getId() == id)
+				return ent;
+		}
+		return null;
+	}
+
 	public boolean removeEntity(Vector3f pos) {
 		for (int i = 0; i < entities.size(); i++) {
 			if (entities.get(i).getPos().pos.equals(pos)) {

@@ -41,6 +41,7 @@ public class Selector {
     public static final int STATE_IDLE = 0;
 	public static final int STATE_SELECTED = 1;
 	public static final int STATE_CLICKED = 2;
+	public boolean printed = false;
 	
 	private int selectedState;
 	public static Map world;
@@ -100,6 +101,7 @@ public class Selector {
 
 					world.addEntity(weak, ServerHandler.instance.playerID);
 					selectedState = STATE_CLICKED;
+					printed = false;
 				}
 		}else{
 			selectedState = STATE_SELECTED;
@@ -109,11 +111,10 @@ public class Selector {
 
 		//The movement of the unit
 		entityMovement(window, world);
-//		if (window.getInput().isMouseButtonDown(0))
-//		{
-//			Vector2f v = getTileCoordinates(window);
-//			SelectUnit(v);		//moves the unit to the right
-//		}
+		if (window.getInput().isMouseButtonDown(0))
+		{
+			printed = false;
+		}
 
 
 		if (window.getInput().isMouseButtonDown(1))
@@ -183,6 +184,21 @@ public class Selector {
 									break;
 							}
 							break;
+						case "move":
+							switch(context.getCommand()) {
+								case "left":
+									moveAndAttack(world, "Left", context.getAmount());
+									break;
+								case "right":
+									moveAndAttack(world, "Right", context.getAmount());
+									break;
+								case "up":
+									moveAndAttack(world, "Up", context.getAmount());
+									break;
+								case "down":
+									moveAndAttack(world, "Down", context.getAmount());
+									break;									
+							}
 					}
 				}
 			}
@@ -280,6 +296,58 @@ public class Selector {
 		canMove = false;
 	}
 
+	public void moveAndAttack(Map world, String direction, int entityId){
+		TransformTc tc = new TransformTc();
+		IEntity foundEntity = null;
+		foundEntity = world.getEntity(entityId);
+		if(foundEntity.equals(null))
+			return;
+		switch (direction){
+			case "Up":
+				tc.pos.x = foundEntity.getPos().pos.x;
+				tc.pos.y = foundEntity.getPos().pos.y + 2;
+				break;
+			case "Down":
+				tc.pos.x = foundEntity.getPos().pos.x;
+				tc.pos.y = foundEntity.getPos().pos.y - 2;
+				break;
+			case "Left":
+				tc.pos.x = foundEntity.getPos().pos.x - 2;
+				tc.pos.y = foundEntity.getPos().pos.y;
+				break;
+			case "Right":
+				tc.pos.x = foundEntity.getPos().pos.x + 2;
+				tc.pos.y = foundEntity.getPos().pos.y;
+				break;
+			default:
+				tc.pos.x = foundEntity.getPos().pos.x;
+				tc.pos.y = foundEntity.getPos().pos.y;
+				break;
+		}
+
+		IEntity opponent = world.getEntity(tc.pos);
+
+		boolean canAttack = foundEntity.move(direction);
+
+		if (opponent != null && canAttack){
+			DeathTax deathTax = new DeathTax();
+			if (foundEntity.attackChain(opponent)){
+				undoMove();
+				App.player.addGold(opponent.accept(deathTax));
+				world.removeEntity(opponent.getPos().pos);
+				foundEntity.move(direction);
+			}
+			else {
+				undoMove();
+				App.player.addGold(foundEntity.accept(deathTax));
+				world.removeEntity(foundEntity.getPos().pos);
+				foundEntity = new Null();
+			}
+			System.out.println("Current gold: " + App.player.getGold());
+		}
+		canMove = false;
+	}
+
 
 	public static void undoMove()
 	{
@@ -299,6 +367,22 @@ public class Selector {
 
 		//checks what type of unit is on the tile and upgrades it
 		selectedEntity = world.getEntity(tc.pos);
+		if(!printed){
+			System.out.println("Entity id: " + selectedEntity.getId());
+			printed = true;
+		}
+			
+	}
+
+	public void printEntityCoordinates(Vector2f v){
+		TransformTc tc = new TransformTc();
+			tc.pos.x = (float)Math.floor(v.x)*2;
+			tc.pos.y =  (float)Math.floor(v.y)*-2;
+
+			//checks what type of unit is on the tile and upgrades it
+			IEntity entity = world.getEntity(tc.pos);
+			if(!entity.equals(null)) System.out.println("Entity id: "+ entity.getId() + 
+			"COORDS: x=" + entity.getPos().pos.x +" y=" + entity.getPos().pos.x);
 	}
 
 	//upgrades units and buildings

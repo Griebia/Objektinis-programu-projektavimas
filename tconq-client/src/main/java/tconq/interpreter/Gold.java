@@ -13,4 +13,10 @@ public class Gold extends Expression {
         App.player.addGold(-amount);
         System.out.println("Current gold: " + App.player.getGold());
     }
+
+    @Override
+    public void interpret(Context context) {
+        // TODO Auto-generated method stub
+        
+    }
 }
