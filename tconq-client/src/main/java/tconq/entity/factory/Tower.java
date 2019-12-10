@@ -6,6 +6,9 @@ import tconq.entity.IEntity;
 import tconq.entity.TransformTc;
 import tconq.entity.adapter.IEntityCostAdapter;
 import tconq.entity.adapter.TowerCostAdapter;
+import tconq.entity.state.MediumUnitState;
+import tconq.entity.state.StateContext;
+import tconq.entity.state.TowerState;
 import tconq.entity.strategy.TowerToCastle;
 import tconq.io.Window;
 import tconq.render.Camera;
@@ -16,6 +19,7 @@ public class Tower extends Entity {
     public Tower( TransformTc transform) {
         super("tower.png", transform);
         upgradeStrategy = new TowerToCastle();
+        stateContext = new StateContext(new TowerState());
         // TODO Auto-generated constructor stub
     }
 
@@ -49,7 +53,8 @@ public class Tower extends Entity {
 
     @Override
     public void addPoints() {
-        App.instance.player.addPoints(7);
+        App.player.addPoints(7);
         
     }
+
 }

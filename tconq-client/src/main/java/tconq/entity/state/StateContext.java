@@ -17,4 +17,7 @@ public class StateContext {
     public void upgrade(TransformTc tc, Map world, Long playerId, Long entityId){
         state.upgrade(this,tc,world,playerId,entityId);
     }
+    public void downgrade(TransformTc tc, Map world, Long playerId, Long entityId){
+        state.downgrade(this,tc,world,playerId,entityId);
+    }
 }

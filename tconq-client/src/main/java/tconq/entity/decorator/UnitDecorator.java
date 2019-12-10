@@ -6,6 +6,7 @@ import tconq.entity.IEntity;
 import tconq.entity.IEntityUpgrade;
 import tconq.entity.TransformTc;
 import tconq.entity.strategy.Upgrade;
+import tconq.entity.visitor.Visitor;
 import tconq.io.Window;
 import tconq.render.Camera;
 import tconq.render.Shader;
@@ -75,8 +76,8 @@ public abstract class UnitDecorator implements IEntity, IEntityUpgrade{
     }
 
     @Override
-    public void move(String direction) {
-        tempUnit.move(direction);
+    public boolean move(String direction) {
+        return tempUnit.move(direction);
     }
     
     @Override
@@ -85,8 +86,13 @@ public abstract class UnitDecorator implements IEntity, IEntityUpgrade{
     }
 
     @Override
-    public void undo() {
-        tempUnit.undo();
+    public void undo(boolean isMovement,Map map) {
+        tempUnit.undo(isMovement,map);
+    }
+
+    @Override
+    public void undoMove() {
+        tempUnit.undoMove();
     }
 
     @Override
@@ -121,6 +127,13 @@ public abstract class UnitDecorator implements IEntity, IEntityUpgrade{
         return tempUnit.getCost();
     }
 
+    @Override
+    public boolean attackChain(IEntity opponent) {
+        return tempUnit.attackChain(opponent);
+    }
 
-
+    @Override
+    public int accept(Visitor visitor) {
+        return tempUnit.accept(visitor);
+    }
 }

@@ -67,9 +67,8 @@ public class App {
 
 	public static Player player;
 
-	public static App instance = new App();
-
-	private App(){};
+	public static Label gold ;
+	public static Label points; 
 
 	private static void showCursorCoordinates(Map world, Camera cam) {
 		// AABB box = world.getTileBoundingBox((int) (pos.x), (int) (pos.y));
@@ -105,10 +104,16 @@ public class App {
 			// vbox.setPadding(new Insets(0, 10, 10, 0));
 			pane.setTop(vbox);
 
-			Label label1 = new Label("Gold"); // TODO: write income and balance
-			label1.setTextFill(Color.YELLOW);
-			label1.setFontSize(32);
-			vbox.getChildren().add(label1);
+			//Label label1 = new Label("Gold" + player.getGold()); // TODO: write income and balance
+			gold = new Label("Gold: " + player.getGold());
+			gold.setTextFill(Color.YELLOW);
+			gold.setFontSize(32);
+			vbox.getChildren().add(gold);
+
+			points = new Label("Points: " + player.getPoints());
+			points.setTextFill(Color.GREEN);
+			points.setFontSize(32);
+			vbox.getChildren().add(points);
 			int i = 0;
 
 			// end turn button
@@ -146,7 +151,8 @@ public class App {
 		return new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent mouseEvent) {
-				Selector.undoMove();
+				Map.undo();
+				//Selector.undoMove();
 			}
 		};
 	}
@@ -252,8 +258,7 @@ public class App {
 
 				if (frame_time >= 1.0) {
 					frame_time = 0;
-					System.out.println("FPS: " + frames + " Memory used: " + 
-					(Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory())/1048576 + " mb");
+//					System.out.println("FPS: " + frames);
 					frames = 0;
 				}
 			}
@@ -332,15 +337,15 @@ public class App {
 
 	public static void main(String[] args) {
 		// getPlayers();
-		player = ServerHandler.instance.addPlayer("aa");
-		
+		player = ServerHandler.instance.addPlayer("bb");
+
 		RequestThread.instance.start();
-		
-		
+
+
 		//addPlayer("Tadas");
 //		addEntity();
-		//addEntities(); 
-		
+		//addEntities();
+
 		new App().run();
 		RequestThread.instance.cancel();
 	}

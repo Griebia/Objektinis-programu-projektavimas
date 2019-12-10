@@ -3,6 +3,7 @@ package tconq.entity;
 import org.joml.Vector2f;
 import tconq.collision.AABB;
 import tconq.entity.strategy.Upgrade;
+import tconq.entity.visitor.Visitor;
 import tconq.io.Window;
 import tconq.render.Animation;
 import tconq.render.Camera;
@@ -23,9 +24,10 @@ public interface IEntity {
 
     public TransformTc getPos();
 
-    public void move(String direction);
+    public boolean move(String direction);
     public void move(Vector2f direction);
-    public void undo();
+    public void undo(boolean isMovement, Map world);
+    public void undoMove();
 
     public AABB getEntityBoundingBox();
 
@@ -45,4 +47,8 @@ public interface IEntity {
     public int getMovement();
 
     public int getCost();
+
+    public boolean attackChain(IEntity opponent);
+
+    public int accept(Visitor visitor);
 }

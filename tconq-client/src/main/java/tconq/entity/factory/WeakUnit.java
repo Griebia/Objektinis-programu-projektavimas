@@ -43,7 +43,8 @@ public class WeakUnit extends Entity {
 
 	@Override
     public void addPoints() {
-        App.instance.player.addPoints(1);
-        
-    }
+        App.player.addPoints(1);
+        System.out.println(App.player.getId()+"=================================================");
+	}
+
 }

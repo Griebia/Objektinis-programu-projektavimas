@@ -23,6 +23,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.web.client.RestTemplate;
 
+import tconq.entity.Player;
 import lwjgui.event.EventHandler;
 import lwjgui.event.MouseEvent;
 import tconq.App;
@@ -30,11 +31,15 @@ import tconq.collision.AABB;
 import tconq.entity.IEntity;
 import tconq.entity.IEntityUpgrade;
 import tconq.entity.TransformTc;
-import tconq.entity.decorator.Attack;
-import tconq.entity.decorator.AttackBuilding;
+//import tconq.entity.decorator.AttackBuilding;
 import tconq.entity.decorator.Movement;
+import tconq.entity.factory.AbstractEntityFactory;
+import tconq.entity.factory.EntityProducer;
 import tconq.gui.Selector;
 import tconq.io.Window;
+import tconq.memento.CareTaker;
+import tconq.memento.Data;
+import tconq.memento.Originator;
 import tconq.render.Camera;
 import tconq.render.Shader;
 import tconq.server.ServerHandler;
@@ -47,6 +52,8 @@ public class Map {
 	private int[] tiles;
 	private AABB[] bounding_boxes;
 	// private AABB selectedTile;
+	private static Originator originator;
+	private static CareTaker careTaker;
 	private static List<IEntity> entities;
 	private static List<IEntity> entitiesOpponent;
 	private int width;
@@ -87,6 +94,10 @@ public class Map {
 			bounding_boxes = new AABB[width * height];
 			entities = new ArrayList<>();
 			entitiesOpponent = new ArrayList<>();
+
+			originator = new Originator();
+			careTaker = new CareTaker();
+
 
 			// TransformTc transform;
 
@@ -131,15 +142,31 @@ public class Map {
 	public static void addEntity(IEntity entity, Long playerId) {
 		entity.setPlayerId(playerId);
 		if (entity.getClass().getSimpleName().toLowerCase().contains("unit"))	//checks if entity is a unit
-			entity = new AttackBuilding( new Attack( new Movement(entity)));	//adds decorator to units
+			entity = new Movement(entity);	//adds decorator to units
+			//entity = new AttackBuilding( new Attack( new Movement(entity)));	//adds decorator to units
 
-		System.out.println("-------------------------------------------------------------------------------------");
-		System.out.println("Can move: " + entity.getMovement() + " spaces");
-		System.out.println("If attacks self with attack function: " + entity.getAttack(entity));
-		System.out.println("If attacks self with attack building function: " + entity.getDestroyBuilding(entity));
-		System.out.println("-------------------------------------------------------------------------------------");
+
+
+//		System.out.println("-------------------------------------------------------------------------------------");
+//		System.out.println("Can move: " + entity.getMovement() + " spaces");
+//		System.out.println("If attacks self with attack function: " + entity.getAttack(entity));
+//		System.out.println("If attacks self with attack building function: " + entity.getDestroyBuilding(entity));
+//		System.out.println("-------------------------------------------------------------------------------------");
 
 		entities.add(entity);
+		save(entity, false);
+	}
+
+	public static void undo(){
+		originator.restore(careTaker.undo());
+		Data current = originator.getData();
+		Selector.undo(current);
+	}
+
+	public static void save(IEntity last, boolean isMovement){
+		Data data = new Data(last,isMovement);
+		originator.setData(data);
+		careTaker.addMemento(originator.save());
 	}
 
 	public static void addEntityOpponent(IEntity entity, Long playerId) {
@@ -155,7 +182,7 @@ public class Map {
 		return null;
 	}
 
-	public static boolean removeEntity(Vector3f pos) {
+	public boolean removeEntity(Vector3f pos) {
 		for (int i = 0; i < entities.size(); i++) {
 			if (entities.get(i).getPos().pos.equals(pos)) {
 				entities.remove(i);
@@ -322,7 +349,10 @@ public class Map {
 				RestTemplate restTemplate = new RestTemplate();
 				restTemplate.postForObject(uri, entity, String.class);
 
-				ServerHandler.instance.updatePlayer(App.instance.player);		// updates player atributes
+				Player updatedPlayer = ServerHandler.instance.updatePlayer(App.player);		// updates player atributes
+
+				App.gold.setText("Gold: " + updatedPlayer.getGold());
+				App.points.setText("Points: " + updatedPlayer.getPoints());
 
 				//-----------------------NEXT TURN STUFF--------------------------
 				final String uriPlayer = "http://" + ServerHandler.instance.serverip + "/NextTurn/" + ServerHandler.instance.playerID.toString();
@@ -345,14 +375,27 @@ public class Map {
 
 	public static void fromDbToMap(String dbEntities, Long opponentId) { // gets entities from database and adds them to map
 		JSONArray jsonArray = new JSONArray(dbEntities); // changes string to jsonArray
+
+		AbstractEntityFactory unitFactory = EntityProducer.getFactory(true);
+		AbstractEntityFactory buildingFactory = EntityProducer.getFactory(false);
+		IEntity Ient = null;
 		for (int i = 0; i < jsonArray.length(); i++) {
 			JSONObject jsonEntity = jsonArray.getJSONObject(i); // gets one json onject form array
 
 			TransformTc tc = new TransformTc();
 			tc.pos.x = jsonEntity.getFloat("x");
 			tc.pos.y = jsonEntity.getFloat("y");
-			String entityType = new StringBuilder().append(jsonEntity.getString("type")).append("unit").toString();
-			IEntity Ient = Selector.entityFactory.getEntity(entityType, tc);
+
+			String entityType = jsonEntity.getString("type");
+			if ( entityType.equals("WEAK") || entityType.equals("MEDIUM") || entityType.equals("STRONG")){
+				entityType += "unit";
+				Ient = unitFactory.getEntityFromDb(entityType, tc);
+			}
+			else
+			{
+				Ient = buildingFactory.getEntityFromDb(entityType, tc);
+			}
+
 			Ient.setId(jsonEntity.getLong("id"));
 			JSONObject player = (JSONObject)jsonEntity.get("player");
 			Long playerId = player.getLong("id");

@@ -2,6 +2,7 @@ package tconq.entity.command;
 
 import tconq.entity.Entity;
 import tconq.entity.IEntity;
+import tconq.worldmap.Map;
 
 import javax.swing.*;
 import java.util.HashMap;
@@ -21,7 +22,7 @@ public class MovementControl {
     }
 
     //Moves the entity to one of the directions
-    public void move(String direction){
+    public boolean move(String direction){
         if(commandSequence.size() < unit.getMovement()) {
             ICommand command = commands.get(direction);
             //If there is no such command throws and exception
@@ -30,7 +31,10 @@ public class MovementControl {
             }
             commandSequence.add(command);
             command.move();
+            Map.save(unit,true);
+            return true;
         }
+        return false;
     };
 
     //Undoes the last made move

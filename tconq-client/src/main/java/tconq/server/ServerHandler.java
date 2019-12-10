@@ -3,18 +3,22 @@ package tconq.server;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javax.swing.text.html.parser.Entity;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
+import tconq.App;
 import tconq.entity.Player;
 
 public class ServerHandler {
-    public String serverip = "212.12.201.159:8080";//"40.76.27.38:8080";
+    public String serverip = "127.0.0.1:8080";//"40.76.27.38:8080";  "127.0.0.1:8080";
     public Long playerID = 0L;
     public static ServerHandler instance = new ServerHandler();
 
@@ -142,7 +146,7 @@ public class ServerHandler {
 		return newPlayer;
 	}
 
-	public void updatePlayer(Player player){
+	public Player updatePlayer(Player player){
 		final String uri = "http://" + serverip + "/Player/" + player.getId();
 
 		
@@ -164,7 +168,9 @@ public class ServerHandler {
 
 		RestTemplate restTemplate = new RestTemplate();
 		// send POST request
-		restTemplate.put(uri, entity);
+		ResponseEntity<Player> updatedplayer = restTemplate.exchange(uri, HttpMethod.PUT, entity, Player.class, player.getId());
+
+		return updatedplayer.getBody();
 
 	}
 	

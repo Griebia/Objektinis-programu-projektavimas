@@ -7,10 +7,11 @@ import org.joml.Vector3f;
 import tconq.assets.Assets;
 import tconq.collision.AABB;
 import tconq.collision.Collision;
+import tconq.entity.chain_of_responsibility.*;
 import tconq.entity.command.MovementControl;
-import tconq.entity.state.State;
 import tconq.entity.state.StateContext;
 import tconq.entity.strategy.Upgrade;
+import tconq.entity.visitor.Visitor;
 import tconq.io.Window;
 import tconq.render.Animation;
 import tconq.render.Camera;
@@ -20,7 +21,7 @@ import tconq.server.ServerHandler;
 import tconq.worldmap.Map;
 
 
-public abstract class Entity implements IEntity, IEntityUpgrade{
+public abstract class Entity implements IEntity, IEntityUpgrade {
 	protected AABB bounding_box;
 	
 	protected Animation[] animations;
@@ -93,11 +94,28 @@ public abstract class Entity implements IEntity, IEntityUpgrade{
 		
 		bounding_box.getCenter().set(transform.pos.x, transform.pos.y);
 	}
-	public void move(String direction)
+	public boolean move(String direction)
 	{
-		movementControl.move(direction);
+		return movementControl.move(direction);
 	}
-	public void undo(){movementControl.undo();};
+
+	public void undoMove(){movementControl.undo();}
+
+	public void undo(boolean isMovement,Map world){
+		if (isMovement){
+		movementControl.undo();
+		}else{
+			downgrade(world);
+		}
+	};
+
+	public void downgrade(Map world) {
+// Strategy Upgrade
+//		if(upgradeStrategy != null)
+//			upgradeStrategy.upgrade(this.transform, world, ServerHandler.instance.playerID, entityId);
+		//TODO: implement
+		this.stateContext.downgrade(this.transform, world, ServerHandler.instance.playerID, this.id);
+	}
 	
 	public void collideWithTiles(Map world) {
 		AABB[] boxes = new AABB[25];
@@ -205,6 +223,30 @@ public abstract class Entity implements IEntity, IEntityUpgrade{
 
 	public final void processEntity(){
 		addPoints();
+	}
+
+
+
+	public boolean attackChain(IEntity opponent){
+		Chain weakUnit = new AttackWeak();
+		Chain mediumUnit = new AttackMedium();
+		Chain stringUnit = new AttackStrong();
+		Chain house = new AttackHouse();
+		Chain tower = new AttackTower();
+		Chain castle = new AttackCastle();
+
+
+		weakUnit.setNextChain(mediumUnit);
+		mediumUnit.setNextChain(stringUnit);
+		stringUnit.setNextChain(house);
+		house.setNextChain(tower);
+		tower.setNextChain(castle);
+
+		return weakUnit.attack(this, opponent);
+	}
+
+	public int accept(Visitor visitor){
+		return visitor.visit(this);
 	}
 	
 }
