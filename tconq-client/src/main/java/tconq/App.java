@@ -146,6 +146,35 @@ public class App {
 
 	}
 
+	private static void updateComponents(Scene scene) {
+		// Create a simple pane
+
+		BorderPane pane = (BorderPane)scene.getRoot();
+
+		{
+			VBox vbox = new VBox();
+			vbox.setAlignment(Pos.BOTTOM_LEFT);
+			vbox.setBackground(Color.BLUE.alpha(0.4f));
+			vbox.setMinSize(window.getWidth() - 10, 64);
+			// vbox.setPadding(new Insets(0, 10, 10, 0));
+			pane.setTop(vbox);
+
+			//Label label1 = new Label("Gold" + player.getGold()); // TODO: write income and balance
+			gold = new Label("Gold: " + player.getGold());
+			gold.setTextFill(Color.YELLOW);
+			gold.setFontSize(32);
+			vbox.getChildren().add(gold);
+
+			points = new Label("Points: " + player.getPoints());
+			points.setTextFill(Color.GREEN);
+			points.setFontSize(32);
+			vbox.getChildren().add(points);
+			int i = 0;
+
+		}
+
+	}
+
 	// Logic that goes if the undoMover button is pressed
 	public static EventHandler<MouseEvent> undoMovePressed() {
 		return new EventHandler<MouseEvent>() {
@@ -278,6 +307,7 @@ public class App {
 				showCursorCoordinates(world, gui.getCamera());
 
 				LWJGUI.render();
+				updateComponents(lwjguiWindow.getScene());
 
 				window.swapBuffers();
 				frames++;
